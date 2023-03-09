@@ -1,0 +1,49 @@
+.center .slick-center .centerCard {
+    transform: scale(1.1);
+    @apply mx-[2rem] md:mx-[6rem] lg:mx-[8rem] opacity-100 pointer-events-auto cursor-grab;
+}
+
+.center .centerCard {
+    @apply md:opacity-50 md:pointer-events-none;
+}
+
+.icons {
+    @apply bg-white shadow-md shadow-orange-200 w-[4rem] h-[4rem] rounded-full absolute
+    grid place-items-center text-orang;
+}
+
+.profile{
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    top: 0;
+    transform: translate(-50%, -50%);
+}
+
+.slick-dots li button:before {
+    content: "";
+}
+
+.slick-dots li button {
+    border: 1px solid #ff8a00;
+    height: 0.8rem;
+    width: 0.8rem;
+    padding: 0.1rem;
+    border-radius: 50px;
+    transition: all 500ms ease-in-out;
+    margin-top: 4rem;
+}
+
+.slick-dots li.slick-active button {
+    @apply bg-orang;
+}
+
+.slick-dots li {
+    margin: 0;
+}
+
+.slick-list,
+.slick-slider,
+.slick-track {
+    padding-bottom: 0rem;
+}
