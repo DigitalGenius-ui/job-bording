@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Person2Icon from "@mui/icons-material/Person2";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import Person4Icon from "@mui/icons-material/Person4";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import { JobContext } from "../Context/Context";
 
 const UserProfile = () => {
   const [drop, setDrop] = useState(false);
+  const { user } = JobContext();
 
   const dorpMenu = [
     {
@@ -25,11 +26,6 @@ const UserProfile = () => {
       icon: <Person4Icon sx={{ fontSize: "1.3rem" }} />,
       path: "/",
     },
-    {
-      title: "Logout",
-      icon: <ExitToAppIcon sx={{ fontSize: "1.3rem" }} />,
-      path: "/",
-    },
   ];
   return (
     <div className="flex items-center gap-4 cursor-pointer relative">
@@ -45,8 +41,8 @@ const UserProfile = () => {
         ></span>
       </div>
       <h1 className="text-gray-500 font-semibold">
-        <div className="hidden md:flex">
-          Hi, John!
+        <div className="hidden md:flex capitalize">
+          Hi, {user?.signupAs || "User"}
           <span>
             {drop ? (
               <KeyboardArrowUpIcon sx={{ fontSize: "1.2rem" }} />
@@ -60,11 +56,12 @@ const UserProfile = () => {
       {/* drop down  */}
       {drop && (
         <div
-          className="bg-white absolute right-0 flex flex-col top-full shadow-md 
-       shadow-gray-300 w-[15rem] mt-2 animate-dropDown transition-all duration-500"
+          className="bg-white absolute right-0 flex flex-col top-full shadow-sm 
+       shadow-gray-800 w-[15rem] mt-2 animate-dropDown transition-all duration-500"
         >
           {dorpMenu.map((menu, i) => (
             <div
+              key={i}
               className="flex items-center gap-2 py-2 px-2 
             hover:text-orang border-b text-sm text-gray-500"
             >

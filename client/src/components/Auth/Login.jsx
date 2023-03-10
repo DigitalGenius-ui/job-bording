@@ -1,9 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
+import Input from "../util/Input/Input";
+import { useMutation } from "react-query";
+import { signIn } from "../FetchHook/User";
+import { JobContext } from "../Context/Context";
+import { Box } from "@mui/system";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Login = () => {
+  const { setAlert, setOpen } = JobContext();
+  const [login, setLogin] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { mutateAsync, error, isLoading, isError } = useMutation(
+    "login",
+    signIn,
+    {
+      onSuccess: (data) => {
+        return data;
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (isError) {
+      setAlert({
+        type: "error",
+        message: error && error.message,
+        open: true,
+      });
+    }
+  }, [error?.message, isError, setAlert, error]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    await mutateAsync(login);
+    setOpen(false);
+    window.location.reload();
+  };
+
   return (
     <>
       <div className="text-center py-4">
@@ -14,16 +53,21 @@ const Login = () => {
         </p>
       </div>
 
-      <form className="flex flex-col px-6 gap-4">
-        <input
-          className="border p-3 text-sm outline-none"
+      <form
+        onSubmit={submitHandler}
+        className="flex flex-col px-3 lg:px-6 gap-4"
+      >
+        <Input
           type="email"
-          placeholder="Email Address"
+          placeHolder="Email Address"
+          name="email"
+          setValue={setLogin}
         />
-        <input
-          className="border p-3 text-sm outline-none"
+        <Input
           type="password"
-          placeholder="Password"
+          placeHolder="Password"
+          name="password"
+          setValue={setLogin}
         />
 
         <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -37,16 +81,22 @@ const Login = () => {
         </div>
 
         <button
-          className="bg-orang w-full py-3 mb-2 rounded-md text-white
-        hover:bg-orange-400"
+          className={`bg-orang w-full py-3 mb-4 rounded-md text-white
+        hover:bg-orange-400 flex items-center justify-center gap-2
+        ${isLoading && "pointer-events-none"}`}
         >
+          {isLoading && (
+            <Box sx={{ display: "flex", marginTop: "0.2rem" }}>
+              <CircularProgress size="1rem" />
+            </Box>
+          )}
           Log In
         </button>
       </form>
 
-      <div className="px-6 mb-5">
+      <div className="px-3 lg:px-6 mb-5">
         <div
-          className="text-center mt-3 relative after:content-[''] after:left-0 after:right-0
+          className="text-center mt-4 relative after:content-[''] after:left-0 after:right-0
             after:border after:absolute after:top-[43%] after:z-[-1]"
         >
           <span className="max-auto bg-gray-200 text-black p-1 rounded-full z-30 px-3">

@@ -3,11 +3,21 @@ import LoginIcon from "@mui/icons-material/Login";
 import UserProfile from "./UserProfile";
 import MenuIcon from "@mui/icons-material/Menu";
 import { JobContext } from "../Context/Context";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const Header = () => {
   const [activeNav, setActiveNav] = useState("home");
   const [menu, setMenu] = useState(false);
-  const { setOpen } = JobContext();
+  const { setOpen, user } = JobContext();
+
+  const handleClick = () => {
+    if (user) {
+      localStorage.clear();
+      window.location.reload();
+    } else {
+      setOpen(true);
+    }
+  };
 
   const nav = [
     {
@@ -75,10 +85,19 @@ const Header = () => {
             className="flex items-center gap-2 bg-orang text-white py-2 px-2 md:py-2 md:px-4 rounded-full
             hover:bg-transparent border-2 border-orang hover:text-orang transition
             duration-500"
-            onClick={() => setOpen(true)}
+            onClick={handleClick}
           >
-            <LoginIcon sx={{ fontSize: "1.2rem" }} />{" "}
-            <span className="hidden md:flex">Sign In</span>
+            {user ? (
+              <>
+                <ExitToAppIcon sx={{ fontSize: "1.2rem" }} />
+                <span className="hidden md:flex">LogOut</span>
+              </>
+            ) : (
+              <>
+                <LoginIcon sx={{ fontSize: "1.2rem" }} />
+                <span className="hidden md:flex">Sign In</span>
+              </>
+            )}
           </button>
 
           {/* user profile dropdown part   */}

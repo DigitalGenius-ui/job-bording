@@ -8,15 +8,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import { JobContext } from "../Context/Context";
 
 const Auth = () => {
-  const { open, setOpen } = JobContext();
-  const [activeForm, setActiveForm] = useState(false);
+  const { open, setOpen, activeForm, setActiveForm } = JobContext();
   const [activeBtn, setActiveBtn] = useState("Log In");
 
   const btn = ["Log In", "Register"];
 
   const handleClick = (item) => {
     setActiveBtn(item);
-    setActiveForm(item === "Log In" ? false : true);
+    setActiveForm(item === "Log In" ? true : false);
   };
 
   const style = {
@@ -54,7 +53,8 @@ const Auth = () => {
                 onClick={() => handleClick(item)}
                 key={i}
                 className={`border-b-[1.7px] border-orang bg-orang flex-1 p-5 text-md font-semibold ${
-                  item === activeBtn ? "bg-white text-orang" : ""} text-sm md:text-lg`}
+                  item === activeBtn ? "bg-white text-orang" : ""
+                } text-sm md:text-lg`}
               >
                 {item}
               </button>
@@ -62,7 +62,7 @@ const Auth = () => {
           </div>
 
           {/*login and sing up forms *************************************************************88*/}
-          {activeForm ? <Register /> : <Login />}
+          {activeForm ? <Login /> : <Register/>}
         </Box>
       </Modal>
     </>

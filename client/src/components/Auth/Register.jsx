@@ -1,17 +1,51 @@
-import React, { useState } from "react";
-import Select from "../Home/Banner/Select";
+import React, { useState, useEffect } from "react";
+import Input from "../util/Input/Input";
+import { useMutation } from "react-query";
+import { signUp } from "../FetchHook/User";
+import { JobContext } from "../Context/Context";
+import { Box, CircularProgress } from "@mui/material";
 
 const Register = () => {
-  const [select, setSelect] = useState("");
+  const { setActiveForm, setAlert } = JobContext();
+  const [register, setRegister] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    rePassword: "",
+    signupAs: "",
+  });
 
-  const data = [
-    "Web Designer",
-    "Web Developer",
-    "Graphic Designer",
-    "PHP Developer",
-    "IOS Developer",
-    "Android Developer",
-  ];
+  const { mutateAsync, isLoading, error, isError } = useMutation(
+    "signup",
+    signUp,
+    {
+      onSuccess: (data) => {
+        return data;
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (isError) {
+      setAlert({
+        type: "error",
+        message: error && error.message,
+        open: true,
+      });
+    }
+  }, [setAlert, error, isError]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    await mutateAsync(register);
+    setActiveForm(true);
+    setAlert({
+      type: "success",
+      message: "User has been successfully created",
+      open: true,
+    });
+  };
+
   return (
     <>
       <div className="text-center py-4">
@@ -22,32 +56,39 @@ const Register = () => {
         </p>
       </div>
 
-      <form className="flex flex-col px-6 gap-4">
-        <input
-          className="border p-3 outline-none"
+      <form
+        onSubmit={submitHandler}
+        className="flex flex-col px-3 lg:px-6 gap-4"
+      >
+        <Input
           type="text"
-          placeholder="User Name"
+          placeHolder="User Name"
+          setValue={setRegister}
+          name="fullName"
         />
-        <input
-          className="border p-3 text-sm outline-none"
+        <Input
           type="email"
-          placeholder="Email Address"
+          placeHolder="Email Address"
+          setValue={setRegister}
+          name="email"
         />
-        <Select
-          placeHolder="Select Jobs"
-          data={data}
-          onChange={setSelect}
-          form="auth"
-        />
-        <input
-          className="border p-3 text-sm outline-none"
+        <Input
           type="password"
-          placeholder="Password"
+          placeHolder="Password"
+          setValue={setRegister}
+          name="password"
         />
-        <input
-          className="border p-3 text-sm outline-none"
+        <Input
           type="password"
-          placeholder="Repeat Password"
+          placeHolder="Repeat Password"
+          setValue={setRegister}
+          name="rePassword"
+        />
+        <Input
+          type="text"
+          placeHolder="Sign Up As"
+          setValue={setRegister}
+          name="signupAs"
         />
 
         <p className="flex items-center gap-2 flex-wrap text-sm md:text-md">
@@ -56,9 +97,15 @@ const Register = () => {
         </p>
 
         <button
-          className="bg-orang w-full py-3 mb-4 rounded-md text-white
-        hover:bg-orange-400"
+          className={`bg-orang w-full py-3 mb-4 rounded-md text-white
+        hover:bg-orange-400 flex items-center justify-center gap-2
+        ${isLoading && "pointer-events-none"}`}
         >
+          {isLoading && (
+            <Box sx={{ display: "flex", marginTop: "0.2rem" }}>
+              <CircularProgress size="1rem" />
+            </Box>
+          )}
           Register
         </button>
       </form>
