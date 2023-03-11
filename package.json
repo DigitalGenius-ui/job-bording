@@ -1,0 +1,27 @@
+{
+  "name": "remote-job",
+  "version": "1.0.0",
+  "description": "For the detailed information about the project please go through the task in the project. \r https://github.com/techsinarif/remote-job/issues/5",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techsinarif/remote-job.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/techsinarif/remote-job/issues"
+  },
+  "homepage": "https://github.com/techsinarif/remote-job#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.3",
+    "nodemon": "^2.0.21"
+  }
+}
