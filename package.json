@@ -1,7 +1,7 @@
 {
-  "name": "remote-job",
+  "name": "hire-me",
   "version": "1.0.0",
-  "description": "For the detailed information about the project please go through the task in the project. \r https://github.com/techsinarif/remote-job/issues/5",
+  "description": "For the detailed information about the project please go through the task in the project.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/techsinarif/remote-job.git"
+    "url": "git+https://github.com/infozapp-solutions/hire-me.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/techsinarif/remote-job/issues"
+    "url": "https://github.com/infozapp-solutions/hire-me/issues"
   },
-  "homepage": "https://github.com/techsinarif/remote-job#readme",
+  "homepage": "https://github.com/infozapp-solutions/hire-me.git#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
