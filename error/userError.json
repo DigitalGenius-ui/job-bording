@@ -1,0 +1,14 @@
+{
+  "NOT_FOUND": {
+    "NO_DATA_IN_DB": {
+      "code": 4004,
+      "message": "User not found"
+    }
+  },
+  "EMAIL_PASSWORD": {
+    "PASSWORD_ERROR": {
+      "code": 5020,
+      "message": "Password does not match"
+    }
+  }
+}

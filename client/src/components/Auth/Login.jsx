@@ -40,7 +40,7 @@ const Login = () => {
     e.preventDefault();
     await mutateAsync(login);
     setOpen(false);
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
