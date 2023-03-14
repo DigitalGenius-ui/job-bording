@@ -9,8 +9,11 @@ const Select = ({ placeHolder, data, onChange, form }) => {
   const [search, setSearch] = useState("");
 
   const selectHandler = (item) => {
+    setShowDrop(false);
     setPrintSelect(item);
-    onChange(item);
+    form === "auth"
+      ? onChange((prev) => ({ ...prev, signupAs: item }))
+      : onChange(item);
   };
 
   return (
@@ -27,27 +30,33 @@ const Select = ({ placeHolder, data, onChange, form }) => {
         {showDrop ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
       </h1>
 
+      {/* header drop down  */}
       {showDrop && (
         <div
           className="bg-white absolute top-full left-0 right-0 z-30 rounded-md 
           lg:rounded-none mt-1 lg:mt-0"
         >
-          <div className="flex items-center bg-gray-200 mt-3 lg:mt-0 p-1 mx-2 mb-2">
-            <input
-              type="text"
-              placeholder="search..."
-              className="outline-none bg-transparent w-full text-sm px-1 py-[0.2rem]"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <span className="text-gray-600">
-              <SearchIcon sx={{ fontSize: "1.3rem" }} />
-            </span>
-          </div>
+          {form === "auth" ? null : (
+            <div className="flex items-center bg-gray-200 mt-3 lg:mt-0 p-1 mx-2 mb-2">
+              {/* search for specific category */}
+              <input
+                type="text"
+                placeholder="search..."
+                className="outline-none bg-transparent w-full text-sm px-1 py-[0.2rem]"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <span className="text-gray-600">
+                <SearchIcon sx={{ fontSize: "1.3rem" }} />
+              </span>
+            </div>
+          )}
 
           <ul
-            className={`${search ? "h-full" : "h-[8rem]"} overflow-auto 
-            bg-white shadow-md`}
+            className={`${
+              search || form === "auth" ? "h-full mt-2" : "h-[8rem]"
+            } overflow-auto 
+            bg-white shadow-sm shadow-gray-600`}
           >
             {data.map((item, i) => (
               <li

@@ -5,7 +5,7 @@ const Job = createContext();
 const Context = ({ children }) => {
   // Auth stats
   const [open, setOpen] = useState(false);
-  const [activeForm, setActiveForm] = useState(true);
+  const [activeForm, setActiveForm] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   // alert state

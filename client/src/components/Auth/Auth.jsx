@@ -3,19 +3,19 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Register from "./Register";
 import Login from "./Login";
-import "./style.css";
+import "./style.scss";
 import CloseIcon from "@mui/icons-material/Close";
 import { JobContext } from "../../Context/Context";
 
 const Auth = () => {
   const { open, setOpen, activeForm, setActiveForm } = JobContext();
-  const [activeBtn, setActiveBtn] = useState("Log In");
+  const [activeBtn, setActiveBtn] = useState("Register");
 
   const btn = ["Log In", "Register"];
 
   const handleClick = (item) => {
     setActiveBtn(item);
-    setActiveForm(item === "Log In" ? true : false);
+    setActiveForm(item === "Register" ? false : true);
   };
 
   const style = {
@@ -53,7 +53,7 @@ const Auth = () => {
                 onClick={() => handleClick(item)}
                 key={i}
                 className={`border-b-[1.7px] border-orang bg-orang flex-1 p-5 text-md font-semibold ${
-                  item === activeBtn ? "bg-white text-orang" : ""
+                  activeBtn === item ? "bg-white text-orang" : ""
                 } text-sm md:text-lg`}
               >
                 {item}

@@ -7,12 +7,11 @@ import {
   RadioGroup,
 } from "@mui/material";
 import React, { useEffect } from "react";
-import { JobContext } from "../../Context/Context";
 import TextEditor from "./TextEditor/TextEditor";
 import Input from "./utils/Input";
+import { useQuill } from "react-quilljs";
 
 const Company = ({ aboutCompany, setAboutCompany, validate }) => {
-  const { setAlert } = JobContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,16 +23,22 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
     });
   };
 
+  // text editor
+  const placeholder = "Write your description...";
+  const { quill, quillRef } = useQuill({ placeholder });
   useEffect(() => {
-    if (validate) {
-      setAlert({
-        type: "error",
-        message: "This Field is required",
-        open: true,
+    if (quill) {
+      // give initialValue to the text editor
+      quill.clipboard.dangerouslyPasteHTML(aboutCompany.company_description);
+      quill.on("text-change", () => {
+        setAboutCompany((prev) => ({
+          ...prev,
+          company_description: quillRef.current.firstChild.innerHTML,
+        }));
       });
-      return;
     }
-  }, [validate, setAlert]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quill, quillRef, setAboutCompany]);
 
   return (
     <div>
@@ -45,6 +50,7 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           <RadioGroup
             row
             defaultValue={aboutCompany?.job_posted_before}
+            value={aboutCompany.job_posted_before}
             name="job_posted_before"
             onChange={handleChange}
           >
@@ -58,13 +64,14 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
         </FormControl>
       </div>
 
-      {aboutCompany.job_posted_before === "Yes" && (
+      {aboutCompany?.job_posted_before === "Yes" && (
         <Input
           type="email"
           label="Email Id"
           name="email_id"
-          defaultValue={aboutCompany?.email_id}
+          state={aboutCompany}
           onCHange={handleChange}
+          isError={validate}
         />
       )}
 
@@ -74,8 +81,9 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           label="Company Name"
           text="Enter your company or organization’s name"
           name="company_name"
-          defaultValue={aboutCompany?.company_name}
+          state={aboutCompany}
           onCHange={handleChange}
+          isError={validate}
         />
         <Input
           type="text"
@@ -83,7 +91,8 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           text="Where your company is officially headquartered."
           name="company_hq"
           onCHange={handleChange}
-          defaultValue={aboutCompany?.company_hq}
+          state={aboutCompany}
+          isError={validate}
         />
       </div>
 
@@ -94,7 +103,8 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
         This will be displayed on your company’s profile."
         name="company_mission_vission"
         onCHange={handleChange}
-        defaultValue={aboutCompany?.company_mission_vission}
+        state={aboutCompany}
+        isError={validate}
       />
 
       <div className="my-6">
@@ -104,17 +114,12 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           text="Example: https://example.com/"
           name="company_website"
           onCHange={handleChange}
-          defaultValue={aboutCompany?.company_website}
+          state={aboutCompany}
+          isError={validate}
         />
       </div>
 
-      <TextEditor
-        title="Company Description"
-        name={"description"}
-        onChange={handleChange}
-        setValue={setAboutCompany}
-        defaultValue={aboutCompany?.description}
-      />
+      <TextEditor title="Company Description" quillRef={quillRef} />
     </div>
   );
 };

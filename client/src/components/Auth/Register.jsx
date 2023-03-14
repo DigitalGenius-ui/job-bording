@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Input from "../util/Input/Input";
 import { useMutation } from "react-query";
-import { signUp } from "../FetchHook/User";
+import { signUp } from "../../FetchHook/User";
 import { JobContext } from "../../Context/Context";
 import { Box, CircularProgress } from "@mui/material";
+import Select from "../util/Select/Select";
 
 const Register = () => {
   const { setActiveForm, setAlert } = JobContext();
@@ -13,6 +14,7 @@ const Register = () => {
     password: "",
     rePassword: "",
     signupAs: "",
+    acceptTerm: false,
   });
 
   const { mutateAsync, isLoading, error, isError } = useMutation(
@@ -41,6 +43,24 @@ const Register = () => {
       setAlert({
         type: "error",
         message: "Your passwords are not matching",
+        open: true,
+      });
+      return;
+    }
+
+    if (!register.signupAs) {
+      setAlert({
+        type: "error",
+        message: "Please fill the select input",
+        open: true,
+      });
+      return;
+    }
+
+    if (register?.acceptTerm === false) {
+      setAlert({
+        type: "error",
+        message: "You must accept the terms and conditions!!",
         open: true,
       });
       return;
@@ -93,15 +113,26 @@ const Register = () => {
           setValue={setRegister}
           name="rePassword"
         />
-        <Input
-          type="text"
-          placeHolder="Sign Up As"
-          setValue={setRegister}
-          name="signupAs"
+
+        <Select
+          placeHolder="Sign UpAs..."
+          data={["Employer", "Candidate"]}
+          form="auth"
+          onChange={setRegister}
         />
 
         <p className="flex items-center gap-2 flex-wrap text-sm md:text-md">
-          <input type="checkbox" />I Have Read and Agree to the
+          <input
+            type="checkbox"
+            value={register?.acceptTerm}
+            onChange={() =>
+              setRegister((prev) => ({
+                ...prev,
+                acceptTerm: !prev?.acceptTerm,
+              }))
+            }
+          />
+          I Have Read and Agree to the
           <span className="text-orang cursor-pointer">Terms & Conditions</span>
         </p>
 

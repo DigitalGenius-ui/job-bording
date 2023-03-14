@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { categories, countries } from "./data";
-import Select from "./Select";
+import Select from "../../util/Select/Select";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Form = () => {

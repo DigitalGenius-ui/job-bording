@@ -4,7 +4,7 @@ import { comments } from "./data";
 import Slide from "./Slide";
 import Slider from "react-slick";
 import { settings } from "./Slider";
-import "./Slider.css";
+import "./Slider.scss";
 
 const Client = () => {
   const slide = comments.map((slides, i) => <Slide slide={slides} key={i} />);

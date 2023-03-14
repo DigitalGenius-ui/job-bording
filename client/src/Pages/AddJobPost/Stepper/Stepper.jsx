@@ -10,6 +10,8 @@ import Company from "../Company";
 import Preview from "../Preview";
 import PostInfo from "../PostInfo";
 import { JobContext } from "../../../Context/Context";
+import { useMutation } from "react-query";
+import { postJob } from "../../../FetchHook/Job";
 
 const steps = ["Position", "Company", "Preview", "Post"];
 
@@ -28,7 +30,7 @@ const StepperComp = () => {
     country: "Remote",
     state: "Remote",
     application_link_or_email: "",
-    description: "",
+    job_description: "",
   });
 
   const [aboutCompany, setAboutCompany] = React.useState({
@@ -38,7 +40,7 @@ const StepperComp = () => {
     company_hq: "",
     company_mission_vission: "",
     company_website: "",
-    description: "",
+    company_description: "",
   });
 
   // handle scroll up
@@ -62,17 +64,6 @@ const StepperComp = () => {
     });
   };
 
-  useEffect(() => {
-    if (validate) {
-      setAlert({
-        type: "error",
-        message: "All Fields are required",
-        open: true,
-      });
-      return;
-    }
-  }, [validate, setAlert]);
-
   const isStepOptional = (step) => {
     return step === 2;
   };
@@ -81,7 +72,36 @@ const StepperComp = () => {
     return skipped.has(step);
   };
 
-  const handleNext = () => {
+  // post job in the database
+  const { mutateAsync, isLoading, isError, error } = useMutation(
+    "job",
+    postJob,
+    {
+      onSuccess: (data) => {
+        return data;
+      },
+    }
+  );
+
+  // error handling for posting jobs
+  useEffect(() => {
+    if (validate) {
+      setAlert({
+        type: "error",
+        message: "All Fields are required",
+        open: true,
+      });
+      return;
+    } else if (isError) {
+      setAlert({
+        type: "error",
+        message: error?.msg,
+        open: true,
+      });
+    }
+  }, [validate, setAlert, error?.msg, isError]);
+
+  const handleNext = async () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -92,7 +112,6 @@ const StepperComp = () => {
     if (activeStep === 0) {
       inputValidate(aboutPosition)
         .then((data) => {
-          console.log(aboutPosition);
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
           handleScroll();
         })
@@ -111,6 +130,22 @@ const StepperComp = () => {
           console.log(err);
         });
     }
+
+    if (activeStep === 2) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      handleScroll();
+    }
+
+    if (activeStep === 3) {
+      const data = {
+        ...aboutPosition,
+        ...aboutCompany,
+      };
+
+      await mutateAsync(data);
+    }
+
+    setSkipped(newSkipped);
   };
 
   const handleBack = () => {
@@ -174,14 +209,19 @@ const StepperComp = () => {
             <Position
               aboutPosition={aboutPosition}
               setAboutPosition={setAboutPosition}
+              validate={validate}
             />
           ) : activeStep === 1 ? (
             <Company
               aboutCompany={aboutCompany}
               setAboutCompany={setAboutCompany}
+              validate={validate}
             />
           ) : activeStep === 2 ? (
-            <Preview />
+            <Preview
+              aboutCompany={aboutCompany}
+              aboutPosition={aboutPosition}
+            />
           ) : (
             <PostInfo />
           )}
@@ -203,6 +243,7 @@ const StepperComp = () => {
             )}
 
             <Button onClick={handleNext}>
+              {isLoading && "Loading..."}
               {activeStep === steps.length - 1 ? "Post" : "Next"}
             </Button>
           </Box>

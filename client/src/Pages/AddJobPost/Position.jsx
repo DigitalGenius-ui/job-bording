@@ -9,7 +9,8 @@ import {
   RadioGroup,
   Select,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { useQuill } from "react-quilljs";
 import TextEditor from "./TextEditor/TextEditor";
 import Input from "./utils/Input";
 
@@ -24,6 +25,24 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
     });
   };
 
+  // text editor
+  const placeholder = "Write your description...";
+  const { quill, quillRef } = useQuill({ placeholder });
+
+  useEffect(() => {
+    if (quill) {
+      // give initialValue to the text editor
+      quill.clipboard.dangerouslyPasteHTML(aboutPosition.job_description);
+      quill.on("text-change", () => {
+        setAboutPosition((prev) => ({
+          ...prev,
+          job_description: quillRef.current.firstChild.innerHTML,
+        }));
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quill, quillRef, setAboutPosition]);
+
   return (
     <div>
       <h1 className="text-center text-2xl py-8">Position Details</h1>
@@ -34,7 +53,8 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
         text=" Example: “Senior Designer”. Titles must describe one position."
         name="job_title"
         onCHange={handleChange}
-        defaultValue={aboutPosition.job_title}
+        state={aboutPosition}
+        isError={validate}
       />
 
       <div className="flex items-center gap-3 my-3">
@@ -117,15 +137,17 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
                 label="Country"
                 type="text"
                 name="country"
-                defaultValue={aboutPosition?.country}
+                state={aboutPosition}
                 onCHange={handleChange}
+                isError={validate}
               />
               <Input
                 label="State"
                 type="text"
                 name="state"
-                defaultValue={aboutPosition?.state}
+                state={aboutPosition}
                 onCHange={handleChange}
+                isError={validate}
               />
             </>
           )}
@@ -137,17 +159,12 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           text="Link to Application page or Email address"
           name="application_link_or_email"
           onCHange={handleChange}
-          defaultValue={aboutPosition?.application_link_or_email}
+          state={aboutPosition}
+          isError={validate}
         />
       </div>
 
-      <TextEditor
-        title="Job Description"
-        name="description"
-        setValue={setAboutPosition}
-        onChange={handleChange}
-        defaultValue={aboutPosition?.description}
-      />
+      <TextEditor title="Job Description" quillRef={quillRef} />
     </div>
   );
 };

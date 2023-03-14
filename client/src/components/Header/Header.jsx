@@ -4,7 +4,7 @@ import UserProfile from "./UserProfile";
 import MenuIcon from "@mui/icons-material/Menu";
 import { JobContext } from "../../Context/Context";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [activeNav, setActiveNav] = useState("home");
@@ -18,6 +18,15 @@ const Header = () => {
     } else {
       setOpen(true);
     }
+  };
+
+  const navigate = useNavigate();
+  const homeClick = () => {
+    navigate("/");
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const nav = [
@@ -47,11 +56,13 @@ const Header = () => {
       <section className="size flex items-center justify-between h-[85px]">
         <div className="flex-1 flex items-center gap-10">
           {/* logo part  */}
-          <Link to="/">
-            <div>
-              <img className="w-32 sm:w-44" src="./images/logo.png" alt="" />
-            </div>
-          </Link>
+          <div onClick={homeClick}>
+            <img
+              className="w-32 sm:w-44 cursor-pointer"
+              src="./images/logo.png"
+              alt=""
+            />
+          </div>
 
           {/* navigation part  */}
           <nav
