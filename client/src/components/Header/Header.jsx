@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import LoginIcon from "@mui/icons-material/Login";
 import UserProfile from "./UserProfile";
 import MenuIcon from "@mui/icons-material/Menu";
-import { JobContext } from "../Context/Context";
+import { JobContext } from "../../Context/Context";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [activeNav, setActiveNav] = useState("home");
@@ -46,9 +47,11 @@ const Header = () => {
       <section className="size flex items-center justify-between h-[85px]">
         <div className="flex-1 flex items-center gap-10">
           {/* logo part  */}
-          <div>
-            <img className="w-32 sm:w-44" src="./images/logo.png" alt="" />
-          </div>
+          <Link to="/">
+            <div>
+              <img className="w-32 sm:w-44" src="./images/logo.png" alt="" />
+            </div>
+          </Link>
 
           {/* navigation part  */}
           <nav

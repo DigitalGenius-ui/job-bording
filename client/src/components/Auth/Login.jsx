@@ -5,7 +5,7 @@ import { BsTwitter } from "react-icons/bs";
 import Input from "../util/Input/Input";
 import { useMutation } from "react-query";
 import { signIn } from "../FetchHook/User";
-import { JobContext } from "../Context/Context";
+import { JobContext } from "../../Context/Context";
 import { Box } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -38,6 +38,7 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     await mutateAsync(login);
     setOpen(false);
     // window.location.reload();

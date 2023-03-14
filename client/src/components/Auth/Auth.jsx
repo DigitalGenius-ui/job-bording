@@ -5,7 +5,7 @@ import Register from "./Register";
 import Login from "./Login";
 import "./style.css";
 import CloseIcon from "@mui/icons-material/Close";
-import { JobContext } from "../Context/Context";
+import { JobContext } from "../../Context/Context";
 
 const Auth = () => {
   const { open, setOpen, activeForm, setActiveForm } = JobContext();
@@ -62,7 +62,7 @@ const Auth = () => {
           </div>
 
           {/*login and sing up forms *************************************************************88*/}
-          {activeForm ? <Login /> : <Register/>}
+          {activeForm ? <Login /> : <Register />}
         </Box>
       </Modal>
     </>

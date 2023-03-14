@@ -1,16 +1,19 @@
-import Auth from "./components/Auth/Auth";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
 import Message from "./components/util/Alert/Message";
+import { Routes, Route } from "react-router-dom";
+import JobPost from "./Pages/JobPost/JobPost";
 
 function App() {
   return (
     <>
       <Header />
-      <Home />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/jobpost" element={<JobPost />} />
+      </Routes>
       <Footer />
-      <Auth />
       <Message />
     </>
   );

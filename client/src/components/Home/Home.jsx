@@ -8,6 +8,7 @@ import Help from "./Help/Help";
 import Award from "./Award/Award";
 import Subscribe from "./Subscribe/Subscribe";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
+import Auth from "../Auth/Auth";
 
 const Home = () => {
   const [isScroll, setIsScroll] = useState(false);
@@ -34,7 +35,7 @@ const Home = () => {
       <Help />
       <Award />
       <Subscribe />
-
+      <Auth />
       {/* arrow ro scroll up  */}
       <span
         onClick={scrollTop}

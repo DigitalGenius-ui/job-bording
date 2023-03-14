@@ -4,7 +4,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Person2Icon from "@mui/icons-material/Person2";
 import Person4Icon from "@mui/icons-material/Person4";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import { JobContext } from "../Context/Context";
+import { JobContext } from "../../Context/Context";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
   const [drop, setDrop] = useState(false);
@@ -19,7 +20,7 @@ const UserProfile = () => {
     {
       title: "Manage Jobs Post",
       icon: <PostAddIcon sx={{ fontSize: "1.3rem" }} />,
-      path: "/",
+      path: "/jobpost",
     },
     {
       title: "Manage Jobs",
@@ -60,14 +61,15 @@ const UserProfile = () => {
        shadow-gray-800 w-[15rem] mt-2 animate-dropDown transition-all duration-500"
         >
           {dorpMenu.map((menu, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 py-2 px-2 
-            hover:text-orang border-b text-sm text-gray-500"
-            >
-              <span>{menu.icon}</span>
-              {menu.title}
-            </div>
+            <Link to={menu.path} key={i}>
+              <div
+                className="flex items-center gap-2 py-2 px-2 
+              hover:text-orang border-b text-sm text-gray-500"
+              >
+                <span>{menu.icon}</span>
+                {menu.title}
+              </div>
+            </Link>
           ))}
         </div>
       )}

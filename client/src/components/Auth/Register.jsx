@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Input from "../util/Input/Input";
 import { useMutation } from "react-query";
 import { signUp } from "../FetchHook/User";
-import { JobContext } from "../Context/Context";
+import { JobContext } from "../../Context/Context";
 import { Box, CircularProgress } from "@mui/material";
 
 const Register = () => {
@@ -37,6 +37,15 @@ const Register = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (register.password !== register.rePassword) {
+      setAlert({
+        type: "error",
+        message: "Your passwords are not matching",
+        open: true,
+      });
+      return;
+    }
+
     await mutateAsync(register);
     setActiveForm(true);
     setAlert({
