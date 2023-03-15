@@ -1,10 +1,26 @@
 import React from "react";
 import Heading from "../../util/Heading/Heading";
-import { jobs } from "./data";
 import Job from "./Job";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { JobContext } from "../../../Context/Context";
+import { useNavigate } from "react-router-dom";
 
 const Jobs = () => {
+  const { allJobs, user, setOpen } = JobContext();
+  const navigate = useNavigate();
+
+  const sortedData = allJobs?.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  const handleNavigate = () => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+    user ? navigate("/jobPosts") : setOpen(true);
+  };
+
   return (
     <div className="size">
       <Heading
@@ -17,15 +33,16 @@ const Jobs = () => {
       />
 
       <div className="flex flex-col gap-6 mb-8">
-        {jobs.map((job, i) => (
+        {sortedData?.slice(0, 3).map((job, i) => (
           <Job job={job} key={i} />
         ))}
       </div>
 
       <div className="mb-16">
         <button
+          onClick={handleNavigate}
           className="bg-orang py-2 px-5 rounded-md text-white group shadow-lg shadow-orange-100
-        flex items-center gap-1 justify-center mx-auto transition-all duration-500"
+          flex items-center gap-1 justify-center mx-auto transition-all duration-500"
         >
           Browse All Jobs
           <span className="hidden group-hover:flex">

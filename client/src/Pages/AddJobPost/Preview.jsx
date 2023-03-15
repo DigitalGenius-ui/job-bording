@@ -30,7 +30,7 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
               <div
                 className="mt-5"
                 dangerouslySetInnerHTML={{
-                  __html: aboutPosition.job_description,
+                  __html: aboutCompany.company_description,
                 }}
               />
 
@@ -38,7 +38,7 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
               <div
                 className="mt-5"
                 dangerouslySetInnerHTML={{
-                  __html: aboutCompany.company_description,
+                  __html: aboutPosition.job_description,
                 }}
               />
             </div>

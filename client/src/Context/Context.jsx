@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
+import { useQuery } from "react-query";
+import { getAllJobs } from "../FetchHook/Job";
 
 const Job = createContext();
 
@@ -15,6 +17,9 @@ const Context = ({ children }) => {
     open: false,
   });
 
+  // fetch all datas 
+  const { data:allJobs, isLoading, isError, error } = useQuery("job", getAllJobs);
+
   return (
     <Job.Provider
       value={{
@@ -26,6 +31,12 @@ const Context = ({ children }) => {
         setUser,
         alert,
         setAlert,
+
+        // fetch all jobs
+        allJobs,
+        isLoading,
+        isError,
+        error,
       }}
     >
       {children}

@@ -1,10 +1,27 @@
 import React from "react";
 import CampaignOutlinedIcon from "@mui/icons-material/CampaignOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { JobContext } from "../../../Context/Context";
 
 const Job = ({ job }) => {
+  const navigate = useNavigate();
+  const { user, setOpen } = JobContext();
+
+  const handleClick = (id) => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+    user ? navigate(`/jobPosts/${id}`) : setOpen(true);
+  };
+
   return (
     <div
+      onClick={() => handleClick(job._id)}
       className="flex flex-col md:flex-row items-center gap-8 bg-cardBg px-3 py-6 shadowCard cursor-pointer
         hover:border border-orang hover:border-l-4 transition-scale duration-500 hover:scale-[1.030] group"
     >
@@ -24,22 +41,49 @@ const Job = ({ job }) => {
             />
           </span>
           <span className="capitalize ml-2 text-sm font-semibold">
-            {job.type}
+            {job.job_type}
           </span>
         </div>
-        <h2 className="py-3 text-xl capitalize">{job.title}</h2>
+        <h2 className="py-3 text-xl capitalize">{job.job_title}</h2>
 
         <div className="flex items-center flex-wrap gap-3">
-          {job.tags.map((tag, i) => (
-            <div
-              key={i}
-              className="shadowCard px-1 py-[0.2rem] bg-white flex items-center gap-1 rounded-md
-              text-gray-500"
-            >
-              <span>{tag.icon}</span>
-              <span className="capitalize mt-1 text-sm">{tag.title}</span>
-            </div>
-          ))}
+          <div
+            className="shadowCard px-1 py-[0.2rem] bg-white flex items-center 
+            gap-1 rounded-md text-gray-500"
+          >
+            <span>
+              <LocationOnOutlinedIcon
+                sx={{ fontSize: "1rem", color: "#12b6e8" }}
+              />
+            </span>
+            <span className="capitalize mt-1 text-sm">{job.company_hq}</span>
+          </div>
+
+          <div
+            className="shadowCard px-1 py-[0.2rem] bg-white flex items-center 
+            gap-1 rounded-md text-gray-500"
+          >
+            <span>
+              <WorkOutlineOutlinedIcon
+                sx={{ fontSize: "1rem", color: "#12b6e8" }}
+              />
+            </span>
+            <span className="capitalize mt-1 text-sm">{job.category}</span>
+          </div>
+
+          <div
+            className="shadowCard px-1 py-[0.2rem] bg-white flex items-center 
+            gap-1 rounded-md text-gray-500"
+          >
+            <span>
+              <AccessTimeOutlinedIcon
+                sx={{ fontSize: "1rem", color: "#12b6e8" }}
+              />
+            </span>
+            <span className="capitalize mt-1 text-sm">
+              {moment(job.createdAt).fromNow()}
+            </span>
+          </div>
         </div>
       </div>
       <button

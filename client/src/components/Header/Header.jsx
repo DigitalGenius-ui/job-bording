@@ -3,22 +3,12 @@ import LoginIcon from "@mui/icons-material/Login";
 import UserProfile from "./UserProfile";
 import MenuIcon from "@mui/icons-material/Menu";
 import { JobContext } from "../../Context/Context";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [activeNav, setActiveNav] = useState("home");
   const [menu, setMenu] = useState(false);
   const { setOpen, user } = JobContext();
-
-  const handleClick = () => {
-    if (user) {
-      localStorage.clear();
-      window.location.reload();
-    } else {
-      setOpen(true);
-    }
-  };
 
   const navigate = useNavigate();
   const homeClick = () => {
@@ -95,24 +85,17 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
-          <button
-            className="flex items-center gap-2 bg-orang text-white py-2 px-2 md:py-2 md:px-4 rounded-full
+          {!user && (
+            <button
+              className="flex items-center gap-2 bg-orang text-white py-2 px-2 md:py-2 md:px-4 rounded-full
             hover:bg-transparent border-2 border-orang hover:text-orang transition
             duration-500"
-            onClick={handleClick}
-          >
-            {user ? (
-              <>
-                <ExitToAppIcon sx={{ fontSize: "1.2rem" }} />
-                <span className="hidden md:flex">LogOut</span>
-              </>
-            ) : (
-              <>
-                <LoginIcon sx={{ fontSize: "1.2rem" }} />
-                <span className="hidden md:flex">Sign In</span>
-              </>
-            )}
-          </button>
+              onClick={() => setOpen(true)}
+            >
+              <LoginIcon sx={{ fontSize: "1.2rem" }} />
+              <span className="hidden md:flex">Sign In</span>
+            </button>
+          )}
 
           {/* user profile dropdown part   */}
           <UserProfile />

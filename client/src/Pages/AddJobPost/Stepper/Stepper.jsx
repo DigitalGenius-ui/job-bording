@@ -10,7 +10,7 @@ import Company from "../Company";
 import Preview from "../Preview";
 import PostInfo from "../PostInfo";
 import { JobContext } from "../../../Context/Context";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { postJob } from "../../../FetchHook/Job";
 
 const steps = ["Position", "Company", "Preview", "Post"];
@@ -39,7 +39,7 @@ const StepperComp = () => {
     company_name: "",
     company_hq: "",
     company_mission_vission: "",
-    company_website: "",
+    company_website: "https://",
     company_description: "",
   });
 
@@ -73,13 +73,11 @@ const StepperComp = () => {
   };
 
   // post job in the database
+  const queryClient = useQueryClient();
   const { mutateAsync, isLoading, isError, error } = useMutation(
-    "job",
     postJob,
     {
-      onSuccess: (data) => {
-        return data;
-      },
+      onSuccess: () => queryClient.invalidateQueries("job"),
     }
   );
 
@@ -143,6 +141,7 @@ const StepperComp = () => {
       };
 
       await mutateAsync(data);
+      window.location.replace("/jobPosts")
     }
 
     setSkipped(newSkipped);
