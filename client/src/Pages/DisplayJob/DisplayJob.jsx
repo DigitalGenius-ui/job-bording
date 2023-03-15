@@ -7,6 +7,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import moment from "moment";
 
+const Category = ({ data }) => {
+  return <p className="border border-orang py-1 px-3 bg-orange-50">{data}</p>;
+};
+
 const DisplayJob = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -39,17 +43,13 @@ const DisplayJob = () => {
             <span>✅ 29 applicants </span>
           </div>
 
-          <h1 className="pt-8 text-xl md:text-3xl font-semibold">
+          <h1 className="pt-8 pb-2 text-xl md:text-3xl font-semibold">
             {data?.job_title}
           </h1>
 
           <div className="flex items-center gap-2 flex-wrap mt-2">
-            <p className="border border-orang py-1 px-3 bg-orange-50">
-              {data.category}
-            </p>
-            <p className="border border-orang py-1 px-3 bg-orange-50">
-              {data.job_type}
-            </p>
+            <Category data={data.category} />
+            <Category data={data.job_type} />
             <p className="border border-orang py-1 px-3 bg-orange-50">
               $50,0000 - $90,0000
             </p>
@@ -65,7 +65,7 @@ const DisplayJob = () => {
 
         <div
           className="shadowCard2 p-7 flex flex-col justify-center 
-      items-center w-full md:w-[15rem] lg:w-[20rem]"
+          items-center w-full md:w-[15rem] lg:w-[20rem]"
         >
           <div>
             <img
