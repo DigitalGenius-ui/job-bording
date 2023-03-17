@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,6 +7,7 @@ const Select = ({ placeHolder, data, onChange, form }) => {
   const [showDrop, setShowDrop] = useState(false);
   const [printSelect, setPrintSelect] = useState("");
   const [search, setSearch] = useState("");
+  const selectRef = useRef();
 
   const selectHandler = (item) => {
     setShowDrop(false);
@@ -16,8 +17,23 @@ const Select = ({ placeHolder, data, onChange, form }) => {
       : onChange(item);
   };
 
+  useEffect(() => {
+    const outSideClick = (e) => {
+      if (!selectRef.current?.contains(e.target)) {
+        setShowDrop(false);
+      }
+    };
+
+    document.addEventListener("mousedown", outSideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", outSideClick);
+    };
+  }, []);
+
   return (
     <div
+      ref={selectRef}
       className={`bg-white w-full py-2 lg:py-3 px-2 relative rounded-md 
     ${form === "auth" && "border"} z-30`}
     >

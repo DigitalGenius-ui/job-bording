@@ -36,7 +36,7 @@ const Form = () => {
         />
       </div>
 
-      <div className="flex-1 lg:border-r border-gray-300 h-full w-full">
+      <div className="flex-1 lg:border-r border-gray-300 h-full w-full z-50">
         <Select
           placeHolder={"Select Country..."}
           data={countries}

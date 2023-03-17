@@ -2,7 +2,7 @@ import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
 import Message from "./components/util/Alert/Message";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import JobPost from "./Pages/AddJobPost/JobPost";
 import Auth from "./components/Auth/Auth";
 import AllJobs from "./Pages/DisplayJob/AllJobs";
@@ -19,6 +19,7 @@ function App() {
         {user && <Route path="/addJob" element={<JobPost />} />}
         {user && <Route path="/jobPosts" element={<AllJobs />} />}
         <Route path="/jobPosts/:id" element={<DisplayJob />} />
+        <Route path="*" element={<Navigate to={!user ? "/" : "/"} />} />
       </Routes>
       <Footer />
       <Auth />

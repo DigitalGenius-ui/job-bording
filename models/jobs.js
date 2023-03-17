@@ -4,6 +4,7 @@ const jobSchema = new mongoose.Schema(
   {
     job_title: { type: String, required: true }, // Title of the job
     category: { type: String, required: true }, // Job category eg: Design
+    salary_range: { type: String, required: true }, // Job category eg: Design
     job_type: { type: String, required: true }, // Type of the job eg: Full-Time/Part-Time
     position_accross_globe: { type: String, required: true }, // Whether the position open across globe eg: Yes / No
     country: { type: String, required: false }, // If the position is not across globe then country is required eg: India

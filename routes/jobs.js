@@ -4,7 +4,6 @@ const router = require("express").Router();
 const jobs = require("../models/jobs");
 
 router.post("/add", async (req, res) => {
-  console.log(req.body);
   const {
     job_title,
     category,
@@ -21,6 +20,7 @@ router.post("/add", async (req, res) => {
     company_mission_vission,
     company_website,
     company_description,
+    salary_range
   } = req.body;
   try {
     const createJob = await jobs.create({
@@ -39,6 +39,7 @@ router.post("/add", async (req, res) => {
       company_mission_vission,
       company_website,
       company_description,
+      salary_range,
     });
     console.log("Contacts created successfully", createJob);
   } catch (err) {
@@ -49,14 +50,13 @@ router.post("/add", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  let allJobs;
   try {
-    allJobs = await jobs.find();
+    const allJobs = await jobs.find();
+    res.status(200).json({ status: "SUCCESS", jobs: allJobs });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ status: "FAILURE", error: err });
   }
-  return res.status(200).json({ status: "SUCCESS", jobs: allJobs });
 });
 
 router.get("/:id", async (req, res) => {

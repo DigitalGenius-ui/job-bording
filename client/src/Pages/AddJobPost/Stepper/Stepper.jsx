@@ -22,11 +22,12 @@ const StepperComp = () => {
   // data states
   const { setAlert } = JobContext();
   const [validate, setValidate] = useState(false);
-  const [aboutPosition, setAboutPosition] = React.useState({
+  let [aboutPosition, setAboutPosition] = React.useState({
     job_title: "",
     category: "Design",
     job_type: "Full-Time",
     position_accross_globe: "No",
+    salary_range : "25,999 - 50,999",
     country: "Remote",
     state: "Remote",
     application_link_or_email: "",
@@ -74,12 +75,9 @@ const StepperComp = () => {
 
   // post job in the database
   const queryClient = useQueryClient();
-  const { mutateAsync, isLoading, isError, error } = useMutation(
-    postJob,
-    {
-      onSuccess: () => queryClient.invalidateQueries("job"),
-    }
-  );
+  const { mutateAsync, isLoading, isError, error } = useMutation(postJob, {
+    onSuccess: () => queryClient.invalidateQueries("job"),
+  });
 
   // error handling for posting jobs
   useEffect(() => {
@@ -141,7 +139,7 @@ const StepperComp = () => {
       };
 
       await mutateAsync(data);
-      window.location.replace("/jobPosts")
+      window.location.replace("/jobPosts");
     }
 
     setSkipped(newSkipped);

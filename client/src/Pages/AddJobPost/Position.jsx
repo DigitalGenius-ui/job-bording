@@ -40,7 +40,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
         }));
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quill, quillRef, setAboutPosition]);
 
   return (
@@ -110,6 +110,24 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           </RadioGroup>
         </FormControl>
       </div>
+
+      <FormControl fullWidth className="flex-1">
+        <InputLabel id="demo-simple-select-label">Salary Range</InputLabel>
+
+        <Select
+          label="Salary Range"
+          onChange={(e) =>
+            setAboutPosition({ ...aboutPosition, salary_range: e.target.value })
+          }
+          value={aboutPosition.salary_range}
+        >
+          <MenuItem value={"Prefer Not to Share"}>Prefer Not to Share</MenuItem>
+          <MenuItem value={"25,999 - 50,999"}>25,000 - 50,000</MenuItem>
+          <MenuItem value={"50,000 - 74,000"}>50,000 - 74,000</MenuItem>
+          <MenuItem value={"75,000 - 99,000"}>75,000 - 99,000</MenuItem>
+          <MenuItem value={"100,000 or more"}>100,000 or more</MenuItem>
+        </Select>
+      </FormControl>
 
       <div className="my-5">
         <FormControl className="flex-1">

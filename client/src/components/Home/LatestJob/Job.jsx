@@ -5,18 +5,16 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { JobContext } from "../../../Context/Context";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
-  const { user, setOpen } = JobContext();
 
   const handleClick = (id) => {
     window.scroll({
       top: 0,
       behavior: "smooth",
     });
-    user ? navigate(`/jobPosts/${id}`) : setOpen(true);
+    navigate(`/jobPosts/${id}`);
   };
 
   return (
@@ -56,7 +54,11 @@ const Job = ({ job }) => {
                 sx={{ fontSize: "1rem", color: "#12b6e8" }}
               />
             </span>
-            <span className="capitalize mt-1 text-sm">{job.company_hq}</span>
+            <span className="capitalize mt-1 text-sm">
+              {job.position_accross_globe === "Yes"
+                ? job.country
+                : job.company_hq}
+            </span>
           </div>
 
           <div

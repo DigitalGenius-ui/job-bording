@@ -49,7 +49,7 @@ const Header = () => {
           <div onClick={homeClick}>
             <img
               className="w-32 sm:w-44 cursor-pointer"
-              src="./images/logo.png"
+              src="https://res.cloudinary.com/ghazni/image/upload/v1679031895/logo_wsl1zk.png"
               alt=""
             />
           </div>

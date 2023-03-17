@@ -22,10 +22,18 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
               <p className="border border-green py-2 px-3 rounded-full text-green text-sm">
                 {aboutPosition.job_type}
               </p>
+              {aboutPosition.position_accross_globe === "Yes" && (
+                <p className="border border-green py-2 px-3 rounded-full text-green text-sm">
+                  {aboutPosition.country}
+                </p>
+              )}
+              <p className="border border-green py-2 px-3 rounded-full text-green text-sm">
+                {aboutPosition.salary_range}
+              </p>
             </div>
 
             <div className="border my-12 p-5 ">
-              <h1 className="text-xl font-bold">Position Details</h1>
+              <h1 className="text-xl font-bold">Company's Details</h1>
 
               <div
                 className="mt-5"
@@ -34,7 +42,7 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
                 }}
               />
 
-              <h1 className="pt-6 text-xl font-bold">Position Details</h1>
+              <h1 className="pt-6 text-xl font-bold">Position's Details</h1>
               <div
                 className="mt-5"
                 dangerouslySetInnerHTML={{
