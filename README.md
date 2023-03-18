@@ -14,6 +14,6 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ## Tech-Stack
-Expressjs(Nodejs framework) - used in back end for creating REST API's and DB manipulation.
-MongoDB - Used to store the application data.
-Reactjs, tailwindcss - For creating front-end application.
+* **Expressjs(Nodejs framework)** - used in back end for creating REST API's and DB manipulation.
+* **MongoDB** - Used to store the application data.
+* **Reactjs & tailwindcss** - For creating user interface.
