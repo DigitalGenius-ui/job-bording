@@ -37,7 +37,10 @@ const Subscribe = () => {
               className="outline-none bg-none text-black/80 text-sm w-full"
             />
           </div>
-          <button className="bg-orang p-4 px-1 text-sm sm:text-md sm:px-5">
+          <button
+            className="bg-orang p-4 px-1 text-sm sm:text-md sm:px-5
+            hover:opacity-50 transition-all duration-500"
+          >
             Subscribe
           </button>
         </div>

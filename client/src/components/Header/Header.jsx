@@ -5,8 +5,36 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { JobContext } from "../../Context/Context";
 import { useNavigate } from "react-router-dom";
 
+const Link = ({ title, path }) => {
+  const navigate = useNavigate();
+  const { setOpen, user } = JobContext();
+  const pathName = window.location.pathname;
+
+  const handleClick = () => {
+    navigate(path);
+    if (path === "/addJob") {
+      return user ? navigate(path) : setOpen(true);
+    } else if (path === "/jobPosts") {
+      return user ? navigate(path) : setOpen(true);
+    }
+  };
+  return (
+    <span
+      onClick={handleClick}
+      className={`cursor-pointer py-3 px-6 border-b border-menuBorder hover:bg-gray-600
+      lg:py-1 lg:px-2 rounded-sm lg:hover:bg-orange-50 
+      ${
+        path === pathName
+          ? "bg-white/10 lg:bg-orange-50 text-orang"
+          : "text-gray-400 lg:text-gray-500 bg-transparent"
+      }`}
+    >
+      {title}
+    </span>
+  );
+};
+
 const Header = () => {
-  const [activeNav, setActiveNav] = useState("home");
   const [menu, setMenu] = useState(false);
   const { setOpen, user } = JobContext();
 
@@ -19,28 +47,6 @@ const Header = () => {
     });
   };
 
-  const nav = [
-    {
-      title: "home",
-      path: "#",
-    },
-    {
-      title: "find job",
-      path: "#",
-    },
-    {
-      title: "blog",
-      path: "#",
-    },
-    {
-      title: "about us",
-      path: "#",
-    },
-    {
-      title: "contact us",
-      path: "#",
-    },
-  ];
   return (
     <header className="shadow-sm shadow-gray-200 bg-white sticky top-0 z-40">
       <section className="size flex items-center justify-between h-[85px]">
@@ -65,22 +71,14 @@ const Header = () => {
             <h1 className="text-white lg:hidden text-center py-4 border-b border-menuBorder">
               Menu
             </h1>
-
-            {nav.map((item, i) => (
-              <span
-                onClick={() => setActiveNav(item.title)}
-                className={`cursor-pointer py-3 px-6 border-b border-menuBorder hover:bg-gray-600
-                lg:py-1 lg:px-2 rounded-sm lg:hover:bg-orange-50 
-                ${
-                  item.title === activeNav
-                    ? "bg-white/10 lg:bg-orange-50 text-orang"
-                    : "text-gray-400 lg:text-gray-500 bg-transparent"
-                }`}
-                key={i}
-              >
-                {item.title}
-              </span>
-            ))}
+            <Link path="/" title="home" />
+            <Link path="/jobPosts" title="find a job" />
+            {user?.signupAs === "Employer" && (
+              <Link path="/addJob" title="post a job" />
+            )}
+            <Link path="/blog" title="blog" />
+            {user?.signupAs !== "Employer" && <Link path="/about" title="about us" />}
+            <Link path="/contact" title="contact us" />
           </nav>
         </div>
 

@@ -1,11 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
+dotenv.config();
 
 mongoose.connect(
   "mongodb+srv://miladTech:milad123@nodeandexpress.84kxwy4.mongodb.net/users?retryWrites=true&w=majority"

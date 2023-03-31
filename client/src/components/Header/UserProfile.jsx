@@ -3,7 +3,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Person2Icon from "@mui/icons-material/Person2";
 import Person4Icon from "@mui/icons-material/Person4";
-import PostAddIcon from "@mui/icons-material/PostAdd";
 import { JobContext } from "../../Context/Context";
 import { useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -26,6 +25,11 @@ const UserProfile = () => {
 
   const logOut = () => {
     localStorage.clear();
+    document.cookie.split(";").forEach(function (c) {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
     window.location.reload();
   };
 
@@ -37,7 +41,6 @@ const UserProfile = () => {
     };
 
     document.addEventListener("mousedown", outSideClick);
-
     return () => {
       document.removeEventListener("mousedown", outSideClick);
     };
@@ -98,18 +101,13 @@ const UserProfile = () => {
             title="My Profile"
             icon={<Person2Icon sx={{ fontSize: "1.3rem" }} />}
           />
-          {user.signupAs === "Employer" && (
+          {user?.signupAs === "Employer" && (
             <Button
-              title="Manage Jobs Post"
-              handleClick={() => handleClick("/addJob")}
-              icon={<PostAddIcon sx={{ fontSize: "1.3rem" }} />}
+              title="About Us"
+              handleClick={() => handleClick("/")}
+              icon={<Person4Icon sx={{ fontSize: "1.3rem" }} />}
             />
           )}
-          <Button
-            title="Manage Jobs"
-            handleClick={() => handleClick("/jobPosts")}
-            icon={<Person4Icon sx={{ fontSize: "1.3rem" }} />}
-          />
           <Button
             title="LogOut"
             handleClick={logOut}

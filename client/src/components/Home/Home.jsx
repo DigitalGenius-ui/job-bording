@@ -43,7 +43,7 @@ const Home = () => {
           isScroll
             ? "translate-x-[0] opacity-100"
             : "translate-x-[8rem] opacity-0"
-        }`}
+        } hover:opacity-50`}
       >
         <ArrowUpwardOutlinedIcon />
       </span>

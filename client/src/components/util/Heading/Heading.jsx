@@ -14,9 +14,6 @@ const Heading = ({ tag, title, shadow, desc }) => {
         >
           {title}
         </h1>
-        <h1 className="absolute hidden md:block md:text-5xl uppercase text-black/10 font-extrabold">
-          {shadow}
-        </h1>
       </div>
       <p className="w-full lg:w-[60%] mx-auto mt-4 text-gray-500">{desc}</p>
     </div>

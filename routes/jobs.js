@@ -2,6 +2,8 @@
 
 const router = require("express").Router();
 const jobs = require("../models/jobs");
+const verifyUser = require("../Verify/verify");
+const verify = require("../Verify/verify");
 
 router.post("/add", async (req, res) => {
   const {
@@ -20,7 +22,7 @@ router.post("/add", async (req, res) => {
     company_mission_vission,
     company_website,
     company_description,
-    salary_range
+    salary_range,
   } = req.body;
   try {
     const createJob = await jobs.create({
@@ -49,7 +51,7 @@ router.post("/add", async (req, res) => {
   return res.status(200).json({ status: "SUCCESS", msg: "Job has been added" });
 });
 
-router.get("/", async (req, res) => {
+router.get("/", verify, async (req, res) => {
   try {
     const allJobs = await jobs.find();
     res.status(200).json({ status: "SUCCESS", jobs: allJobs });
