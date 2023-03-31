@@ -13,15 +13,14 @@ const verify = (req, res, next) => {
   });
 };
 
-
 const verifyUser = (req, res, next) => {
-    verify(req, res, next, () => {
-        if (req.user.email === res.user.email) {
-            next();
-        } else {
-            return res.status(500).json("You are not Authenticated!!");
-        }
-    });
+  verify(req, res, next, () => {
+    if (req.user.email === res.params.id) {
+      next();
+    } else {
+      return res.status(500).json("You are not Authenticated!!");
+    }
+  });
 };
 
 module.exports = verifyUser;

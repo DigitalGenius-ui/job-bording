@@ -2,8 +2,6 @@
 
 const router = require("express").Router();
 const jobs = require("../models/jobs");
-const verifyUser = require("../Verify/verify");
-const verify = require("../Verify/verify");
 
 router.post("/add", async (req, res) => {
   const {
@@ -51,7 +49,7 @@ router.post("/add", async (req, res) => {
   return res.status(200).json({ status: "SUCCESS", msg: "Job has been added" });
 });
 
-router.get("/", verify, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const allJobs = await jobs.find();
     res.status(200).json({ status: "SUCCESS", jobs: allJobs });
