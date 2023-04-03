@@ -34,12 +34,15 @@ module.exports = {
           "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('../public/images/office.jpg')",
         cardBg:
           "linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),url('../public/images/line.jpg')",
-        foot:
-          "linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),url('../public/images/foot.png')",
+        foot: "linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),url('../public/images/foot.png')",
       },
 
       gridTemplateColumns: {
         cart: "repeat(auto-fit, minmax(250px, 1fr))",
+      },
+
+      fontFamily: {
+        poppins: "Poppins, sans-serif",
       },
     },
   },

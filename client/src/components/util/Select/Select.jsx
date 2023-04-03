@@ -69,10 +69,9 @@ const Select = ({ placeHolder, data, onChange, form }) => {
           )}
 
           <ul
-            className={`${
-              search || form === "auth" ? "h-full mt-2" : "h-[8rem]"
-            } overflow-auto 
-            bg-white shadow-sm shadow-gray-600`}
+            className={`
+            ${search || form === "auth" ? "h-full mt-2" : "h-[8rem]"} 
+              overflow-auto bg-white shadow-sm shadow-gray-600`}
           >
             {data.map((item, i) => (
               <li

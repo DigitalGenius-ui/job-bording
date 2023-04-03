@@ -48,7 +48,7 @@ const Header = () => {
   };
 
   return (
-    <header className="shadow-sm shadow-gray-200 bg-white sticky top-0 z-40">
+    <header className="shadow-sm shadow-gray-200 bg-white sticky top-0 z-50">
       <section className="size flex items-center justify-between h-[85px]">
         <div className="flex-1 flex items-center gap-10">
           {/* logo part  */}
@@ -63,7 +63,7 @@ const Header = () => {
           {/* navigation part  */}
           <nav
             className={`text-md capitalize flex w-[90%] lg:w-[24rem] fixed flex-col bg-menuBg 
-            left-0 top-0 bottom-0 lg:static lg:flex-row z-30 ${
+            left-0 top-0 bottom-0 lg:static lg:flex-row z-50 ${
               menu ? "translate-x-0" : "translate-x-[-100%] lg:translate-x-0"
             } transition-all duration-500
             lg:bg-transparent lg:items-center lg:justify-between lg:w-[60%]`}

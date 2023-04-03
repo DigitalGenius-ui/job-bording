@@ -1,6 +1,4 @@
 import React from "react";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import LanguageIcon from "@mui/icons-material/Language";
 import { getSingleJob } from "../../FetchHook/Job";
 import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +7,7 @@ import moment from "moment";
 import { JobContext } from "../../Context/Context";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import Company from "./CompanyDetails";
 
 const Category = ({ data }) => {
   return <p className="border border-orang py-1 px-3 bg-orange-50">{data}</p>;
@@ -103,53 +102,7 @@ const DisplayJob = () => {
           </div>
         </div>
 
-        <div
-          className="shadowCard2 p-7 flex flex-col justify-center 
-          items-center w-full md:w-[15rem] lg:w-[20rem]"
-        >
-          <div>
-            <img
-              className="w-[8rem] h-[8rem] object-cover rounded-full border-2 border-gray-200"
-              src="https://t4.ftcdn.net/jpg/02/90/27/39/360_F_290273933_ukYZjDv8nqgpOBcBUo5CQyFcxAzYlZRW.jpg"
-              alt="user"
-            />
-          </div>
-          <h1 className="py-4 text-xl font-bold capitalize">
-            {data.company_name}
-          </h1>
-
-          <div className="text-gray-500 font-bold">
-            <div className="flex items-center justify-center gap-1">
-              <span>
-                <LocationOnIcon />
-              </span>
-              <p>{data.company_hq}</p>
-            </div>
-
-            <div className="flex items-center justify-center gap-1">
-              <span>
-                <LanguageIcon />
-              </span>
-              <a href={data.company_website} target="_blank" rel="noreferrer">
-                Company Website
-              </a>
-            </div>
-          </div>
-
-          <p className="py-3 font-bold capitalized text-gray-500">
-            JOBS Posted 137
-          </p>
-
-          {user?.signupAs !== "Employer" ? (
-            <a
-              href={`mailto:${data.application_link_or_email}`}
-              className={`bg-orang py-2 px-4 capitalize text-white hover:bg-orange-400 mt-2
-              ${!user && "pointer-events-none bg-orange-200"}`}
-            >
-              apply for the job
-            </a>
-          ) : null}
-        </div>
+        <Company data={data} />
       </main>
     </section>
   );

@@ -2,7 +2,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 
-export const countries = ["afghanistan", "india", "canada", "America"];
+export const countries = ["afghanistan", "india", "canada", "America", "Remote"];
 export const categories = [
   "customer service",
   "data analytic",

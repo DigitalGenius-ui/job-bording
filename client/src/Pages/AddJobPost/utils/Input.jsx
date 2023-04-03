@@ -1,7 +1,7 @@
 import React from "react";
 import { FormControl, TextField, FormHelperText } from "@mui/material";
 
-const Input = ({ type, label, text, onCHange, name, state, isError }) => {
+const Input = ({ type, label, text, onCHange, name, state, isError, size }) => {
   // validation
   const inputValidation = (input) => {
     if (isError) {
@@ -26,6 +26,7 @@ const Input = ({ type, label, text, onCHange, name, state, isError }) => {
         name={name}
         defaultValue={state && state[name]}
         error={inputValidation(name)?.error}
+        size={size && size}
       />
       {inputValidation(name)?.error ? (
         <FormHelperText className="!text-red-700">

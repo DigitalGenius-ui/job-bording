@@ -1,7 +1,7 @@
 import React from "react";
 import Job from "../../components/Home/LatestJob/Job";
 import { JobContext } from "../../Context/Context";
-import Filter from "./Filter";
+import Filter from "../../components/util/Filter/Filter";
 
 const AllJobs = () => {
   const { allJobs, isLoading, isError, error } = JobContext();
