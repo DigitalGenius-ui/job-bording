@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const jobSchema = new mongoose.Schema(
   {
+    userId: { type: String }, // Title of the job
     job_title: { type: String, required: true }, // Title of the job
     category: { type: String, required: true }, // Job category eg: Design
     salary_range: { type: String, required: true }, // Job category eg: Design

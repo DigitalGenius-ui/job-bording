@@ -8,8 +8,8 @@ import Auth from "./components/Auth/Auth";
 import AllJobs from "./Pages/AllJob/AllJobs";
 import DisplayJob from "./Pages/DisplayJob/DisplayJob";
 import { JobContext } from "./Context/Context";
-import CompanyProfile from "./Pages/Profile/CompanyProfile";
-import EditCompany from "./Pages/Profile/EditCompany";
+import CompanyProfile from "./Pages/Profile/Employer/CompanyProfile";
+import EditCompany from "./Pages/Profile/Employer/EditProfile/EditCompany";
 
 function App() {
   const { user } = JobContext();

@@ -18,16 +18,18 @@ const steps = ["Position", "Company", "Preview", "Post"];
 const StepperComp = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
+  const { user } = JobContext();
 
   // data states
   const { setAlert } = JobContext();
   const [validate, setValidate] = useState(false);
   let [aboutPosition, setAboutPosition] = React.useState({
+    userId: user._id,
     job_title: "",
     category: "Design",
     job_type: "Full-Time",
     position_accross_globe: "No",
-    salary_range : "25,999 - 50,999",
+    salary_range: "25,999 - 50,999",
     country: "Remote",
     state: "Remote",
     application_link_or_email: "",

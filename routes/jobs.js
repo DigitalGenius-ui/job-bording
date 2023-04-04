@@ -5,6 +5,7 @@ const jobs = require("../models/jobs");
 
 router.post("/add", async (req, res) => {
   const {
+    userId,
     job_title,
     category,
     job_type,
@@ -24,6 +25,7 @@ router.post("/add", async (req, res) => {
   } = req.body;
   try {
     const createJob = await jobs.create({
+      userId,
       job_title,
       category,
       job_type,

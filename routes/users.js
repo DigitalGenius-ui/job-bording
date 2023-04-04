@@ -6,7 +6,24 @@ const users = require("../models/users");
 const jwt = require("jsonwebtoken");
 
 router.post("/sign-up", async (req, res) => {
-  const { fullName, email, signupAs } = req.body;
+  const {
+    fullName,
+    email,
+    signupAs,
+    company_name,
+    HQ,
+    established,
+    industry,
+    size,
+    website,
+    linkedIn,
+    twitter,
+    telegram,
+    about,
+    culture,
+    benefits,
+    hiring,
+  } = req.body;
   let { password } = req.body;
   try {
     // generate salt to hash password
@@ -28,6 +45,19 @@ router.post("/sign-up", async (req, res) => {
           email,
           password,
           signupAs,
+          company_name,
+          HQ,
+          established,
+          industry,
+          size,
+          website,
+          linkedIn,
+          twitter,
+          telegram,
+          about,
+          culture,
+          benefits,
+          hiring,
         });
         console.log("User created successfully", createUser);
         return res
@@ -79,6 +109,16 @@ router.post("/sign-in", async (req, res) => {
       });
     }
   });
+});
+
+// get all users
+router.get("/", async (req, res) => {
+  try {
+    const users = await users.find();
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
 });
 
 module.exports = router;

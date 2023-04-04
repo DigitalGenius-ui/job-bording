@@ -1,5 +1,4 @@
 import React from "react";
-import EditIcon from "@mui/icons-material/Edit";
 
 const Detail = ({ title, desc }) => {
   return (
@@ -23,9 +22,6 @@ const ResponsiveDetails = () => {
           <div>
             <h1 className="text-3xl font-medium capitalize !font-poppins">
               Toggl
-              <span className="ml-6 cursor-pointer">
-                <EditIcon />
-              </span>
             </h1>
             <p
               className="uppercase text-gray-500 font-normal !font-poppins

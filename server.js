@@ -22,7 +22,6 @@ mongoose.connection.once("open", () => {
 // Use the contacts.js to handle the endpoints starts with '/api/contact';
 app.use("/api/job", require("./routes/jobs"));
 app.use("/api/user", require("./routes/users"));
-app.use("/api/company", require("./routes/CompanyProfile"));
 
 const port = 8080;
 app.listen(port, () => {
