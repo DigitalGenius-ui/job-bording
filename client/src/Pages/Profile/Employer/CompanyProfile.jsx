@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
@@ -6,7 +6,10 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import ResponsiveDetails from "./ResponsiveDetails";
 import EditIcon from "@mui/icons-material/Edit";
+import { useQuery } from "react-query";
+import { singleUser } from "../../../FetchHook/User";
 import { JobContext } from "../../../Context/Context";
+import Job from "../../../components/Home/LatestJob/Job";
 
 const Detail = ({ title, desc }) => {
   return (
@@ -19,17 +22,38 @@ const Detail = ({ title, desc }) => {
 
 const CompanyProfile = () => {
   const navigate = useNavigate();
-  const { user } = JobContext();
+  const { setUserData, user: users, allJobs } = JobContext();
+  const id = window.location.pathname.split("/")[2];
+  const [details, setDetails] = useState({});
+  const [active, setActive] = useState("");
 
-  const details = {
-    about: user.about || "please edit your profile1",
-    culture: user.culture || "please edit your profile2",
-    benefits: user.benefits || "please edit your profile3",
-    hiring: user.hiring || "please edit your profile4",
-  };
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery(["users", id], () => singleUser(id));
+
+  useEffect(() => {
+    const details = {
+      about: user?.about || "Please edit your profile",
+      culture: user?.culture || "Please edit your profile",
+      benefits: user?.benefits || "Please edit your profile",
+      hiring: user?.hiring || "Please edit your profile",
+    };
+
+    setActive(details["about"]);
+    setDetails(details);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const objKeys = Object.keys(details);
-  const [active, setActive] = useState(details["about"]);
+
+  // find jobs related to this user
+  const userJobs = allJobs?.filter((job) => job.userId === id);
+  console.log(userJobs);
+
+  if (isLoading) return "Loading...";
+  if (isError) return "Something went wrong!!";
 
   return (
     <section className="size py-12">
@@ -40,21 +64,26 @@ const CompanyProfile = () => {
         >
           <ArrowBackIosNewIcon sx={{ fontSize: "0.9rem" }} /> Back To All Jobs
         </button>
-        <span
-          onClick={() => navigate(`/editCompany/3455`)}
-          className="ml-6 cursor-pointer flex gap-2 text-gray-600 hover:text-black"
-        >
-          Edit
-          <EditIcon sx={{ fontSize: "1.2rem" }} />
-        </span>
+        {user?._id === users._id && (
+          <span
+            onClick={() => {
+              setUserData(user);
+              navigate(`/editCompany/${user?._id}`);
+            }}
+            className="ml-6 cursor-pointer flex gap-2 text-gray-600 hover:text-black"
+          >
+            Edit
+            <EditIcon sx={{ fontSize: "1.2rem" }} />
+          </span>
+        )}
       </div>
 
       <div className="flex gap-[3rem] flex-col lg:flex-row">
         <div
           className="flex-1 bg-slate-100 flex-col pt-7 pb-4
-          shadow-md shadow-gray-300 hidden lg:flex"
+          shadow-md shadow-gray-300 hidden lg:flex h-full"
         >
-          <div >
+          <div>
             <img
               className="w-[6rem] h-[6rem] object-cover rounded-full border-2 border-gray-200 mx-auto"
               src="https://t4.ftcdn.net/jpg/02/90/27/39/360_F_290273933_ukYZjDv8nqgpOBcBUo5CQyFcxAzYlZRW.jpg"
@@ -69,13 +98,13 @@ const CompanyProfile = () => {
             <Detail title="Industry" desc={user?.industry || "industry"} />
             <Detail
               title="Established"
-              desc={user?.establishment || "Established"}
+              desc={user?.established || "Established"}
             />
             <Detail title="Sizes" desc={user?.size || "1 - 5 Seats"} />
           </div>
         </div>
 
-        <div className="flex-[3]">
+        <div className="flex-[3] ">
           <div className="hidden lg:flex justify-between pb-[2rem] ">
             <div>
               <h1 className="text-3xl font-medium capitalize !font-poppins">
@@ -124,7 +153,20 @@ const CompanyProfile = () => {
                 </span>
               ))}
             </div>
-            <p className="pt-8 first-letter:capitalize">{active}</p>
+            <div
+              className="pt-8 first-letter:capitalize"
+              dangerouslySetInnerHTML={{ __html: active }}
+            />
+          </div>
+
+          {/* all jobs posted  */}
+          <div className="mt-6">
+            <h1 className="py-4 text-[1.5rem]">All Jobs Posted</h1>
+            <div className="flex flex-col gap-5">
+              {userJobs?.map((job, i) => (
+                <Job job={job} key={i} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

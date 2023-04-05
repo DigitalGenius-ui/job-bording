@@ -17,7 +17,7 @@ const Login = () => {
   });
 
   const { mutateAsync, error, isLoading, isError } = useMutation(
-    "login",
+    "users",
     signIn,
     {
       onSuccess: (data) => {

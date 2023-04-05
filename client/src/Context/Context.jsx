@@ -17,8 +17,32 @@ const Context = ({ children }) => {
     open: false,
   });
 
-  // fetch all datas 
-  const { data:allJobs, isLoading, isError, error } = useQuery("job", getAllJobs);
+  // fetch all datas
+  const {
+    data: allJobs,
+    isLoading,
+    isError,
+    error,
+  } = useQuery("job", getAllJobs);
+
+  //update employer data
+  const [userData, setUserData] = useState({
+    fullName: user?.fullName,
+    email: user?.email,
+    company_name: "",
+    HQ: "",
+    established: "",
+    industry: "",
+    size: "",
+    about: "",
+    website: "",
+    linkedIn: "",
+    twitter: "",
+    telegram: "",
+    culture: "",
+    benefits: "",
+    hiring: "",
+  });
 
   return (
     <Job.Provider
@@ -37,6 +61,8 @@ const Context = ({ children }) => {
         isLoading,
         isError,
         error,
+        userData,
+        setUserData,
       }}
     >
       {children}

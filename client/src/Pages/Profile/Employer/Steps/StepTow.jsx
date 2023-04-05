@@ -34,7 +34,7 @@ const StepTow = ({ data, setData }) => {
 
   return (
     <div className="flex flex-col gap-5 mt-[2rem]">
-      <div className="flex gap-5">
+      <div className="flex gap-5 flex-col md:flex-row">
         <TextField
           fullWidth
           label="Company Website"
@@ -52,7 +52,7 @@ const StepTow = ({ data, setData }) => {
         />
       </div>
 
-      <div className="flex gap-5">
+      <div className="flex gap-5 flex-col md:flex-row">
         <TextField
           fullWidth
           label="Company twitter"

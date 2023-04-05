@@ -1,4 +1,5 @@
 import React from "react";
+import { JobContext } from "../../../Context/Context";
 
 const Detail = ({ title, desc }) => {
   return (
@@ -10,8 +11,10 @@ const Detail = ({ title, desc }) => {
 };
 
 const ResponsiveDetails = () => {
+  const { user } = JobContext();
+
   return (
-    <div className="bg-slate-100 pl-[1rem] shadow-md shadow-gray-300 ">
+    <div className="bg-slate-100 pl-[1rem] shadow-md shadow-gray-300">
       <div className="flex-1 flex-col lg:items-center pt-7 pb-4 flex">
         <div className="flex gap-5 items-center">
           <img
@@ -21,7 +24,7 @@ const ResponsiveDetails = () => {
           />
           <div>
             <h1 className="text-3xl font-medium capitalize !font-poppins">
-              Toggl
+              {user?.company_name}
             </h1>
             <p
               className="uppercase text-gray-500 font-normal !font-poppins
@@ -40,7 +43,7 @@ const ResponsiveDetails = () => {
           <div className="flex gap-10 items-center flex-wrap mt-4">
             <Detail title="Sizes" desc="1 - 10 seats" />
             <div className="font-bold !font-poppins text-lg">
-              <a href="/">Website</a>
+              <a href={user?.website}>Website</a>
             </div>
           </div>
         </div>

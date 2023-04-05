@@ -114,10 +114,35 @@ router.post("/sign-in", async (req, res) => {
 // get all users
 router.get("/", async (req, res) => {
   try {
-    const users = await users.find();
-    return res.status(200).json(users);
-  } catch (error) {
-    return res.status(500).json(error);
+    const allUsers = await users.find();
+    res.status(200).json({ status: "SUCCESS", jobs: allUsers });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ status: "FAILURE", error: err });
+  }
+});
+
+// get single user
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const singleUser = await users.findById(id);
+    res.status(200).json({ status: "SUCCESS", singleUser: singleUser });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ status: "FAILURE", error: err });
+  }
+});
+
+// update user
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedUser = await users.findByIdAndUpdate(id, req.body);
+    res.status(200).json({ status: "SUCCESS", singleUser: updatedUser });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ status: "FAILURE", error: err });
   }
 });
 
