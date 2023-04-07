@@ -3,11 +3,11 @@ import React from "react";
 const Trending = () => {
   const trends = [
     "Web Designer",
-    "Web Developer",
     "Graphic Designer",
     "PHP Developer",
     "IOS Developer",
     "Android Developer",
+    "React JS Developer",
   ];
   return (
     <div className="text-white flex items-center flex-wrap gap-2 mt-5">

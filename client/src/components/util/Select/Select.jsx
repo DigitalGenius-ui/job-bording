@@ -73,14 +73,14 @@ const Select = ({ placeHolder, data, onChange, form }) => {
             ${search || form === "auth" ? "h-full mt-2" : "h-[8rem]"} 
               overflow-auto bg-white shadow-sm shadow-gray-600`}
           >
-            {data.map((item, i) => (
+            {data?.map((item, i) => (
               <li
                 key={i}
                 onClick={() => selectHandler(item)}
-                className={`${
-                  item?.toLowerCase().startsWith(search) ? "block" : "hidden"
-                } py-2 hover:bg-orange-50 rounded-md lg:rounded-none cursor-pointer px-3 capitalize
-                  border-b border-gray-200 text-gray-500`}
+                className={`
+                ${item?.toLowerCase().startsWith(search) ? "block" : "hidden"} 
+                py-2 hover:bg-orange-50 rounded-md lg:rounded-none cursor-pointer px-3 capitalize
+                border-b border-gray-200 text-gray-500`}
               >
                 {item}
               </li>

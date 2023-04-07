@@ -19,6 +19,7 @@ const jobSchema = new mongoose.Schema(
     company_mission_vission: { type: String, required: true }, // vission and mission of the company
     company_website: { type: String, required: true }, // company website link
     company_description: { type: String, required: true }, // Description about the company
+    keyword: { type: String, required: true }, // Description about the company
 
     // job_posted_date: {type: String, required: true},
     // job_expiry_date: {type: String, required: true},

@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { categories, countries } from "./data";
 import Select from "../../util/Select/Select";
 import SearchIcon from "@mui/icons-material/Search";
+import { JobContext } from "../../../Context/Context";
 
 const Form = () => {
   const [country, setCountry] = useState("");
   const [category, setCategory] = useState("");
   const [keyword, setKeyWord] = useState("");
+
+  const { allJobs } = JobContext();
+  const getCountries = [...new Set(allJobs?.map((count) => count?.country))];
+  const getCategory = [...new Set(allJobs?.map((cat) => cat?.category))];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +26,7 @@ const Form = () => {
     >
       <div
         className="flex-1 flex items-center bg-white lg:bg-transparent gap-1 
-          lg:border-r border-gray-300 h-full w-full rounded-md px-2 lg:px-0"
+          lg:border-r border-gray-300 h-full w-full rounded-md px-2 lg:px-0 relative"
       >
         <span className="text-gray-500">
           <SearchIcon sx={{ fontSize: "1.6rem" }} />
@@ -39,7 +43,7 @@ const Form = () => {
       <div className="flex-1 lg:border-r border-gray-300 h-full w-full">
         <Select
           placeHolder={"Select Country..."}
-          data={countries}
+          data={getCountries}
           onChange={setCountry}
         />
       </div>
@@ -47,7 +51,7 @@ const Form = () => {
       <div className="flex-1 lg:border-r border-gray-300 h-full w-full">
         <Select
           placeHolder={"All Categories..."}
-          data={categories}
+          data={getCategory}
           onChange={setCategory}
         />
       </div>

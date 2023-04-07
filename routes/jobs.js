@@ -22,6 +22,7 @@ router.post("/add", async (req, res) => {
     company_website,
     company_description,
     salary_range,
+    keyword,
   } = req.body;
   try {
     const createJob = await jobs.create({
@@ -42,6 +43,7 @@ router.post("/add", async (req, res) => {
       company_website,
       company_description,
       salary_range,
+      keyword,
     });
     console.log("Contacts created successfully", createJob);
   } catch (err) {
@@ -52,8 +54,28 @@ router.post("/add", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  const { country, category, keyword } = req.query;
+  const query = {};
+
+  // check if the country exist in the database
+  const existingCountries = await jobs.distinct("country");
+  const isExistingCountry = existingCountries.includes(country);
+
+  if (isExistingCountry) {
+    query.country = country;
+  }
+
+  if (keyword || category) {
+    const searchQuery = keyword || category;
+    query.$or = [
+      { category: { $regex: searchQuery, $options: "i" } },
+      { keyword: { $regex: searchQuery, $options: "i" } },
+      { country: { $regex: searchQuery, $options: "i" } },
+    ];
+  }
+
   try {
-    const allJobs = await jobs.find();
+    const allJobs = await jobs.find(query);
     res.status(200).json({ status: "SUCCESS", jobs: allJobs });
   } catch (err) {
     console.log(err);

@@ -13,6 +13,7 @@ import React, { useEffect } from "react";
 import { useQuill } from "react-quilljs";
 import TextEditor from "./TextEditor/TextEditor";
 import Input from "./utils/Input";
+import { category, salary, trends } from "./utils/data";
 
 const Position = ({ aboutPosition, setAboutPosition, validate }) => {
   const handleChange = (e) => {
@@ -68,18 +69,11 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
             }
             value={aboutPosition.category}
           >
-            <MenuItem value={"Design"}>Design</MenuItem>
-            <MenuItem value={"Front-End Development"}>
-              Front-End Development
-            </MenuItem>
-            <MenuItem value={"Back-End Development"}>
-              Back-End Development
-            </MenuItem>
-            <MenuItem value={"Full-Stack Development"}>
-              Full-Stack Development
-            </MenuItem>
-            <MenuItem value={"DevOps"}>DevOps</MenuItem>
-            <MenuItem value={"Others"}>Others</MenuItem>
+            {category.map((cat, i) => (
+              <MenuItem value={cat} key={i}>
+                {cat}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -119,13 +113,15 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           onChange={(e) =>
             setAboutPosition({ ...aboutPosition, salary_range: e.target.value })
           }
+          defaultValue={aboutPosition.salary_range}
           value={aboutPosition.salary_range}
         >
           <MenuItem value={"Prefer Not to Share"}>Prefer Not to Share</MenuItem>
-          <MenuItem value={"25,999 - 50,999"}>25,000 - 50,000</MenuItem>
-          <MenuItem value={"50,000 - 74,000"}>50,000 - 74,000</MenuItem>
-          <MenuItem value={"75,000 - 99,000"}>75,000 - 99,000</MenuItem>
-          <MenuItem value={"100,000 or more"}>100,000 or more</MenuItem>
+          {salary.map((money, i) => (
+            <MenuItem key={i} value={money}>
+              {money}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
 
@@ -149,7 +145,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
 
       <div>
         <div className="flex items-center gap-6 mb-5">
-          {aboutPosition.position_accross_globe === "Yes" && (
+          {aboutPosition.position_accross_globe === "No" && (
             <>
               <Input
                 label="Country"
@@ -180,6 +176,30 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           state={aboutPosition}
           isError={validate}
         />
+      </div>
+
+      <div className="mt-6">
+        <FormControl fullWidth className="flex-1">
+          <InputLabel id="demo-simple-select-label">Keyword</InputLabel>
+
+          <Select
+            label="keyword"
+            onChange={(e) =>
+              setAboutPosition({
+                ...aboutPosition,
+                keyword: e.target.value,
+              })
+            }
+            defaultValue={aboutPosition.keyword}
+            value={aboutPosition.keyword}
+          >
+            {trends.map((trend, i) => (
+              <MenuItem key={i} value={trend}>
+                {trend}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
 
       <TextEditor title="Job Description" quillRef={quillRef} />

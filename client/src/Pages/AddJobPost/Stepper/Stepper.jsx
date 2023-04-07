@@ -29,11 +29,12 @@ const StepperComp = () => {
     category: "Design",
     job_type: "Full-Time",
     position_accross_globe: "No",
-    salary_range: "25,999 - 50,999",
+    salary_range: "25,000 - 50,000",
     country: "Remote",
     state: "Remote",
     application_link_or_email: "",
     job_description: "",
+    keyword: "Web Designer",
   });
 
   const [aboutCompany, setAboutCompany] = React.useState({

@@ -10,9 +10,9 @@ export const postJob = async (form) => {
   }
 };
 
-export const getAllJobs = async () => {
+export const getAllJobs = async (country, category, keyword) => {
   try {
-    const res = await axios.get(BaseURL + "/api/job");
+    const res = await axios.get(BaseURL + `/api/job`);
     return res.data.jobs;
   } catch (error) {
     throw Error(error.response.data.msg);
