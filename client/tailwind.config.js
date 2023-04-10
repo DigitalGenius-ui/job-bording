@@ -35,6 +35,8 @@ module.exports = {
         cardBg:
           "linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),url('../public/images/line.jpg')",
         foot: "linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)),url('../public/images/foot.png')",
+        profileBg:
+          "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url('../public/images/page-title.jpg')",
       },
 
       gridTemplateColumns: {

@@ -13,9 +13,6 @@ const DisplayJob = lazy(() => import("./Pages/DisplayJob/DisplayJob"));
 const CompanyProfile = lazy(() =>
   import("./Pages/Profile/Employer/CompanyProfile")
 );
-const EditCompany = lazy(() =>
-  import("./Pages/Profile/Employer/EditProfile/EditCompany")
-);
 
 function App() {
   const { user } = JobContext();
@@ -28,7 +25,6 @@ function App() {
           {user && <Route path="/jobPosts" element={<AllJobs />} />}
           <Route path="/jobPosts/:id" element={<DisplayJob />} />
           <Route path="/companyProf/:id" element={<CompanyProfile />} />
-          <Route path="/editCompany/:id" element={<EditCompany />} />
           <Route path="*" element={<Navigate to={!user ? "/" : "/"} />} />
         </Route>
       </Routes>
@@ -41,13 +37,14 @@ function App() {
 export default App;
 
 const HeadWrapper = () => {
+  const route = window.location.pathname.split("/")[1];
   return (
     <>
       <Header />
       <Suspense fallback={<div>Loading...</div>}>
         <Outlet />
       </Suspense>
-      <Footer />
+      {route !== "companyProf" && <Footer />}
     </>
   );
 };

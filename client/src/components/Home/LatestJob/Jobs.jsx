@@ -5,10 +5,10 @@ import { JobContext } from "../../../Context/Context";
 import { useNavigate } from "react-router-dom";
 
 const Jobs = () => {
-  const { allJobs, user, setOpen } = JobContext();
+  const { displayJob, user, setOpen } = JobContext();
   const navigate = useNavigate();
 
-  const sortedData = allJobs?.sort(
+  const sortedData = displayJob?.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 

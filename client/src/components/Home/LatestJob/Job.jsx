@@ -21,7 +21,7 @@ const Job = ({ job }) => {
     <div
       onClick={() => handleClick(job._id)}
       className="flex flex-col md:flex-row items-center gap-8 bg-cardBg px-3 py-6 shadowCard cursor-pointer
-        hover:border border-orang hover:border-l-4 transition-scale duration-500 hover:scale-[1.030] group"
+        hover:border border-orang hover:border-l-4 transition-all duration-100 group"
     >
       <div className="border-2 rounded-full p-1">
         <img

@@ -1,21 +1,39 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "../../util/Select/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import { JobContext } from "../../../Context/Context";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
-  const [country, setCountry] = useState("");
-  const [category, setCategory] = useState("");
-  const [keyword, setKeyWord] = useState("");
+  const {
+    setCountry,
+    setCategory,
+    keyword,
+    setKeyWord,
+    searchLoading,
+    searchError,
+    refetch,
+    country,
+    category,
+  } = JobContext();
 
-  const { allJobs } = JobContext();
-  const getCountries = [...new Set(allJobs?.map((count) => count?.country))];
-  const getCategory = [...new Set(allJobs?.map((cat) => cat?.category))];
+  const { displayJob } = JobContext();
+  const getCountries = [...new Set(displayJob?.map((count) => count?.country))];
+  const getCategory = [...new Set(displayJob?.map((cat) => cat?.category))];
+  const getKeyword = [...new Set(displayJob?.map((cat) => cat?.keyword))];
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(country, category, keyword);
+    navigate(
+      `/jobPosts?country=${country}&category=${category}&keyword=${keyword}`
+    );
+    refetch();
   };
+
+  if (searchLoading) return "Loading...";
+  if (searchError) return "Something went wrong!!!";
 
   return (
     <form
@@ -38,6 +56,24 @@ const Form = () => {
           value={keyword}
           onChange={(e) => setKeyWord(e.target.value)}
         />
+        {keyword.length > 0 && (
+          <ul
+            className="bg-white absolute top-[90%] left-0 right-0 p-1
+          flex flex-col gap-0"
+          >
+            {getKeyword.map((key, i) => (
+              <li
+                onClick={() => setKeyWord(key)}
+                key={i}
+                className={`
+              ${key?.toLowerCase().startsWith(keyword) ? "block" : "hidden"}
+            hover:bg-orange-50 py-[2px] text-sm cursor-pointer`}
+              >
+                {key}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="flex-1 lg:border-r border-gray-300 h-full w-full">

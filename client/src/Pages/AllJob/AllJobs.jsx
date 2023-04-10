@@ -4,9 +4,9 @@ import { JobContext } from "../../Context/Context";
 import Filter from "../../components/util/Filter/Filter";
 
 const AllJobs = () => {
-  const { allJobs, isLoading, isError, error } = JobContext();
+  const { displayJob, isLoading, isError, error } = JobContext();
 
-  const sortedData = allJobs?.sort(
+  const sortedData = displayJob?.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
-import { getAllJobs } from "../FetchHook/Job";
+import { getAllJobs, searchJobs } from "../FetchHook/Job";
 
 const Job = createContext();
 
@@ -17,6 +17,22 @@ const Context = ({ children }) => {
     open: false,
   });
 
+  // search states
+  const [country, setCountry] = useState("");
+  const [category, setCategory] = useState("");
+  const [keyword, setKeyWord] = useState("");
+
+  const {
+    isLoading: searchLoading,
+    isError: searchError,
+    refetch,
+    data: searchData,
+  } = useQuery("job", () => searchJobs(country, category, keyword), {
+    enabled: false,
+    refetchOnWindowFocus: false,
+    staleTime: 300000,
+  });
+
   // fetch all datas
   const {
     data: allJobs,
@@ -24,6 +40,8 @@ const Context = ({ children }) => {
     isError,
     error,
   } = useQuery("job", getAllJobs);
+
+  const displayJob = country || category || keyword ? searchData : allJobs
 
   //update employer data
   const [userData, setUserData] = useState({
@@ -57,12 +75,22 @@ const Context = ({ children }) => {
         setAlert,
 
         // fetch all jobs
-        allJobs,
         isLoading,
         isError,
         error,
         userData,
         setUserData,
+        displayJob,
+        // search states
+        setCountry,
+        setCategory,
+        keyword,
+        setKeyWord,
+        searchLoading,
+        searchError,
+        refetch,
+        country,
+        category,
       }}
     >
       {children}

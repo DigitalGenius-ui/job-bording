@@ -10,9 +10,21 @@ export const postJob = async (form) => {
   }
 };
 
-export const getAllJobs = async (country, category, keyword) => {
+export const getAllJobs = async () => {
   try {
     const res = await axios.get(BaseURL + `/api/job`);
+    return res.data.jobs;
+  } catch (error) {
+    throw Error(error.response.data.msg);
+  }
+};
+
+export const searchJobs = async (country, category, keyword) => {
+  try {
+    const res = await axios.get(
+      BaseURL +
+        `/api/job?country=${country}&category=${category}&keyword=${keyword}`
+    );
     return res.data.jobs;
   } catch (error) {
     throw Error(error.response.data.msg);
