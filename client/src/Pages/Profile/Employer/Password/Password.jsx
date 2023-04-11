@@ -11,8 +11,7 @@ const Password = () => {
         <Inputs label="Confirm New Password" type="password" />
         <button
           className="bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
-            w-[10rem] hover:bg-black mt-[2rem]"
-        >
+            w-[10rem] hover:bg-black mt-[2rem]">
           Save Changes
         </button>
       </form>

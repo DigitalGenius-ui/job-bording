@@ -23,6 +23,7 @@ module.exports = {
 
       screens: {
         lg: "1042px",
+        1114 : "1114px"
       },
 
       backgroundImage: {

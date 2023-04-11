@@ -1,9 +1,4 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  IconButton,
-} from "@mui/material";
+import { IconButton, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
 const Accordions = ({ header, children }) => {
@@ -15,8 +10,7 @@ const Accordions = ({ header, children }) => {
       <AccordionSummary
         aria-controls="panel1a-content"
         id="panel1a-header"
-        className="!bg-black/70 !text-white !rounded-sm"
-      >
+        className="!bg-black/70 !text-white !rounded-sm">
         <div className="flex items-center justify-between !w-full">
           <h1>{header}</h1>
           <IconButton onClick={onClickHandler}>
