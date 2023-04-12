@@ -33,7 +33,7 @@ const Context = ({ children }) => {
     staleTime: 300000,
   });
 
-  // fetch all datas
+  // fetch all data
   const {
     data: allJobs,
     isLoading,
@@ -41,26 +41,35 @@ const Context = ({ children }) => {
     error,
   } = useQuery("job", getAllJobs);
 
-  const displayJob = country || category || keyword ? searchData : allJobs
+  const displayJob = country || category || keyword ? searchData : allJobs;
 
-  //update employer data
-  const [userData, setUserData] = useState({
+  //update profile data
+  const [update, setUpdate] = useState(false);
+  const [file, setFile] = useState("");
+  const [profile, setProfile] = useState({
+    profileImg: user?.profileImg || "",
+    gender: user?.gender || "",
     fullName: user?.fullName,
+    phoneNumber: user?.phoneNumber || "+62",
     email: user?.email,
-    company_name: "",
-    HQ: "",
-    established: "",
-    industry: "",
-    size: "",
-    about: "",
-    website: "",
-    linkedIn: "",
-    twitter: "",
-    telegram: "",
-    culture: "",
-    benefits: "",
-    hiring: "",
+    notes: user?.notes || "",
+    resume: user?.resume || "",
+    portfolio: user?.portfolio || "https://www.portfolio.com",
+    linkedIn: user?.linkedIn || "https://www.linkedIn.com",
+    twitter: user?.twitter || "https://www.twitter.com",
+    telegram: user?.telegram || "https://www.telegram.com",
+    companyWebsite: user?.telegram || "https://www.website.com",
   });
+
+  const handleChange = (e) => {
+    setProfile((prev) => {
+      const { name, value } = e.target;
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
 
   return (
     <Job.Provider
@@ -78,8 +87,6 @@ const Context = ({ children }) => {
         isLoading,
         isError,
         error,
-        userData,
-        setUserData,
         displayJob,
         // search states
         setCountry,
@@ -91,8 +98,15 @@ const Context = ({ children }) => {
         refetch,
         country,
         category,
-      }}
-    >
+        // update profile
+        update,
+        setUpdate,
+        profile,
+        setProfile,
+        handleChange,
+        file,
+        setFile,
+      }}>
       {children}
     </Job.Provider>
   );

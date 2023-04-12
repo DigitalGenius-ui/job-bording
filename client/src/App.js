@@ -24,7 +24,9 @@ function App() {
           {user && <Route path="/addJob" element={<JobPost />} />}
           {user && <Route path="/jobPosts" element={<AllJobs />} />}
           <Route path="/jobPosts/:id" element={<DisplayJob />} />
-          <Route path="/companyProf/:id" element={<CompanyProfile />} />
+          {user && (
+            <Route path="/companyProf/:id" element={<CompanyProfile />} />
+          )}
           <Route path="*" element={<Navigate to={!user ? "/" : "/"} />} />
         </Route>
       </Routes>

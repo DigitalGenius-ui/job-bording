@@ -4,10 +4,10 @@ import ProfileDetails from "./ProfileDetails/ProfileDetails";
 import Password from "./Password/Password";
 import Dashboard from "../Dashboard/Dashboard";
 import MenuIcon from "@mui/icons-material/Menu";
+import Social from "./SocialLinks/Social";
 
 const CompanyProfile = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [hieght, setHieght] = useState(0);
   return (
     <section className="bg-profileBg bg-cover bg-no-repeat lg:h-[510px] relative overflow-hidden">
       <div className="lg:fixed lg:left-0 lg:right-0 lg:top-[80px] lg:flex">
@@ -53,6 +53,7 @@ const CompanyProfile = () => {
               </div>
 
               <div className="flex-1">
+                <Social />
                 <Password />
               </div>
             </div>
