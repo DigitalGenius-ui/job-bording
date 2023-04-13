@@ -1,12 +1,22 @@
 import React, { useRef, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { JobContext } from "../../../Context/Context";
-import { OutlinedInput } from "@mui/material";
 
-const Inputs = ({ icon, label, type, handleChange, value, error, name }) => {
+const Inputs = ({
+  icon,
+  label,
+  type,
+  handleChange,
+  value,
+  errorMsg,
+  name,
+  required,
+  pattern,
+  update,
+}) => {
   const inputRef = useRef();
   const [show, setShow] = useState(false);
-  const { update } = JobContext();
+  const { profile } = JobContext();
 
   let inputElement = inputRef?.current;
 
@@ -25,16 +35,24 @@ const Inputs = ({ icon, label, type, handleChange, value, error, name }) => {
       </span>
       {type !== "textarea" ? (
         <div className="relative">
-          <OutlinedInput
-            type={type}
-            ref={inputRef}
-            size="small"
-            readOnly={type === "email" || !update ? true : false}
-            className="border border-gray-300 !outline-none p-1 rounded-sm w-full"
-            onChange={handleChange}
-            defaultValue={value}
-            nam={name}
-          />
+          <div>
+            <input
+              type={type}
+              ref={inputRef}
+              size="small"
+              readOnly={type === "email" || !update ? true : false}
+              className={`border border-gray-300 !outline-none p-3 rounded-sm w-full
+              invalid:border-red-500 input ${
+                type === "file" && !update && "pointer-events-none"
+              }`}
+              onChange={handleChange}
+              defaultValue={type === "password" ? "*****" : profile[name]}
+              required={required}
+              name={name}
+              pattern={pattern}
+            />
+            <span className={`text-sm text-red-600 error`}>{errorMsg}</span>
+          </div>
           {type === "password" && (
             <span
               onClick={handlePassword}
@@ -46,16 +64,20 @@ const Inputs = ({ icon, label, type, handleChange, value, error, name }) => {
           )}
         </div>
       ) : (
-        <OutlinedInput
-          className="border border-gray-300 outline-none p-2 resize-none rounded-sm"
-          cols="30"
-          rows="5"
-          placeholder="Your Notes..."
-          readOnly={!update ? true : false}
-          multiline
-          defaultValue={value}
-          error={error ? true : false}
-          onChange={handleChange}></OutlinedInput>
+        <>
+          <textarea
+            className="border border-gray-300 outline-none p-2 resize-none rounded-sm
+            text-sm invalid:border-red-400 input"
+            cols="30"
+            rows="5"
+            placeholder="Your Notes..."
+            readOnly={!update ? true : false}
+            defaultValue={value}
+            required
+            minLength={10}
+            onChange={handleChange}></textarea>
+          <span className={`text-sm text-red-600 error`}>{errorMsg}</span>
+        </>
       )}
     </div>
   );

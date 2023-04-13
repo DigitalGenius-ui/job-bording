@@ -8,24 +8,18 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 const Social = () => {
-  const [error, setError] = useState(false);
-  const { user, handleChange, profile, update } = JobContext();
+  const { user, handleChange, profile } = JobContext();
+  const [update, setUpdate] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      !profile.portfolio ||
-      !profile.linkedIn ||
-      !profile.twitter ||
-      !profile.telegram
-    ) {
-      setError(true);
-      window.scroll(0, 0);
-    }
   };
 
   return (
-    <Accordions header=" Social media links">
+    <Accordions
+      header="Social media links"
+      update={update}
+      setUpdate={setUpdate}>
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row lg:flex-col gap-8">
           {user.signupAs === "Candidate" && (
@@ -34,7 +28,7 @@ const Social = () => {
               type="text"
               onChange={handleChange}
               name="portfolio"
-              value={profile.portfolio}
+              update={update}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
@@ -43,8 +37,10 @@ const Social = () => {
               label="Company Website"
               type="text"
               onChange={handleChange}
-              name="portfolio"
-              value={profile.portfolio}
+              name="companyWebsite"
+              errorMsg="Full Name is required!!!"
+              required={true}
+              update={update}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
@@ -54,6 +50,7 @@ const Social = () => {
             onChange={handleChange}
             name="linkedIn"
             value={profile.linkedIn}
+            update={update}
             icon={<LinkedInIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>
@@ -65,6 +62,7 @@ const Social = () => {
             onChange={handleChange}
             name="twitter"
             value={profile.twitter}
+            update={update}
             icon={<TwitterIcon sx={{ fontSize: "1.2rem" }} />}
           />
           <Inputs
@@ -73,13 +71,14 @@ const Social = () => {
             onChange={handleChange}
             name="telegram"
             value={profile.telegram}
+            update={update}
             icon={<TelegramIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>
         <button
           className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
           w-[10rem] hover:bg-black mt-[2rem]
-          ${!update && "pointer-events-none bg-gray-400"}`}>
+          ${!update && "pointer-events-none"}`}>
           Save Changes
         </button>
       </form>

@@ -5,21 +5,17 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { JobContext } from "../../../Context/Context";
 
-const Accordions = ({ header, children }) => {
-  const { setUpdate } = JobContext();
+const Accordions = ({ header, children, update, setUpdate }) => {
   const onClickHandler = (event) => {
+    // this will prevent the accordion to not be closed by clicking hte icon.
     event.stopPropagation();
-    setUpdate(prev => !prev);
+    setUpdate(!update);
   };
 
   return (
     <Accordion defaultExpanded={true}>
-      <AccordionSummary
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-        className="!bg-black/70 !text-white !rounded-sm">
+      <AccordionSummary className="!bg-black/70 !text-white !rounded-sm">
         <div className="flex items-center justify-between !w-full">
           <h1>{header}</h1>
 
@@ -28,7 +24,10 @@ const Accordions = ({ header, children }) => {
           </IconButton>
         </div>
       </AccordionSummary>
-      <AccordionDetails className="!rounded-sm !p-[2rem]">
+      <AccordionDetails
+        className={`!rounded-sm !p-[2rem] ${
+          update ? "text-black" : "text-gray-500"
+        } `}>
         {children}
       </AccordionDetails>
     </Accordion>

@@ -6,7 +6,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import MenuIcon from "@mui/icons-material/Menu";
 import Social from "./SocialLinks/Social";
 
-const CompanyProfile = () => {
+const Profile = () => {
   const [showMenu, setShowMenu] = useState(false);
   return (
     <section className="bg-profileBg bg-cover bg-no-repeat lg:h-[510px] relative overflow-hidden">
@@ -71,4 +71,4 @@ const CompanyProfile = () => {
   );
 };
 
-export default CompanyProfile;
+export default Profile;

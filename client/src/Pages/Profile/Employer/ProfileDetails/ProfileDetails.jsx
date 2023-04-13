@@ -16,25 +16,31 @@ import InputForm from "./InputForm";
 const ProfileDetails = () => {
   const fileRef = useRef(null);
   const [error, setError] = useState(false);
-  const { user, update, setUpdate, profile, handleChange } = JobContext();
+  const { user, profile, handleChange } = JobContext();
+  const [update, setUpdate] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!profile.phoneNumber || !profile.notes || !profile.gender) {
+    if (profile.gender === "") {
       setError(true);
-      window.scroll(0, 0);
-    } else {
-      setUpdate(false);
-      console.log(profile);
+      return;
     }
+    setError(false);
   };
 
   return (
-    <Accordions header="My Profile Details">
+    <Accordions
+      header="My Profile Details"
+      setUpdate={setUpdate}
+      update={update}>
       <form onSubmit={handleSubmit}>
         <div className="flex gap-3">
           {/* upload image  */}
-          <div className="lg:flex-1" onClick={() => fileRef?.current.click()}>
+          <div
+            className="lg:flex-1"
+            onClick={() => {
+              update && fileRef?.current.click();
+            }}>
             <img
               src={
                 profile.gender === "male"
@@ -79,15 +85,13 @@ const ProfileDetails = () => {
             onChange={handleChange}>
             <FormControlLabel
               value="male"
-              control={<Radio />}
+              control={<Radio disabled={update ? false : true} />}
               label="Male"
-              disabled={!update ? true : false}
             />
             <FormControlLabel
               value="female"
-              control={<Radio />}
+              control={<Radio disabled={update ? false : true} />}
               label="Female"
-              disabled={!update ? true : false}
             />
           </RadioGroup>
           <FormHelperText className="!text-red-700">
@@ -96,12 +100,12 @@ const ProfileDetails = () => {
         </div>
 
         {/* links inputs  */}
-        <InputForm error={error} />
+        <InputForm update={update} />
 
         <button
           className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
-          w-[10rem] hover:bg-black mt-[2rem]
-          ${!update && "pointer-events-none bg-gray-400"}`}>
+          w-[10rem] hover:bg-black mt-[2rem] 
+          ${!update && "pointer-events-none"}`}>
           Save Changes
         </button>
       </form>

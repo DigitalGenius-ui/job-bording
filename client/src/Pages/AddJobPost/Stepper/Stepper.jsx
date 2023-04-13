@@ -23,6 +23,7 @@ const StepperComp = () => {
   // data states
   const { setAlert } = JobContext();
   const [validate, setValidate] = useState(false);
+  
   let [aboutPosition, setAboutPosition] = React.useState({
     userId: user._id,
     job_title: "",

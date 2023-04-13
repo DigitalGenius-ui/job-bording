@@ -10,9 +10,7 @@ const Home = lazy(() => import("./components/Home/Home"));
 const JobPost = lazy(() => import("./Pages/AddJobPost/JobPost"));
 const AllJobs = lazy(() => import("./Pages/AllJob/AllJobs"));
 const DisplayJob = lazy(() => import("./Pages/DisplayJob/DisplayJob"));
-const CompanyProfile = lazy(() =>
-  import("./Pages/Profile/Employer/CompanyProfile")
-);
+const Profile = lazy(() => import("./Pages/Profile/Employer/Profile"));
 
 function App() {
   const { user } = JobContext();
@@ -24,9 +22,7 @@ function App() {
           {user && <Route path="/addJob" element={<JobPost />} />}
           {user && <Route path="/jobPosts" element={<AllJobs />} />}
           <Route path="/jobPosts/:id" element={<DisplayJob />} />
-          {user && (
-            <Route path="/companyProf/:id" element={<CompanyProfile />} />
-          )}
+          {user && <Route path="/companyProf/:id" element={<Profile />} />}
           <Route path="*" element={<Navigate to={!user ? "/" : "/"} />} />
         </Route>
       </Routes>

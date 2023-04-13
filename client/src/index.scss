@@ -19,7 +19,7 @@ body {
 }
 
 .size {
-  @apply max-w-screen-xl w-[95%] mx-auto lg:w-[85%];
+  @apply w-[95%] mx-auto lg:w-[85%];
 }
 
 .shadowCard{
@@ -56,4 +56,13 @@ body {
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+// input error message 
+ .error{
+  display: none;
+}
+
+.input:invalid ~ .error{
+  display: block;
 }

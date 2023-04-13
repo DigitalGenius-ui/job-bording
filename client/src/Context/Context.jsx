@@ -44,8 +44,8 @@ const Context = ({ children }) => {
   const displayJob = country || category || keyword ? searchData : allJobs;
 
   //update profile data
-  const [update, setUpdate] = useState(false);
   const [file, setFile] = useState("");
+
   const [profile, setProfile] = useState({
     profileImg: user?.profileImg || "",
     gender: user?.gender || "",
@@ -62,13 +62,7 @@ const Context = ({ children }) => {
   });
 
   const handleChange = (e) => {
-    setProfile((prev) => {
-      const { name, value } = e.target;
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
+    setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
   return (
@@ -99,8 +93,6 @@ const Context = ({ children }) => {
         country,
         category,
         // update profile
-        update,
-        setUpdate,
         profile,
         setProfile,
         handleChange,
