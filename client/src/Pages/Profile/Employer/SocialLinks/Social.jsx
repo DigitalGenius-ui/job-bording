@@ -8,7 +8,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 const Social = () => {
-  const { user, handleChange, profile } = JobContext();
+  const { user, handleChange } = JobContext();
   const [update, setUpdate] = useState(false);
 
   const handleSubmit = (e) => {
@@ -20,6 +20,7 @@ const Social = () => {
       header="Social media links"
       update={update}
       setUpdate={setUpdate}>
+      {/* form part  */}
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row lg:flex-col gap-8">
           {user.signupAs === "Candidate" && (
@@ -49,7 +50,6 @@ const Social = () => {
             type="text"
             onChange={handleChange}
             name="linkedIn"
-            value={profile.linkedIn}
             update={update}
             icon={<LinkedInIcon sx={{ fontSize: "1.2rem" }} />}
           />
@@ -61,7 +61,6 @@ const Social = () => {
             type="text"
             onChange={handleChange}
             name="twitter"
-            value={profile.twitter}
             update={update}
             icon={<TwitterIcon sx={{ fontSize: "1.2rem" }} />}
           />
@@ -70,7 +69,6 @@ const Social = () => {
             type="text"
             onChange={handleChange}
             name="telegram"
-            value={profile.telegram}
             update={update}
             icon={<TelegramIcon sx={{ fontSize: "1.2rem" }} />}
           />

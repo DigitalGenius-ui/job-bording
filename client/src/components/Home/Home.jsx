@@ -6,7 +6,6 @@ import Category from "./Category/Category";
 import Jobs from "./LatestJob/Jobs";
 import Help from "./Help/Help";
 import Award from "./Award/Award";
-import Subscribe from "./Subscribe/Subscribe";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 
 const Home = () => {
@@ -33,7 +32,6 @@ const Home = () => {
       <BrowsJobs />
       <Help />
       <Award />
-      <Subscribe />
 
       {/* arrow ro scroll up  */}
       <span

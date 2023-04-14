@@ -6,13 +6,13 @@ const Inputs = ({
   icon,
   label,
   type,
-  handleChange,
-  value,
+  onChange,
   errorMsg,
   name,
   required,
   pattern,
   update,
+  accept,
 }) => {
   const inputRef = useRef();
   const [show, setShow] = useState(false);
@@ -45,11 +45,12 @@ const Inputs = ({
               invalid:border-red-500 input ${
                 type === "file" && !update && "pointer-events-none"
               }`}
-              onChange={handleChange}
+              onChange={onChange}
               defaultValue={type === "password" ? "*****" : profile[name]}
               required={required}
               name={name}
               pattern={pattern}
+              accept={accept}
             />
             <span className={`text-sm text-red-600 error`}>{errorMsg}</span>
           </div>
@@ -72,10 +73,11 @@ const Inputs = ({
             rows="5"
             placeholder="Your Notes..."
             readOnly={!update ? true : false}
-            defaultValue={value}
+            name={name}
+            defaultValue={profile[name]}
             required
             minLength={10}
-            onChange={handleChange}></textarea>
+            onChange={onChange}></textarea>
           <span className={`text-sm text-red-600 error`}>{errorMsg}</span>
         </>
       )}

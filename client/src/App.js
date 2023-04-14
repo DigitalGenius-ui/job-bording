@@ -1,10 +1,12 @@
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Message from "./components/util/Alert/Message";
+import Subscribe from "./components/Home/Subscribe/Subscribe";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
 import { JobContext } from "./Context/Context";
 import { Suspense, lazy } from "react";
+import Contact from "./Pages/Contact Us/Contact";
 
 const Home = lazy(() => import("./components/Home/Home"));
 const JobPost = lazy(() => import("./Pages/AddJobPost/JobPost"));
@@ -22,7 +24,8 @@ function App() {
           {user && <Route path="/addJob" element={<JobPost />} />}
           {user && <Route path="/jobPosts" element={<AllJobs />} />}
           <Route path="/jobPosts/:id" element={<DisplayJob />} />
-          {user && <Route path="/companyProf/:id" element={<Profile />} />}
+          {user && <Route path="/profile/:id" element={<Profile />} />}
+          {<Route path="/contact" element={<Contact />} />}
           <Route path="*" element={<Navigate to={!user ? "/" : "/"} />} />
         </Route>
       </Routes>
@@ -42,7 +45,12 @@ const HeadWrapper = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Outlet />
       </Suspense>
-      {route !== "companyProf" && <Footer />}
+      {route !== "companyProf" && (
+        <>
+          <Subscribe />
+          <Footer />
+        </>
+      )}
     </>
   );
 };

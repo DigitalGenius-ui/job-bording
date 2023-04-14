@@ -48,6 +48,7 @@ const Context = ({ children }) => {
 
   const [profile, setProfile] = useState({
     profileImg: user?.profileImg || "",
+    password: "",
     gender: user?.gender || "",
     fullName: user?.fullName,
     phoneNumber: user?.phoneNumber || "+62",
@@ -60,6 +61,7 @@ const Context = ({ children }) => {
     telegram: user?.telegram || "https://www.telegram.com",
     companyWebsite: user?.telegram || "https://www.website.com",
   });
+
 
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });

@@ -1,7 +1,6 @@
 import React from "react";
 import Inputs from "../../util/Inputs";
 import { JobContext } from "../../../../Context/Context";
-import { FormHelperText } from "@mui/material";
 
 const InputForm = ({ update }) => {
   const { user, setProfile, profile, handleChange } = JobContext();
@@ -64,7 +63,10 @@ const InputForm = ({ update }) => {
           name="resume"
           header="My Profile Details"
           update={update}
-          onChange={(e) => setProfile({ ...profile, resume: e.target.file[0] })}
+          accept=".pdf,.doc,.docx"
+          onChange={(e) =>
+            setProfile({ ...profile, resume: e.target.files[0] })
+          }
         />
       )}
     </div>

@@ -99,7 +99,7 @@ const UserProfile = () => {
         >
           <Button
             title="My Profile"
-            handleClick={() => navigate(`/companyProf/${user._id}`)}
+            handleClick={() => navigate(`/profile/${user._id}`)}
             icon={<Person2Icon sx={{ fontSize: "1.3rem" }} />}
           />
           {user?.signupAs === "Employer" && (

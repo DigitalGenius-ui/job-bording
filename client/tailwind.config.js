@@ -12,6 +12,7 @@ module.exports = {
         menuBg: "#2a2a2a",
         menu: "rgba(3, 2, 1, 0)",
         menuBorder: "rgba(255, 255, 255, 0.1)",
+        darkBlack: "#424242",
       },
 
       keyframes: {
@@ -23,7 +24,7 @@ module.exports = {
 
       screens: {
         lg: "1042px",
-        1114 : "1114px"
+        1114: "1114px",
       },
 
       backgroundImage: {

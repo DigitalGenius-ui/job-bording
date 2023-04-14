@@ -11,12 +11,13 @@ import {
 import { JobContext } from "../../../../Context/Context";
 import noneGender from "../../../../images/question.png";
 import female from "../../../../images/female.jpg";
+import male from "../../../../images/male.jpg";
 import InputForm from "./InputForm";
 
 const ProfileDetails = () => {
   const fileRef = useRef(null);
   const [error, setError] = useState(false);
-  const { user, profile, handleChange } = JobContext();
+  const { user, profile, setProfile, handleChange } = JobContext();
   const [update, setUpdate] = useState(false);
 
   const handleSubmit = (e) => {
@@ -26,6 +27,7 @@ const ProfileDetails = () => {
       return;
     }
     setError(false);
+    console.log(profile);
   };
 
   return (
@@ -41,19 +43,36 @@ const ProfileDetails = () => {
             onClick={() => {
               update && fileRef?.current.click();
             }}>
-            <img
-              src={
-                profile.gender === "male"
-                  ? "https://www.libera.fi/wp-content/uploads/2019/02/blank-profile-picture-973460__480.png"
-                  : profile.gender === "female"
-                  ? female
-                  : noneGender
-              }
-              alt="profile"
-              className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
+            {!profile.profileImg ? (
+              <img
+                src={
+                  profile.gender === "male"
+                    ? male
+                    : profile.gender === "female"
+                    ? female
+                    : noneGender
+                }
+                alt="profile"
+                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
               border-dashed border-gray-300 cursor-pointer"
+              />
+            ) : (
+              <img
+                src={URL.createObjectURL(profile.profileImg)}
+                alt="profile"
+                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
+              border-dashed border-gray-300 cursor-pointer"
+              />
+            )}
+            <input
+              name="profileImg"
+              onChange={(e) =>
+                setProfile({ ...profile, profileImg: e.target.files[0] })
+              }
+              type="file"
+              className="hidden"
+              ref={fileRef}
             />
-            <input type="file" className="hidden" ref={fileRef} />
           </div>
 
           {/* profile type  */}
