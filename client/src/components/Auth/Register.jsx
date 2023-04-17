@@ -14,19 +14,16 @@ const Register = () => {
     password: "",
     rePassword: "",
     signupAs: "",
-    company_name: "",
-    HQ: "",
-    established: "",
-    industry: "",
-    size: "",
     website: "",
-    linkedIn: "",
-    twitter: "",
-    telegram: "",
-    about: "",
-    culture: "",
-    benefits: "",
-    hiring: "",
+    userProfile: "",
+    gender: "",
+    phoneNumber: "",
+    notes: "",
+    portfolio: "",
+    resume: "",
+    linkedIn : "",
+    twitter : "",
+    telegram : "",
     acceptTerm: false,
   });
 
@@ -100,8 +97,7 @@ const Register = () => {
 
       <form
         onSubmit={submitHandler}
-        className="flex flex-col px-3 lg:px-6 gap-4"
-      >
+        className="flex flex-col px-3 lg:px-6 gap-4">
         <Input
           type="text"
           placeHolder="User Name"
@@ -152,8 +148,7 @@ const Register = () => {
         <button
           className={`bg-orang w-full py-3 mb-4 rounded-md text-white
         hover:bg-orange-400 flex items-center justify-center gap-2
-        ${isLoading && "pointer-events-none"}`}
-        >
+        ${isLoading && "pointer-events-none"}`}>
           {isLoading && (
             <Box sx={{ display: "flex", marginTop: "0.2rem" }}>
               <CircularProgress size="1rem" />

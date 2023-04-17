@@ -45,7 +45,7 @@ const HeadWrapper = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Outlet />
       </Suspense>
-      {route !== "companyProf" && (
+      {route !== "profile" && (
         <>
           <Subscribe />
           <Footer />

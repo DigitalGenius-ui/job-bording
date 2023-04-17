@@ -53,7 +53,7 @@ const Company = ({ data }) => {
         </a>
       ) : null}
 
-      <Link to={`/companyProf/${data.userId}`}>
+      <Link to={`/profile/${data.userId}`}>
         <button
           className="font-extrabold text-lg border-t border-gray-300 mt-8
           pt-5 text-orang leading-6"

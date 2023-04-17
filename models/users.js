@@ -1,29 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
     fullName: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    signupAs: { type: String },
-    company_name: String,
-    HQ: String,
-    established: String,
-    industry: String,
-    size: String,
-    website: String,
-    linkedIn: String,
-    twitter: String,
-    telegram: String,
-    // long texts
-    about: String,
-    culture: String,
-    benefits: String,
-    hiring: String,
+    signupAs: { type: String, required: true },
+    website: { type: String },
+    userProfile: { type: String },
+    gender: { type: String },
+    phoneNumber: { type: String },
+    notes: { type: String },
+    portfolio: { type: String },
+    resume: { type: String },
+    linkedIn: { type: String },
+    twitter: { type: String },
+    telegram: { type: String },
   },
   { collection: "users" }
 );
 
-const model = mongoose.model('users', userSchema);
+const model = mongoose.model("users", userSchema);
 
 module.exports = model;

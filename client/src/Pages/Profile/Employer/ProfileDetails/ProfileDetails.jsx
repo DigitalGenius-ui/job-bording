@@ -17,17 +17,29 @@ import InputForm from "./InputForm";
 const ProfileDetails = () => {
   const fileRef = useRef(null);
   const [error, setError] = useState(false);
-  const { user, profile, setProfile, handleChange } = JobContext();
+  const {
+    user,
+    profile,
+    setProfile,
+    handleChange,
+    currentUser,
+    updateProfile,
+  } = JobContext();
   const [update, setUpdate] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (profile.gender === "") {
-      setError(true);
-      return;
+    try {
+      if (profile.gender === "") {
+        setError(true);
+        return;
+      }
+      await updateProfile(profile);
+      window.location.reload();
+      setError(false);
+    } catch (error) {
+      console.log(error);
     }
-    setError(false);
-    console.log(profile);
   };
 
   return (
@@ -50,18 +62,22 @@ const ProfileDetails = () => {
                     ? male
                     : profile.gender === "female"
                     ? female
+                    : currentUser?.gender === "male"
+                    ? male
+                    : currentUser.gender === "female"
+                    ? female
                     : noneGender
                 }
                 alt="profile"
                 className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-              border-dashed border-gray-300 cursor-pointer"
+                border-dashed border-gray-300 cursor-pointer"
               />
             ) : (
               <img
                 src={URL.createObjectURL(profile.profileImg)}
                 alt="profile"
                 className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-              border-dashed border-gray-300 cursor-pointer"
+                border-dashed border-gray-300 cursor-pointer"
               />
             )}
             <input
@@ -72,6 +88,7 @@ const ProfileDetails = () => {
               type="file"
               className="hidden"
               ref={fileRef}
+              defaultValue={currentUser?.profileImg}
             />
           </div>
 
@@ -98,8 +115,7 @@ const ProfileDetails = () => {
           <FormLabel>Choose Your Gender</FormLabel>
           <RadioGroup
             row
-            defaultValue={profile.gender}
-            value={profile.gender}
+            defaultValue={currentUser?.gender}
             name="gender"
             onChange={handleChange}>
             <FormControlLabel
@@ -119,7 +135,7 @@ const ProfileDetails = () => {
         </div>
 
         {/* links inputs  */}
-        <InputForm update={update} />
+        <InputForm update={update} currentUser={currentUser} />
 
         <button
           className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer

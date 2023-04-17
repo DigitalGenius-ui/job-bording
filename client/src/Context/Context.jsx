@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getAllJobs, searchJobs } from "../FetchHook/Job";
+import { singleAllUsers, updateUser } from "../FetchHook/User";
 
 const Job = createContext();
 
@@ -43,29 +44,38 @@ const Context = ({ children }) => {
 
   const displayJob = country || category || keyword ? searchData : allJobs;
 
+  // get all profiles
+  const { data: allUsers } = useQuery("users", singleAllUsers);
+
   //update profile data
   const [file, setFile] = useState("");
+  const currentUser = allUsers?.find((newUser) => newUser?._id === user?._id);
 
   const [profile, setProfile] = useState({
-    profileImg: user?.profileImg || "",
+    _id: user?._id,
+    profileImg: currentUser?.profileImg,
     password: "",
-    gender: user?.gender || "",
-    fullName: user?.fullName,
-    phoneNumber: user?.phoneNumber || "+62",
-    email: user?.email,
-    notes: user?.notes || "",
-    resume: user?.resume || "",
-    portfolio: user?.portfolio || "https://www.portfolio.com",
-    linkedIn: user?.linkedIn || "https://www.linkedIn.com",
-    twitter: user?.twitter || "https://www.twitter.com",
-    telegram: user?.telegram || "https://www.telegram.com",
-    companyWebsite: user?.telegram || "https://www.website.com",
+    gender: currentUser?.gender,
+    fullName: currentUser?.fullName,
+    phoneNumber: currentUser?.phoneNumber,
+    email: currentUser?.email,
+    notes: currentUser?.notes,
+    resume: currentUser?.resume,
+    portfolio: currentUser?.portfolio,
+    linkedIn: currentUser?.linkedIn,
+    twitter: currentUser?.twitter,
+    telegram: currentUser?.telegram,
+    website: currentUser?.website,
   });
-
 
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
+
+  const queryClient = useQueryClient();
+  const { mutateAsync: updateProfile } = useMutation("users", updateUser, {
+    onSuccess: () => queryClient.invalidateQueries("users"),
+  });
 
   return (
     <Job.Provider
@@ -100,6 +110,8 @@ const Context = ({ children }) => {
         handleChange,
         file,
         setFile,
+        currentUser,
+        updateProfile,
       }}>
       {children}
     </Job.Provider>

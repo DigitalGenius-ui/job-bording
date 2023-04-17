@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
+const multer = require("multer");
 
 const app = express();
 
@@ -17,6 +18,21 @@ mongoose.connect(
 
 mongoose.connection.once("open", () => {
   console.log("DB connection has been made");
+});
+
+// uploading image for profile
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "upload");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body);
+  },
+});
+
+const upload = multer({ storage: storage });
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  res.status(200).json("Image has been successfully uploaded");
 });
 
 // Use the contacts.js to handle the endpoints starts with '/api/contact';

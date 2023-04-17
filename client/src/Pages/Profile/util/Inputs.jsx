@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { JobContext } from "../../../Context/Context";
 
 const Inputs = ({
   icon,
@@ -13,10 +12,10 @@ const Inputs = ({
   pattern,
   update,
   accept,
+  defaultValue,
 }) => {
   const inputRef = useRef();
   const [show, setShow] = useState(false);
-  const { profile } = JobContext();
 
   let inputElement = inputRef?.current;
 
@@ -46,7 +45,7 @@ const Inputs = ({
                 type === "file" && !update && "pointer-events-none"
               }`}
               onChange={onChange}
-              defaultValue={type === "password" ? "*****" : profile[name]}
+              defaultValue={defaultValue}
               required={required}
               name={name}
               pattern={pattern}
@@ -74,7 +73,7 @@ const Inputs = ({
             placeholder="Your Notes..."
             readOnly={!update ? true : false}
             name={name}
-            defaultValue={profile[name]}
+            defaultValue={defaultValue}
             required
             minLength={10}
             onChange={onChange}></textarea>

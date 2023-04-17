@@ -27,7 +27,7 @@ const StepperComp = () => {
   let [aboutPosition, setAboutPosition] = React.useState({
     userId: user._id,
     job_title: "",
-    category: "Design",
+    category: "Front-End developer",
     job_type: "Full-Time",
     position_accross_globe: "No",
     salary_range: "25,000 - 50,000",

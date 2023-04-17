@@ -1,0 +1,45 @@
+{
+  "location": [
+    "Afghanistan",
+    "India",
+    "Australia",
+    "Canada",
+    "United State",
+    "remote"
+  ],
+
+  "categories": [
+    "Front-End developer",
+    "Back-End developer",
+    "PHP developer",
+    "full stack developer",
+    "devops"
+  ],
+
+  "jobType": ["Full-Time", "Part-Time", "Contract"],
+
+  "salary": [
+    "25,000 - 50,000",
+    "50,000 - 74,000",
+    "75,000 - 99,000",
+    "100,000 or more"
+  ],
+
+  "keyWords": [
+    "Web Designer",
+    "Graphic Designer",
+    "PHP Developer",
+    "IOS Developer",
+    "Android Developer"
+  ],
+
+  "skills": [
+    "HTML5",
+    "CSS3",
+    "JavaScript",
+    "React JS",
+    "TailwindCSS",
+    "Material UI",
+    "SCSS"
+  ]
+}

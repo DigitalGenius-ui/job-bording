@@ -8,11 +8,18 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 const Social = () => {
-  const { user, handleChange } = JobContext();
+  const { user, handleChange, updateProfile, currentUser, profile } =
+    JobContext();
   const [update, setUpdate] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await updateProfile(profile);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -30,6 +37,7 @@ const Social = () => {
               onChange={handleChange}
               name="portfolio"
               update={update}
+              defaultValue={currentUser?.portfolio || "https://"}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
@@ -38,10 +46,11 @@ const Social = () => {
               label="Company Website"
               type="text"
               onChange={handleChange}
-              name="companyWebsite"
+              name="website"
               errorMsg="Full Name is required!!!"
               required={true}
               update={update}
+              defaultValue={currentUser?.website || "https://"}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
@@ -51,6 +60,7 @@ const Social = () => {
             onChange={handleChange}
             name="linkedIn"
             update={update}
+            defaultValue={currentUser?.linkedIn || "https://"}
             icon={<LinkedInIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>
@@ -62,6 +72,7 @@ const Social = () => {
             onChange={handleChange}
             name="twitter"
             update={update}
+            defaultValue={currentUser?.twitter || "https://"}
             icon={<TwitterIcon sx={{ fontSize: "1.2rem" }} />}
           />
           <Inputs
@@ -70,6 +81,7 @@ const Social = () => {
             onChange={handleChange}
             name="telegram"
             update={update}
+            defaultValue={currentUser?.telegram || "https://"}
             icon={<TelegramIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>

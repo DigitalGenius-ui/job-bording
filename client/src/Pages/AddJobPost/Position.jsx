@@ -13,7 +13,7 @@ import React, { useEffect } from "react";
 import { useQuill } from "react-quilljs";
 import TextEditor from "./TextEditor/TextEditor";
 import Input from "./utils/Input";
-import { category, salary, trends } from "./utils/data";
+import data from "../../app.config.json";
 
 const Position = ({ aboutPosition, setAboutPosition, validate }) => {
   const handleChange = (e) => {
@@ -69,7 +69,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
             }
             value={aboutPosition.category}
           >
-            {category.map((cat, i) => (
+            {data.categories.map((cat, i) => (
               <MenuItem value={cat} key={i}>
                 {cat}
               </MenuItem>
@@ -117,7 +117,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           value={aboutPosition.salary_range}
         >
           <MenuItem value={"Prefer Not to Share"}>Prefer Not to Share</MenuItem>
-          {salary.map((money, i) => (
+          {data.salary.map((money, i) => (
             <MenuItem key={i} value={money}>
               {money}
             </MenuItem>
@@ -193,7 +193,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
             defaultValue={aboutPosition.keyword}
             value={aboutPosition.keyword}
           >
-            {trends.map((trend, i) => (
+            {data.keyWords.map((trend, i) => (
               <MenuItem key={i} value={trend}>
                 {trend}
               </MenuItem>

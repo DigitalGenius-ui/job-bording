@@ -2,7 +2,7 @@ import React from "react";
 import Inputs from "../../util/Inputs";
 import { JobContext } from "../../../../Context/Context";
 
-const InputForm = ({ update }) => {
+const InputForm = ({ update, currentUser }) => {
   const { user, setProfile, profile, handleChange } = JobContext();
 
   return (
@@ -16,7 +16,8 @@ const InputForm = ({ update }) => {
           required={true}
           header="My Profile Details"
           update={update}
-          onChange={handleChange}
+          onChange={(handleChange)}
+          defaultValue={currentUser?.fullName}
         />
         <Inputs
           label="Phone Number"
@@ -28,6 +29,7 @@ const InputForm = ({ update }) => {
           header="My Profile Details"
           update={update}
           onChange={handleChange}
+          defaultValue={currentUser?.phoneNumber || "+1"}
         />
       </div>
       <Inputs
@@ -39,6 +41,7 @@ const InputForm = ({ update }) => {
         update={update}
         onChange={handleChange}
         required={true}
+        defaultValue={currentUser?.email}
       />
       <div>
         <Inputs
@@ -53,6 +56,7 @@ const InputForm = ({ update }) => {
           onChange={handleChange}
           update={update}
           errorMsg="This field must be a least 10 characters"
+          defaultValue={currentUser?.notes}
         />
       </div>
 

@@ -10,20 +10,18 @@ router.post("/sign-up", async (req, res) => {
     fullName,
     email,
     signupAs,
-    company_name,
-    HQ,
-    established,
-    industry,
-    size,
+    userProfile,
+    gender,
+    phoneNumber,
+    notes,
     website,
+    portfolio,
+    resume,
     linkedIn,
     twitter,
     telegram,
-    about,
-    culture,
-    benefits,
-    hiring,
   } = req.body;
+
   let { password } = req.body;
   try {
     // generate salt to hash password
@@ -45,19 +43,16 @@ router.post("/sign-up", async (req, res) => {
           email,
           password,
           signupAs,
-          company_name,
-          HQ,
-          established,
-          industry,
-          size,
-          website,
           linkedIn,
           twitter,
           telegram,
-          about,
-          culture,
-          benefits,
-          hiring,
+          website,
+          userProfile,
+          gender,
+          phoneNumber,
+          notes,
+          portfolio,
+          resume,
         });
         console.log("User created successfully", createUser);
         return res
@@ -115,7 +110,7 @@ router.post("/sign-in", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const allUsers = await users.find();
-    res.status(200).json({ status: "SUCCESS", jobs: allUsers });
+    res.status(200).json({ status: "SUCCESS", allUsers: allUsers });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ status: "FAILURE", error: err });
