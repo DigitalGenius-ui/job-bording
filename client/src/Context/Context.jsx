@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getAllJobs, searchJobs } from "../FetchHook/Job";
-import { singleAllUsers, updateUser } from "../FetchHook/User";
+import { updateUser, singleUser } from "../FetchHook/User";
 
 const Job = createContext();
 
@@ -45,15 +45,18 @@ const Context = ({ children }) => {
   const displayJob = country || category || keyword ? searchData : allJobs;
 
   // get all profiles
-  const { data: allUsers } = useQuery("users", singleAllUsers);
+  // const { data: allUsers } = useQuery("users", singleAllUsers);
 
   //update profile data
-  const [file, setFile] = useState("");
-  const currentUser = allUsers?.find((newUser) => newUser?._id === user?._id);
+  const id = window.location.pathname.split("/")[2];
+  const { data: currentUser, refetch: profileFetch } = useQuery(
+    ["users", id],
+    () => singleUser(id)
+  );
 
   const [profile, setProfile] = useState({
-    _id: user?._id,
-    profileImg: currentUser?.profileImg,
+    _id: user._id,
+    userProfile: currentUser?.userProfile,
     password: "",
     gender: currentUser?.gender,
     fullName: currentUser?.fullName,
@@ -108,10 +111,10 @@ const Context = ({ children }) => {
         profile,
         setProfile,
         handleChange,
-        file,
-        setFile,
         currentUser,
         updateProfile,
+        // profile
+        profileFetch,
       }}>
       {children}
     </Job.Provider>

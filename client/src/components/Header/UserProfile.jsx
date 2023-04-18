@@ -9,7 +9,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 const UserProfile = () => {
   const [drop, setDrop] = useState(false);
-  const { user, setOpen } = JobContext();
+  const { user, setOpen, profileFetch } = JobContext();
   const navigate = useNavigate();
   const selectRef = useRef();
 
@@ -50,8 +50,7 @@ const UserProfile = () => {
     <div className="flex items-center gap-4 cursor-pointer relative">
       <div
         onClick={() => (user ? setDrop(!drop) : setOpen(true))}
-        className="relative"
-      >
+        className="relative">
         {user ? (
           <img
             className="w-11 h-11 object-cover rounded-full border-2 border-gray-200"
@@ -68,13 +67,11 @@ const UserProfile = () => {
         {user ? (
           <span
             className="w-[12px] h-[12px] bg-green rounded-full absolute
-              border-2 border-gray-200 top-0 right-0"
-          ></span>
+              border-2 border-gray-200 top-0 right-0"></span>
         ) : (
           <span
             className="w-[12px] h-[12px] bg-gray-500 rounded-full absolute
-              border-2 border-gray-200 top-0 right-0"
-          ></span>
+              border-2 border-gray-200 top-0 right-0"></span>
         )}
       </div>
       <h1 className="text-gray-500 font-semibold">
@@ -95,11 +92,13 @@ const UserProfile = () => {
         <div
           ref={selectRef}
           className="bg-white absolute right-0 flex flex-col top-full shadow-sm 
-        shadow-gray-800 w-[15rem] mt-2 animate-dropDown transition-all duration-500"
-        >
+        shadow-gray-800 w-[15rem] mt-2 animate-dropDown transition-all duration-500">
           <Button
             title="My Profile"
-            handleClick={() => navigate(`/profile/${user._id}`)}
+            handleClick={() => {
+              navigate(`/profile/${user._id}`);
+              profileFetch();
+            }}
             icon={<Person2Icon sx={{ fontSize: "1.3rem" }} />}
           />
           {user?.signupAs === "Employer" && (
@@ -127,8 +126,7 @@ const Button = ({ icon, title, handleClick }) => {
     <div
       onClick={handleClick}
       className="flex items-center gap-2 py-2 px-2 cursor-pointer
-        hover:text-orang border-b text-sm text-gray-500"
-    >
+        hover:text-orang border-b text-sm text-gray-500">
       <span>{icon}</span>
       {title}
     </div>

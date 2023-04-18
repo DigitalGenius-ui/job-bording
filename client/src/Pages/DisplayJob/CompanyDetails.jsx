@@ -3,15 +3,15 @@ import { JobContext } from "../../Context/Context";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import LanguageIcon from "@mui/icons-material/Language";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Company = ({ data }) => {
-  const { user } = JobContext();
+  const { user, profileFetch } = JobContext();
+  const navigate = useNavigate();
   return (
     <div
       className="shadowCard2 p-7 flex flex-col justify-center 
-          items-center w-full md:w-[15rem] lg:w-[20rem]"
-    >
+          items-center w-full md:w-[15rem] lg:w-[20rem]">
       <div>
         <img
           className="w-[8rem] h-[8rem] object-cover rounded-full border-2 border-gray-200"
@@ -47,28 +47,28 @@ const Company = ({ data }) => {
         <a
           href={`mailto:${data.application_link_or_email}`}
           className={`bg-orang py-2 px-4 capitalize text-white hover:bg-orange-400 mt-2
-              ${!user && "pointer-events-none bg-orange-200"}`}
-        >
+              ${!user && "pointer-events-none bg-orange-200"}`}>
           apply for the job
         </a>
       ) : null}
 
-      <Link to={`/profile/${data.userId}`}>
-        <button
-          className="font-extrabold text-lg border-t border-gray-300 mt-8
-          pt-5 text-orang leading-6"
-        >
-          <div className="lg:flex lg:flex-col">
-            View Company Profile &
-            <span className="ml-1 lg:m-0">
-              All Jobs
-              <span className="bg-orang text-white rounded-sm ml-1">
-                <ArrowForwardIcon />
-              </span>
+      <button
+        onClick={() => {
+          navigate(`/profile/${data.userId}`);
+          profileFetch();
+        }}
+        className="font-extrabold text-lg border-t border-gray-300 mt-8
+          pt-5 text-orang leading-6">
+        <div className="lg:flex lg:flex-col">
+          View Company Profile &
+          <span className="ml-1 lg:m-0">
+            All Jobs
+            <span className="bg-orang text-white rounded-sm ml-1">
+              <ArrowForwardIcon />
             </span>
-          </div>
-        </button>
-      </Link>
+          </span>
+        </div>
+      </button>
     </div>
   );
 };

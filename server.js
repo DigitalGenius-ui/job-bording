@@ -1,3 +1,7 @@
+const { dirname } = require("path");
+const path = require("path");
+const { fileURLToPath } = require("url");
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -12,6 +16,9 @@ app.use(cookieParser());
 app.use(cors({ credentials: true, origin: true }));
 dotenv.config();
 
+// image path
+app.use("/upload", express.static(path.join(__dirname, "/upload")));
+
 mongoose.connect(
   "mongodb+srv://miladTech:milad123@nodeandexpress.84kxwy4.mongodb.net/users?retryWrites=true&w=majority"
 );
@@ -21,12 +28,13 @@ mongoose.connection.once("open", () => {
 });
 
 // uploading image for profile
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "upload");
   },
   filename: (req, file, cb) => {
-    cb(null, req.body);
+    cb(null, req.body.name);
   },
 });
 

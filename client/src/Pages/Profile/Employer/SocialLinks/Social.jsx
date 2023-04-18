@@ -8,7 +8,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 const Social = () => {
-  const { user, handleChange, updateProfile, currentUser, profile } =
+  const { user, handleChange, updateProfile, profile } =
     JobContext();
   const [update, setUpdate] = useState(false);
 
@@ -37,7 +37,7 @@ const Social = () => {
               onChange={handleChange}
               name="portfolio"
               update={update}
-              defaultValue={currentUser?.portfolio || "https://"}
+              defaultValue={profile?.portfolio || "https://"}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
@@ -50,7 +50,7 @@ const Social = () => {
               errorMsg="Full Name is required!!!"
               required={true}
               update={update}
-              defaultValue={currentUser?.website || "https://"}
+              defaultValue={profile?.website || "https://"}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
@@ -60,7 +60,7 @@ const Social = () => {
             onChange={handleChange}
             name="linkedIn"
             update={update}
-            defaultValue={currentUser?.linkedIn || "https://"}
+            defaultValue={profile?.linkedIn || "https://"}
             icon={<LinkedInIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>
@@ -72,7 +72,7 @@ const Social = () => {
             onChange={handleChange}
             name="twitter"
             update={update}
-            defaultValue={currentUser?.twitter || "https://"}
+            defaultValue={profile?.twitter || "https://"}
             icon={<TwitterIcon sx={{ fontSize: "1.2rem" }} />}
           />
           <Inputs
@@ -81,7 +81,7 @@ const Social = () => {
             onChange={handleChange}
             name="telegram"
             update={update}
-            defaultValue={currentUser?.telegram || "https://"}
+            defaultValue={profile?.telegram || "https://"}
             icon={<TelegramIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>

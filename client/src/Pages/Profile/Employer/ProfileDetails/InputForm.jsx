@@ -2,8 +2,8 @@ import React from "react";
 import Inputs from "../../util/Inputs";
 import { JobContext } from "../../../../Context/Context";
 
-const InputForm = ({ update, currentUser }) => {
-  const { user, setProfile, profile, handleChange } = JobContext();
+const InputForm = ({ update }) => {
+  const { user, setProfile, profile, handleChange, currentUser } = JobContext();
 
   return (
     <div className="pt-[2rem] flex flex-col gap-5">
@@ -16,7 +16,7 @@ const InputForm = ({ update, currentUser }) => {
           required={true}
           header="My Profile Details"
           update={update}
-          onChange={(handleChange)}
+          onChange={handleChange}
           defaultValue={currentUser?.fullName}
         />
         <Inputs

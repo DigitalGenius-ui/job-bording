@@ -6,7 +6,7 @@ import Context from "./Context/Context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { BrowserRouter } from "react-router-dom";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({ refetchOnWindowFocus: true });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

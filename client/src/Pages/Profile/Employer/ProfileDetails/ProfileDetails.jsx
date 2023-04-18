@@ -17,6 +17,7 @@ import InputForm from "./InputForm";
 const ProfileDetails = () => {
   const fileRef = useRef(null);
   const [error, setError] = useState(false);
+  const [imgPrev, setImgPrev] = useState("");
   const {
     user,
     profile,
@@ -26,6 +27,8 @@ const ProfileDetails = () => {
     updateProfile,
   } = JobContext();
   const [update, setUpdate] = useState(false);
+
+  const folder = "http://localhost:8080/upload/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +58,21 @@ const ProfileDetails = () => {
             onClick={() => {
               update && fileRef?.current.click();
             }}>
-            {!profile.profileImg ? (
+            {profile.userProfile ? (
+              <img
+                src={imgPrev}
+                alt="profile"
+                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
+                border-dashed border-gray-300 cursor-pointer"
+              />
+            ) : currentUser?.userProfile ? (
+              <img
+                src={folder + currentUser?.userProfile}
+                alt="profile"
+                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
+                border-dashed border-gray-300 cursor-pointer"
+              />
+            ) : (
               <img
                 src={
                   profile.gender === "male"
@@ -64,7 +81,7 @@ const ProfileDetails = () => {
                     ? female
                     : currentUser?.gender === "male"
                     ? male
-                    : currentUser.gender === "female"
+                    : currentUser?.gender === "female"
                     ? female
                     : noneGender
                 }
@@ -72,23 +89,17 @@ const ProfileDetails = () => {
                 className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
                 border-dashed border-gray-300 cursor-pointer"
               />
-            ) : (
-              <img
-                src={URL.createObjectURL(profile.profileImg)}
-                alt="profile"
-                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-                border-dashed border-gray-300 cursor-pointer"
-              />
             )}
             <input
-              name="profileImg"
-              onChange={(e) =>
-                setProfile({ ...profile, profileImg: e.target.files[0] })
-              }
+              name="userProfile"
+              onChange={(e) => {
+                setProfile({ ...profile, userProfile: e.target.files[0] });
+                e.target.files.length !== 0 &&
+                  setImgPrev(URL.createObjectURL(e.target.files[0]));
+              }}
               type="file"
               className="hidden"
               ref={fileRef}
-              defaultValue={currentUser?.profileImg}
             />
           </div>
 
@@ -115,9 +126,9 @@ const ProfileDetails = () => {
           <FormLabel>Choose Your Gender</FormLabel>
           <RadioGroup
             row
-            defaultValue={currentUser?.gender}
             name="gender"
-            onChange={handleChange}>
+            onChange={handleChange}
+            defaultValue={currentUser?.gender}>
             <FormControlLabel
               value="male"
               control={<Radio disabled={update ? false : true} />}
@@ -135,7 +146,7 @@ const ProfileDetails = () => {
         </div>
 
         {/* links inputs  */}
-        <InputForm update={update} currentUser={currentUser} />
+        <InputForm update={update} />
 
         <button
           className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer

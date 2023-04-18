@@ -30,7 +30,7 @@ const Password = () => {
         />
         <Inputs
           required={true}
-          pattern={profile.password}
+          pattern={profile?.password}
           update={update}
           label="Confirm New Password"
           type="password"

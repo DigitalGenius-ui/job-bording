@@ -42,6 +42,19 @@ export const singleUser = async (id) => {
 
 // update users
 export const updateUser = async (data) => {
+  if (data.userProfile) {
+    const form = new FormData();
+    const imageName = "12" + data.userProfile.name;
+    form.append("name", imageName);
+    form.append("file", data.userProfile);
+    data.userProfile = imageName;
+    try {
+      await axios.post("/api/upload", form);
+    } catch (error) {
+      throw Error(error.response.data.msg);
+    }
+  }
+
   try {
     const res = await axios.put(`/api/user/update/${data._id}`, data);
     return res.data.updatedUser;
