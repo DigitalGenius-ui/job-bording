@@ -3,6 +3,7 @@ import Select from "../../util/Select/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import { JobContext } from "../../../Context/Context";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../Loading/Loading";
 
 const Form = () => {
   const {
@@ -32,7 +33,7 @@ const Form = () => {
     refetch();
   };
 
-  if (searchLoading) return "Loading...";
+  if (searchLoading) return <Loading />;
   if (searchError) return "Something went wrong!!!";
 
   return (
@@ -40,12 +41,10 @@ const Form = () => {
       onSubmit={handleSubmit}
       className="flex items-center flex-col gap-4 lg:gap-2 bg-white/20 lg:bg-white w-full lg:mt-5 lg:px-3 
         rounded-md lg:rounded-full border-4 border-gray-300/20 lg:border-gray-300 lg:flex-row 
-        p-3 lg:p-0"
-    >
+        p-3 lg:p-0">
       <div
         className="flex-1 flex items-center bg-white lg:bg-transparent gap-1 
-          lg:border-r border-gray-300 h-full w-full rounded-md px-2 lg:px-0 relative"
-      >
+          lg:border-r border-gray-300 h-full w-full rounded-md px-2 lg:px-0 relative">
         <span className="text-gray-500">
           <SearchIcon sx={{ fontSize: "1.6rem" }} />
         </span>
@@ -59,16 +58,14 @@ const Form = () => {
         {keyword.length > 0 && (
           <ul
             className="bg-white absolute top-[90%] left-0 right-0 p-1
-          flex flex-col gap-0"
-          >
+          flex flex-col gap-0">
             {getKeyword.map((key, i) => (
               <li
                 onClick={() => setKeyWord(key)}
                 key={i}
                 className={`
               ${key?.toLowerCase().startsWith(keyword) ? "block" : "hidden"}
-            hover:bg-orange-50 py-[2px] text-sm cursor-pointer`}
-              >
+            hover:bg-orange-50 py-[2px] text-sm cursor-pointer`}>
                 {key}
               </li>
             ))}
@@ -94,8 +91,7 @@ const Form = () => {
 
       <button
         className="uppercase bg-orang py-3 px-5 rounded-md w-full lg:w-[11rem] lg:rounded-full text-white
-          flex items-center justify-center gap-1 lg:my-2 hover:bg-black transition-all duration-500"
-      >
+          flex items-center justify-center gap-1 lg:my-2 hover:bg-black transition-all duration-500">
         <SearchIcon /> search jobs
       </button>
     </form>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Accordions from "../../util/Accordion";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
@@ -14,31 +14,56 @@ import female from "../../../../images/female.jpg";
 import male from "../../../../images/male.jpg";
 import InputForm from "./InputForm";
 
-const ProfileDetails = () => {
+const ProfileDetails = ({ currentUser, profileFetch }) => {
   const fileRef = useRef(null);
   const [error, setError] = useState(false);
   const [imgPrev, setImgPrev] = useState("");
-  const {
-    user,
-    profile,
-    setProfile,
-    handleChange,
-    currentUser,
-    updateProfile,
-  } = JobContext();
+  const { user, profile, setProfile, updateProfile, setAlert } = JobContext();
   const [update, setUpdate] = useState(false);
 
-  const folder = "http://localhost:8080/upload/";
+  useEffect(() => {
+    if (currentUser) {
+      // when the user navigate between profiles, data should be updated
+      setProfile({
+        ...profile,
+        gender: currentUser?.gender,
+        fullName: currentUser?.fullName,
+        phoneNumber: currentUser?.phoneNumber,
+        email: currentUser?.email,
+        notes: currentUser?.notes,
+        resume: currentUser?.resume,
+        portfolio: currentUser?.portfolio,
+        linkedIn: currentUser?.linkedIn,
+        twitter: currentUser?.twitter,
+        telegram: currentUser?.telegram,
+        website: currentUser?.website,
+      });
+      profileFetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileFetch, currentUser]);
+
+  const folder = process.env.REACT_APP_FOLDER;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (profile.gender === "") {
         setError(true);
+        setAlert({
+          type: "error",
+          message: "Please specify your Gender",
+          open: true,
+        });
         return;
       }
       await updateProfile(profile);
-      window.location.reload();
+      setUpdate(false);
+      setAlert({
+        type: "success",
+        message: "Profile has been successfully updated",
+        open: true,
+      });
       setError(false);
     } catch (error) {
       console.log(error);
@@ -49,6 +74,7 @@ const ProfileDetails = () => {
     <Accordions
       header="My Profile Details"
       setUpdate={setUpdate}
+      currentUser={currentUser}
       update={update}>
       <form onSubmit={handleSubmit}>
         <div className="flex gap-3">
@@ -127,8 +153,8 @@ const ProfileDetails = () => {
           <RadioGroup
             row
             name="gender"
-            onChange={handleChange}
-            defaultValue={currentUser?.gender}>
+            onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+            value={profile.gender}>
             <FormControlLabel
               value="male"
               control={<Radio disabled={update ? false : true} />}
@@ -148,12 +174,14 @@ const ProfileDetails = () => {
         {/* links inputs  */}
         <InputForm update={update} />
 
-        <button
-          className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
-          w-[10rem] hover:bg-black mt-[2rem] 
+        {user?._id === currentUser?._id && (
+          <button
+            className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
+            w-[10rem] hover:bg-black mt-[2rem] 
           ${!update && "pointer-events-none"}`}>
-          Save Changes
-        </button>
+            Save Changes
+          </button>
+        )}
       </form>
     </Accordions>
   );

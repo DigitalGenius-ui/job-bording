@@ -8,6 +8,7 @@ import { JobContext } from "../../Context/Context";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import Company from "./CompanyDetails";
+import Loading from "../../Loading/Loading";
 
 const Category = ({ data }) => {
   return <p className="border border-orang py-1 px-3 bg-orange-50">{data}</p>;
@@ -23,21 +24,19 @@ const DisplayJob = () => {
     getSingleJob(id)
   );
 
-  if (isLoading) return "Loading";
+  if (isLoading) return <Loading />;
   if (isError) return "Something went wrong..." + error.msg;
 
   return (
     <section className="size my-12 ">
       <button
         onClick={() => navigate("/jobPosts")}
-        className="mb-6 bg-orang py-1 px-4 text-white rounded-md hover:bg-orange-400"
-      >
+        className="mb-6 bg-orang py-1 px-4 text-white rounded-md hover:bg-orange-400">
         <ArrowBackIosNewIcon sx={{ fontSize: "0.9rem" }} /> Back To All Jobs
       </button>
       <main
         className="flex flex-col-reverse items-start md:flex-row 
-      justify-between gap-12"
-      >
+      justify-between gap-12">
         <div className="flex-1">
           <div className="flex flex-col gap-1 font-bold uppercase text-gray-600">
             <span className="pb-2">
@@ -71,8 +70,7 @@ const DisplayJob = () => {
               <a
                 href={`mailto:${data.application_link_or_email}`}
                 className={`bg-orang py-2 px-4 capitalize text-white hover:bg-orange-400 mt-2
-              ${!user && "pointer-events-none bg-orange-200"}`}
-              >
+              ${!user && "pointer-events-none bg-orange-200"}`}>
                 apply for the job
               </a>
             ) : null}

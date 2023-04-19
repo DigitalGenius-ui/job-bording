@@ -2,6 +2,7 @@ import React from "react";
 import Job from "../../components/Home/LatestJob/Job";
 import { JobContext } from "../../Context/Context";
 import Filter from "../../components/util/Filter/Filter";
+import Loading from "../../Loading/Loading";
 
 const AllJobs = () => {
   const { displayJob, isLoading, isError, error } = JobContext();
@@ -10,7 +11,7 @@ const AllJobs = () => {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
-  if (isLoading) return "Loading";
+  if (isLoading) return <Loading />;
   if (isError) return "Something went wrong..." + error.msg;
 
   return (

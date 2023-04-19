@@ -12,7 +12,7 @@ const Inputs = ({
   pattern,
   update,
   accept,
-  defaultValue,
+  value,
 }) => {
   const inputRef = useRef();
   const [show, setShow] = useState(false);
@@ -45,7 +45,7 @@ const Inputs = ({
                 type === "file" && !update && "pointer-events-none"
               }`}
               onChange={onChange}
-              defaultValue={defaultValue}
+              value={value}
               required={required}
               name={name}
               pattern={pattern}
@@ -73,7 +73,7 @@ const Inputs = ({
             placeholder="Your Notes..."
             readOnly={!update ? true : false}
             name={name}
-            defaultValue={defaultValue}
+            value={value}
             required
             minLength={10}
             onChange={onChange}></textarea>

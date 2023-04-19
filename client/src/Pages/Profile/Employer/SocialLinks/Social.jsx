@@ -7,16 +7,20 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
-const Social = () => {
-  const { user, handleChange, updateProfile, profile } =
-    JobContext();
+const Social = ({ currentUser }) => {
+  const { user, setProfile, updateProfile, profile, setAlert } = JobContext();
   const [update, setUpdate] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await updateProfile(profile);
-      window.location.reload();
+      setUpdate(false);
+      setAlert({
+        type: "success",
+        message: "Social Links have been successfully updated",
+        open: true,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -26,6 +30,7 @@ const Social = () => {
     <Accordions
       header="Social media links"
       update={update}
+      currentUser={currentUser}
       setUpdate={setUpdate}>
       {/* form part  */}
       <form onSubmit={handleSubmit}>
@@ -34,10 +39,12 @@ const Social = () => {
             <Inputs
               label="Portfolio"
               type="text"
-              onChange={handleChange}
+              onChange={(e) =>
+                setProfile({ ...profile, linked: e.target.value })
+              }
               name="portfolio"
               update={update}
-              defaultValue={profile?.portfolio || "https://"}
+              value={profile?.portfolio || "https://"}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
@@ -45,22 +52,26 @@ const Social = () => {
             <Inputs
               label="Company Website"
               type="text"
-              onChange={handleChange}
+              onChange={(e) =>
+                setProfile({ ...profile, website: e.target.value })
+              }
               name="website"
               errorMsg="Full Name is required!!!"
               required={true}
               update={update}
-              defaultValue={profile?.website || "https://"}
+              value={profile.website || "https://"}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
           <Inputs
             label="LinkedIn"
             type="text"
-            onChange={handleChange}
+            onChange={(e) =>
+              setProfile({ ...profile, linkedIn: e.target.value })
+            }
             name="linkedIn"
             update={update}
-            defaultValue={profile?.linkedIn || "https://"}
+            value={profile.linkedIn || "https://"}
             icon={<LinkedInIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>
@@ -69,28 +80,34 @@ const Social = () => {
           <Inputs
             label="Twitter"
             type="text"
-            onChange={handleChange}
+            onChange={(e) =>
+              setProfile({ ...profile, twitter: e.target.value })
+            }
             name="twitter"
             update={update}
-            defaultValue={profile?.twitter || "https://"}
+            value={profile.twitter || "https://"}
             icon={<TwitterIcon sx={{ fontSize: "1.2rem" }} />}
           />
           <Inputs
             label="Telegram"
             type="text"
-            onChange={handleChange}
+            onChange={(e) =>
+              setProfile({ ...profile, telegram: e.target.value })
+            }
             name="telegram"
             update={update}
-            defaultValue={profile?.telegram || "https://"}
+            value={profile.telegram || "https://"}
             icon={<TelegramIcon sx={{ fontSize: "1.2rem" }} />}
           />
         </div>
-        <button
-          className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
-          w-[10rem] hover:bg-black mt-[2rem]
-          ${!update && "pointer-events-none"}`}>
-          Save Changes
-        </button>
+        {user?._id === currentUser?._id && (
+          <button
+            className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
+            w-[10rem] hover:bg-black mt-[2rem]
+            ${!update && "pointer-events-none"}`}>
+            Save Changes
+          </button>
+        )}
       </form>
     </Accordions>
   );

@@ -6,18 +6,30 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
 
 const Company = ({ data }) => {
-  const { user, profileFetch } = JobContext();
+  const { user, allUser } = JobContext();
+
+  const postUser = allUser?.find((userId) => userId?._id === data?.userId);
+  const folder = process.env.REACT_APP_FOLDER;
+
   const navigate = useNavigate();
   return (
     <div
       className="shadowCard2 p-7 flex flex-col justify-center 
           items-center w-full md:w-[15rem] lg:w-[20rem]">
       <div>
-        <img
-          className="w-[8rem] h-[8rem] object-cover rounded-full border-2 border-gray-200"
-          src="https://t4.ftcdn.net/jpg/02/90/27/39/360_F_290273933_ukYZjDv8nqgpOBcBUo5CQyFcxAzYlZRW.jpg"
-          alt="user"
-        />
+        {postUser?.userProfile ? (
+          <img
+            className="w-[8rem] h-[8rem] object-cover rounded-full border-2 border-gray-200"
+            src={folder + postUser?.userProfile}
+            alt="profile"
+          />
+        ) : (
+          <div
+            className="text-center w-[8rem] h-[8rem] flex items-center justify-center
+            text-lg border border-black rounded-full">
+            Company <br /> Logo
+          </div>
+        )}
       </div>
       <h1 className="py-4 text-xl font-bold capitalize">{data.company_name}</h1>
 
@@ -55,7 +67,6 @@ const Company = ({ data }) => {
       <button
         onClick={() => {
           navigate(`/profile/${data.userId}`);
-          profileFetch();
         }}
         className="font-extrabold text-lg border-t border-gray-300 mt-8
           pt-5 text-orang leading-6">

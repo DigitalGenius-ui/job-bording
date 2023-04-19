@@ -6,12 +6,19 @@ import Person4Icon from "@mui/icons-material/Person4";
 import { JobContext } from "../../Context/Context";
 import { useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import male from "../../images/male.jpg";
+import female from "../../images/female.jpg";
+import noneGender from "../../images/question.png";
 
 const UserProfile = () => {
   const [drop, setDrop] = useState(false);
-  const { user, setOpen, profileFetch } = JobContext();
+  const { user, setOpen, allUser } = JobContext();
   const navigate = useNavigate();
   const selectRef = useRef();
+
+  const currentUser = allUser?.find((userId) => userId?._id === user?._id);
+
+  const folder = process.env.REACT_APP_FOLDER;
 
   const handleClick = (path) => {
     window.scroll({
@@ -52,11 +59,29 @@ const UserProfile = () => {
         onClick={() => (user ? setDrop(!drop) : setOpen(true))}
         className="relative">
         {user ? (
-          <img
-            className="w-11 h-11 object-cover rounded-full border-2 border-gray-200"
-            src="https://t4.ftcdn.net/jpg/02/90/27/39/360_F_290273933_ukYZjDv8nqgpOBcBUo5CQyFcxAzYlZRW.jpg"
-            alt="user"
-          />
+          currentUser?.userProfile ? (
+            <img
+              className="w-11 h-11 object-cover rounded-full border-2 border-gray-200"
+              src={folder + currentUser?.userProfile}
+              alt="user"
+            />
+          ) : (
+            <img
+              className="w-11 h-11 object-cover rounded-full border-2 border-gray-200"
+              src={
+                currentUser?.gender === "male"
+                  ? male
+                  : currentUser?.gender === "female"
+                  ? female
+                  : currentUser?.gender === "male"
+                  ? male
+                  : currentUser?.gender === "female"
+                  ? female
+                  : noneGender
+              }
+              alt="user"
+            />
+          )
         ) : (
           <img
             className="w-11 h-11 object-cover rounded-full border-2 border-gray-200"
@@ -97,7 +122,6 @@ const UserProfile = () => {
             title="My Profile"
             handleClick={() => {
               navigate(`/profile/${user._id}`);
-              profileFetch();
             }}
             icon={<Person2Icon sx={{ fontSize: "1.3rem" }} />}
           />

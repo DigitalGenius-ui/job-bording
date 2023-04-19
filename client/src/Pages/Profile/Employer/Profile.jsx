@@ -5,9 +5,22 @@ import Password from "./Password/Password";
 import Dashboard from "../Dashboard/Dashboard";
 import MenuIcon from "@mui/icons-material/Menu";
 import Social from "./SocialLinks/Social";
+import { useQuery } from "react-query";
+import { singleUser } from "../../../FetchHook/User";
 
 const Profile = () => {
   const [showMenu, setShowMenu] = useState(false);
+
+  //single user
+  const id = window?.location?.pathname.split("/")[2];
+  const { data: currentUser, refetch: profileFetch } = useQuery(
+    ["users", id],
+    () => singleUser(id),
+    {
+      refetchOnWindowFocus: true,
+    }
+  );
+
   return (
     <section className="bg-profileBg bg-cover bg-no-repeat lg:h-[510px] relative overflow-hidden">
       <div className="lg:fixed lg:left-0 lg:right-0 lg:top-[80px] lg:flex">
@@ -49,12 +62,15 @@ const Profile = () => {
           <div className=" bg-slate-100 mb-[5rem] ">
             <div className="flex flex-col lg:flex-row gap-5 mb-[5rem] p-6">
               <div className="flex-1">
-                <ProfileDetails />
+                <ProfileDetails
+                  currentUser={currentUser}
+                  profileFetch={profileFetch}
+                />
               </div>
 
               <div className="flex-1">
-                <Social />
-                <Password />
+                <Social currentUser={currentUser} />
+                <Password currentUser={currentUser} />
               </div>
             </div>
 

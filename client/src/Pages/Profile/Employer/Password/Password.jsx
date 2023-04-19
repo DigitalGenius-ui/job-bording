@@ -3,18 +3,23 @@ import Accordions from "../../util/Accordion";
 import Inputs from "../../util/Inputs";
 import { JobContext } from "../../../../Context/Context";
 
-const Password = () => {
+const Password = ({ currentUser }) => {
   const [update, setUpdate] = useState(false);
-  const { profile, onChange } = JobContext();
+  const { profile, user } = JobContext();
   return (
-    <Accordions header="Change Password" setUpdate={setUpdate} update={update}>
+    <Accordions
+      header="Change Password"
+      setUpdate={setUpdate}
+      currentUser={currentUser}
+      update={update}>
       <form className="flex flex-col gap-5">
         <Inputs
           required={true}
           update={update}
           label="Current Password"
           type="password"
-          onChange={onChange}
+          // onChange={onChange}
+          // value={""}
           name="password"
           errorMsg="Please type your current password"
         />
@@ -24,7 +29,8 @@ const Password = () => {
           update={update}
           label="New Password"
           type="password"
-          onChange={onChange}
+          // onChange={onChange}
+          // value={""}
           name="newPassword"
           errorMsg="Your password should contain at least one number and one capital latter"
         />
@@ -34,16 +40,19 @@ const Password = () => {
           update={update}
           label="Confirm New Password"
           type="password"
-          onChange={onChange}
+          // onChange={onChange}
+          // value={""}
           name="confirmPassword"
           errorMsg="Passwords are not match!!"
         />
-        <button
-          className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
+        {user?._id === currentUser?._id && (
+          <button
+            className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
           w-[10rem] hover:bg-black mt-[2rem]
           ${!update && "pointer-events-none"}`}>
-          Save Changes
-        </button>
+            Save Changes
+          </button>
+        )}
       </form>
     </Accordions>
   );

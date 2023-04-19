@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getAllJobs, searchJobs } from "../FetchHook/Job";
-import { updateUser, singleUser } from "../FetchHook/User";
+import { updateUser, allUsers } from "../FetchHook/User";
 
 const Job = createContext();
 
@@ -45,30 +45,27 @@ const Context = ({ children }) => {
   const displayJob = country || category || keyword ? searchData : allJobs;
 
   // get all profiles
-  // const { data: allUsers } = useQuery("users", singleAllUsers);
+  const { data: allUser } = useQuery("users", allUsers);
 
   //update profile data
-  const id = window.location.pathname.split("/")[2];
-  const { data: currentUser, refetch: profileFetch } = useQuery(
-    ["users", id],
-    () => singleUser(id)
-  );
+  const id = window?.location?.pathname.split("/")[2];
+  const currentUser = allUser?.find((user) => user?._id === id);
 
   const [profile, setProfile] = useState({
-    _id: user._id,
+    _id: user?._id,
     userProfile: currentUser?.userProfile,
     password: "",
-    gender: currentUser?.gender,
-    fullName: currentUser?.fullName,
-    phoneNumber: currentUser?.phoneNumber,
-    email: currentUser?.email,
-    notes: currentUser?.notes,
-    resume: currentUser?.resume,
-    portfolio: currentUser?.portfolio,
-    linkedIn: currentUser?.linkedIn,
-    twitter: currentUser?.twitter,
-    telegram: currentUser?.telegram,
-    website: currentUser?.website,
+    gender: "",
+    fullName: "",
+    phoneNumber: "",
+    email: "",
+    notes: "",
+    resume: "",
+    portfolio: "",
+    linkedIn: "",
+    twitter: "",
+    telegram: "",
+    website: "",
   });
 
   const handleChange = (e) => {
@@ -113,8 +110,9 @@ const Context = ({ children }) => {
         handleChange,
         currentUser,
         updateProfile,
-        // profile
-        profileFetch,
+
+        // all users
+        allUser,
       }}>
       {children}
     </Job.Provider>

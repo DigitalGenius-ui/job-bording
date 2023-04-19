@@ -3,7 +3,7 @@ import Inputs from "../../util/Inputs";
 import { JobContext } from "../../../../Context/Context";
 
 const InputForm = ({ update }) => {
-  const { user, setProfile, profile, handleChange, currentUser } = JobContext();
+  const { user, setProfile, profile } = JobContext();
 
   return (
     <div className="pt-[2rem] flex flex-col gap-5">
@@ -16,8 +16,8 @@ const InputForm = ({ update }) => {
           required={true}
           header="My Profile Details"
           update={update}
-          onChange={handleChange}
-          defaultValue={currentUser?.fullName}
+          onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
+          value={profile.fullName}
         />
         <Inputs
           label="Phone Number"
@@ -28,8 +28,10 @@ const InputForm = ({ update }) => {
           pattern="^\+(?:[0-9] ?){6,14}[0-9]$"
           header="My Profile Details"
           update={update}
-          onChange={handleChange}
-          defaultValue={currentUser?.phoneNumber || "+1"}
+          onChange={(e) =>
+            setProfile({ ...profile, phoneNumber: e.target.value })
+          }
+          value={profile.phoneNumber || "+1"}
         />
       </div>
       <Inputs
@@ -39,9 +41,9 @@ const InputForm = ({ update }) => {
         errorMsg="Email is required!!!"
         header="My Profile Details"
         update={update}
-        onChange={handleChange}
+        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
         required={true}
-        defaultValue={currentUser?.email}
+        value={profile.email}
       />
       <div>
         <Inputs
@@ -53,10 +55,10 @@ const InputForm = ({ update }) => {
           type="textarea"
           name="notes"
           header="My Profile Details"
-          onChange={handleChange}
+          onChange={(e) => setProfile({ ...profile, notes: e.target.value })}
           update={update}
           errorMsg="This field must be a least 10 characters"
-          defaultValue={currentUser?.notes}
+          value={profile.notes}
         />
       </div>
 

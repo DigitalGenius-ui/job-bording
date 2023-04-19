@@ -7,6 +7,7 @@ import Auth from "./components/Auth/Auth";
 import { JobContext } from "./Context/Context";
 import { Suspense, lazy } from "react";
 import Contact from "./Pages/Contact Us/Contact";
+import Loading from "./Loading/Loading";
 
 const Home = lazy(() => import("./components/Home/Home"));
 const JobPost = lazy(() => import("./Pages/AddJobPost/JobPost"));
@@ -42,7 +43,7 @@ const HeadWrapper = () => {
   return (
     <>
       <Header />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Outlet />
       </Suspense>
       {route !== "profile" && (
