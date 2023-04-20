@@ -35,20 +35,20 @@ const Social = ({ currentUser }) => {
       {/* form part  */}
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row lg:flex-col gap-8">
-          {user.signupAs === "Candidate" && (
+          {currentUser?.signupAs === "Candidate" && (
             <Inputs
               label="Portfolio"
               type="text"
               onChange={(e) =>
-                setProfile({ ...profile, linked: e.target.value })
+                setProfile({ ...profile, portfolio: e.target.value })
               }
               name="portfolio"
               update={update}
-              value={profile?.portfolio || "https://"}
+              value={profile.portfolio || "https://"}
               icon={<LanguageIcon sx={{ fontSize: "1.2rem" }} />}
             />
           )}
-          {user.signupAs === "Employer" && (
+          {currentUser?.signupAs === "Employer" && (
             <Inputs
               label="Company Website"
               type="text"

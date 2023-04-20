@@ -21,11 +21,6 @@ const UserProfile = () => {
   const folder = process.env.REACT_APP_FOLDER;
 
   const handleClick = (path) => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-
     navigate(path);
     setDrop(false);
   };
@@ -122,13 +117,17 @@ const UserProfile = () => {
             title="My Profile"
             handleClick={() => {
               navigate(`/profile/${user._id}`);
+              setDrop(false);
             }}
             icon={<Person2Icon sx={{ fontSize: "1.3rem" }} />}
           />
           {user?.signupAs === "Employer" && (
             <Button
               title="About Us"
-              handleClick={() => handleClick("/")}
+              handleClick={() => {
+                handleClick("/");
+                setDrop(false);
+              }}
               icon={<Person4Icon sx={{ fontSize: "1.3rem" }} />}
             />
           )}

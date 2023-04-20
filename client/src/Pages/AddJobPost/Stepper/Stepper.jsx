@@ -23,9 +23,10 @@ const StepperComp = () => {
   // data states
   const { setAlert } = JobContext();
   const [validate, setValidate] = useState(false);
-  
+
   let [aboutPosition, setAboutPosition] = React.useState({
     userId: user._id,
+    signupAs: user?.signupAs,
     job_title: "",
     category: "Front-End developer",
     job_type: "Full-Time",
@@ -232,8 +233,7 @@ const StepperComp = () => {
               color="inherit"
               disabled={activeStep === 0}
               onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
+              sx={{ mr: 1 }}>
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />

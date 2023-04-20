@@ -13,7 +13,7 @@ const Home = lazy(() => import("./components/Home/Home"));
 const JobPost = lazy(() => import("./Pages/AddJobPost/JobPost"));
 const AllJobs = lazy(() => import("./Pages/AllJob/AllJobs"));
 const DisplayJob = lazy(() => import("./Pages/DisplayJob/DisplayJob"));
-const Profile = lazy(() => import("./Pages/Profile/Employer/Profile"));
+const Profile = lazy(() => import("./Pages/Profile/Profile"));
 
 function App() {
   const { user } = JobContext();

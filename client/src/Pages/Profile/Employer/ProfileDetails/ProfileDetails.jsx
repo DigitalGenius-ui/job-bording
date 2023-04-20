@@ -72,7 +72,7 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
 
   return (
     <Accordions
-      header="My Profile Details"
+      header={`${currentUser?._id === user?._id ? "My" : ""} Profile Details`}
       setUpdate={setUpdate}
       currentUser={currentUser}
       update={update}>
@@ -132,7 +132,9 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
           {/* profile type  */}
           <div className="flex-1 lg:flex-[1.2]">
             <h1 className="md:text-lg text-sm pb-2">
-              {user.signupAs === "Condidate" ? "Account Type" : "Employer Type"}
+              {currentUser?.signupAs === "Candidate"
+                ? "Account Type"
+                : "Employer Type"}
             </h1>
             <p
               className="bg-orang rounded-sm text-white py-3 w-full text-center
@@ -142,37 +144,43 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
                   sx={{ fontSize: "1.4rem", marginRight: "0.4rem" }}
                 />
               </span>
-              {user.signupAs === "Candidate" ? "Candidate" : "Employer"}
+              {currentUser?.signupAs === "Candidate" ? "Candidate" : "Employer"}
             </p>
           </div>
         </div>
 
         {/* gender  */}
-        <div className="mt-10">
-          <FormLabel>Choose Your Gender</FormLabel>
-          <RadioGroup
-            row
-            name="gender"
-            onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
-            value={profile.gender}>
-            <FormControlLabel
-              value="male"
-              control={<Radio disabled={update ? false : true} />}
-              label="Male"
-            />
-            <FormControlLabel
-              value="female"
-              control={<Radio disabled={update ? false : true} />}
-              label="Female"
-            />
-          </RadioGroup>
-          <FormHelperText className="!text-red-700">
-            {error && "This field is required!!"}
-          </FormHelperText>
-        </div>
+        {currentUser?.signupAs === "Candidate" ? (
+          <div className="mt-10">
+            <FormLabel>{`${
+              currentUser?._id === user?._id ? "Choose Your" : null
+            } Gender`}</FormLabel>
+            <RadioGroup
+              row
+              name="gender"
+              onChange={(e) =>
+                setProfile({ ...profile, gender: e.target.value })
+              }
+              value={profile.gender}>
+              <FormControlLabel
+                value="male"
+                control={<Radio disabled={update ? false : true} />}
+                label="Male"
+              />
+              <FormControlLabel
+                value="female"
+                control={<Radio disabled={update ? false : true} />}
+                label="Female"
+              />
+            </RadioGroup>
+            <FormHelperText className="!text-red-700">
+              {error && "This field is required!!"}
+            </FormHelperText>
+          </div>
+        ) : null}
 
         {/* links inputs  */}
-        <InputForm update={update} />
+        <InputForm update={update} currentUser={currentUser} />
 
         {user?._id === currentUser?._id && (
           <button
