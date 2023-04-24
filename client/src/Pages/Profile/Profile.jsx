@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ProfileDetails from "./Employer/ProfileDetails/ProfileDetails";
-import Password from "./Employer/Password/Password";
+import ProfileDetails from "./Details/ProfileDetails/ProfileDetails";
+import Password from "./Details/Password/Password";
 import Dashboard from "./Dashboard/Dashboard";
 import MenuIcon from "@mui/icons-material/Menu";
-import Social from "./Employer/SocialLinks/Social";
+import Social from "./Details/SocialLinks/Social";
 import { useQuery } from "react-query";
 import { singleUser } from "../../FetchHook/User";
 import { JobContext } from "../../Context/Context";
