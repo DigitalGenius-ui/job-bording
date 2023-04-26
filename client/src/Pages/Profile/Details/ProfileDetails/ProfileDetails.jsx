@@ -18,7 +18,15 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
   const fileRef = useRef(null);
   const [error, setError] = useState(false);
   const [imgPrev, setImgPrev] = useState("");
-  const { user, profile, setProfile, updateProfile, setAlert } = JobContext();
+  const {
+    user,
+    profile,
+    setProfile,
+    updateProfile,
+    setAlert,
+    userProfile,
+    setUserProfile,
+  } = JobContext();
   const [update, setUpdate] = useState(false);
 
   useEffect(() => {
@@ -38,6 +46,7 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
         telegram: currentUser?.telegram,
         website: currentUser?.website,
       });
+      setUserProfile("");
       profileFetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,7 +57,7 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (profile.gender === "") {
+      if (user?.signupAs !== "Employer" && profile.gender === "") {
         setError(true);
         setAlert({
           type: "error",
@@ -57,7 +66,11 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
         });
         return;
       }
-      await updateProfile(profile);
+      const data = {
+        userProfile,
+        profile,
+      };
+      await updateProfile(data);
       setUpdate(false);
       setAlert({
         type: "success",
@@ -84,21 +97,34 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
             onClick={() => {
               update && fileRef?.current.click();
             }}>
-            {profile.userProfile ? (
+            {/* for previewing the profile while uploading  */}
+            {userProfile ? (
               <img
                 src={imgPrev}
                 alt="profile"
-                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-                border-dashed border-gray-300 cursor-pointer"
+                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
+                border-dashed border-gray-300 
+                ${update ? "cursor-pointer" : "pointer-events-none"}`}
               />
-            ) : currentUser?.userProfile ? (
+            ) : // displaying the user profile if exist in the database
+            currentUser?.userProfile ? (
               <img
                 src={folder + currentUser?.userProfile}
                 alt="profile"
-                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-                border-dashed border-gray-300 cursor-pointer"
+                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
+                border-dashed border-gray-300 
+                ${update ? "cursor-pointer" : "pointer-events-none"}`}
               />
+            ) : // if the user is an employer
+            user?.signupAs === "Employer" ? (
+              <div
+                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] border-2 text-gray-500
+                border-dashed border-gray-300 flex items-center justify-center text-center text-2xl
+                ${update ? "cursor-pointer" : "pointer-events-none"}`}>
+                COMPANY <br /> PROFILE
+              </div>
             ) : (
+              // if the user is a candidate
               <img
                 src={
                   profile.gender === "male"
@@ -112,14 +138,16 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
                     : noneGender
                 }
                 alt="profile"
-                className="w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-                border-dashed border-gray-300 cursor-pointer"
+                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
+                border-dashed border-gray-300 
+                ${update ? "cursor-pointer" : "pointer-events-none"}`}
               />
             )}
+            {/* input for uploading the profile image  */}
             <input
               name="userProfile"
               onChange={(e) => {
-                setProfile({ ...profile, userProfile: e.target.files[0] });
+                setUserProfile(e.target.files[0]);
                 e.target.files.length !== 0 &&
                   setImgPrev(URL.createObjectURL(e.target.files[0]));
               }}

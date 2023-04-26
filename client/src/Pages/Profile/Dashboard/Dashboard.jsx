@@ -13,7 +13,7 @@ import female from "../../../images/female.jpg";
 import male from "../../../images/male.jpg";
 
 const Dashboard = ({ currentUser }) => {
-  const { profile } = JobContext();
+  const { profile, user } = JobContext();
   const folder = process.env.REACT_APP_FOLDER;
 
   return (
@@ -25,6 +25,12 @@ const Dashboard = ({ currentUser }) => {
             alt="profile"
             className="w-[4rem] h-[4rem] object-cover rounded-full"
           />
+        ) : user?.signupAs === "Employer" ? (
+          <div
+            className="w-[4rem] h-[4rem] rounded-full border-2 border-gray-200
+              text-[0.6rem] flex items-center justify-center text-center">
+            COMPANY <br /> PROFILE
+          </div>
         ) : (
           <img
             src={
@@ -43,7 +49,7 @@ const Dashboard = ({ currentUser }) => {
           />
         )}
         <div className="flex flex-col gap-1">
-          <p className="font-bold">{currentUser?.fullName}</p>
+          <p className="font-bold capitalize">{currentUser?.fullName}</p>
           <p className="text-gray-400 1114:text-sm">Software Engineer</p>
         </div>
       </div>

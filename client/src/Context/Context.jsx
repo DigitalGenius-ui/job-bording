@@ -50,13 +50,13 @@ const Context = ({ children }) => {
   //update profile data
   const id = window?.location?.pathname.split("/")[2];
   const currentUser = allUser?.find((user) => user?._id === id);
+  const [userProfile, setUserProfile] = useState(currentUser?.userProfile);
 
   const [profile, setProfile] = useState({
     _id: user?._id,
-    userProfile: currentUser?.userProfile,
-    password: "",
     gender: "",
     fullName: "",
+    userProfile: currentUser?.userProfile,
     phoneNumber: "",
     email: "",
     notes: "",
@@ -67,11 +67,6 @@ const Context = ({ children }) => {
     telegram: "",
     website: "",
   });
-
-  const handleChange = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
-  };
-
   const queryClient = useQueryClient();
   const { mutateAsync: updateProfile } = useMutation("users", updateUser, {
     onSuccess: () => queryClient.invalidateQueries("users"),
@@ -107,9 +102,12 @@ const Context = ({ children }) => {
         // update profile
         profile,
         setProfile,
-        handleChange,
         currentUser,
         updateProfile,
+
+        // profile image
+        userProfile,
+        setUserProfile,
 
         // all users
         allUser,

@@ -42,7 +42,7 @@ const StepperComp = () => {
   const [aboutCompany, setAboutCompany] = React.useState({
     job_posted_before: "No",
     email_id: "something@something.com",
-    company_name: "",
+    company_name: user?.fullName,
     company_hq: "",
     company_mission_vission: "",
     company_website: "https://",

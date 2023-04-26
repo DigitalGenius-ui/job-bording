@@ -44,10 +44,10 @@ export const singleUser = async (id) => {
 export const updateUser = async (data) => {
   if (data.userProfile) {
     const form = new FormData();
-    const imageName = "12" + data.userProfile.name;
+    const imageName = Date.now() + data.userProfile.name;
     form.append("name", imageName);
     form.append("file", data.userProfile);
-    data.userProfile = imageName;
+    data.profile.userProfile = imageName;
     try {
       await axios.post("/api/upload", form);
     } catch (error) {
@@ -56,7 +56,10 @@ export const updateUser = async (data) => {
   }
 
   try {
-    const res = await axios.put(`/api/user/update/${data?._id}`, data);
+    const res = await axios.put(
+      `/api/user/update/${data?.profile?._id}`,
+      data.profile
+    );
     return res.data.updatedUser;
   } catch (error) {
     throw Error(error.response.data.msg);

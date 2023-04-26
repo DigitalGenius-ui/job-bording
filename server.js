@@ -28,7 +28,6 @@ mongoose.connection.once("open", () => {
 });
 
 // uploading image for profile
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "upload");

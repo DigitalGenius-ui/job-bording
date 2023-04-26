@@ -8,13 +8,18 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import TelegramIcon from "@mui/icons-material/Telegram";
 
 const Social = ({ currentUser }) => {
-  const { user, setProfile, updateProfile, profile, setAlert } = JobContext();
+  const { user, setProfile, updateProfile, profile, setAlert, userProfile } =
+    JobContext();
   const [update, setUpdate] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = {
+      userProfile,
+      profile,
+    };
     try {
-      await updateProfile(profile);
+      await updateProfile(data);
       setUpdate(false);
       setAlert({
         type: "success",

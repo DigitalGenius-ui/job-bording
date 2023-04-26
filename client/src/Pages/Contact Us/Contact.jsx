@@ -4,6 +4,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { addresses } from "./data";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const FormDesign = ({ children, header, icon }) => {
   return (
@@ -30,6 +31,8 @@ const Contact = () => {
     message: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setContact({ ...contact, [e.target.name]: e.target.value });
   };
@@ -46,7 +49,11 @@ const Contact = () => {
       <div className="size flex justify-between items-center text-white py-[3rem] px-5">
         <h1 className="text-2xl capitalize font-bold">contact us</h1>
         <div className="flex items-center text-sm">
-          <p className="cursor-pointer hover:text-orang">Home</p>
+          <p
+            className="cursor-pointer hover:text-orang"
+            onClick={() => navigate("/")}>
+            Home
+          </p>
           <span>
             <ArrowRightIcon />
           </span>

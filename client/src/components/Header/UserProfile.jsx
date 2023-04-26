@@ -60,6 +60,12 @@ const UserProfile = () => {
               src={folder + currentUser?.userProfile}
               alt="user"
             />
+          ) : user?.signupAs === "Employer" ? (
+            <div
+              className="w-11 h-11 object-cover rounded-full border-2 border-gray-200
+              text-[0.4rem] flex items-center justify-center text-center">
+              COMPANY <br /> PROFILE
+            </div>
           ) : (
             <img
               className="w-11 h-11 object-cover rounded-full border-2 border-gray-200"
@@ -84,6 +90,8 @@ const UserProfile = () => {
             alt="user"
           />
         )}
+
+        {/* user online sign  */}
         {user ? (
           <span
             className="w-[12px] h-[12px] bg-green rounded-full absolute
@@ -94,6 +102,8 @@ const UserProfile = () => {
               border-2 border-gray-200 top-0 right-0"></span>
         )}
       </div>
+
+      {/* user details  */}
       <h1 className="text-gray-500 font-semibold">
         <div className="hidden md:flex capitalize">
           Hi, {user?.fullName || "User"}
