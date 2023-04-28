@@ -3,9 +3,18 @@ import Job from "../../components/Home/LatestJob/Job";
 import { JobContext } from "../../Context/Context";
 import Filter from "../../components/util/Filter/Filter";
 import Loading from "../../Loading/Loading";
+import { Button } from "@mui/material";
 
 const AllJobs = () => {
-  const { displayJob, isLoading, isError, error } = JobContext();
+  const {
+    displayJob,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+  } = JobContext();
 
   const sortedData = displayJob?.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -13,6 +22,7 @@ const AllJobs = () => {
 
   if (isLoading) return <Loading />;
   if (isError) return "Something went wrong..." + error.msg;
+
 
   return (
     <div className="size my-16">
@@ -41,11 +51,21 @@ const AllJobs = () => {
           />
         </div>
         <div className="flex-[3.5] flex flex-col gap-6">
-          {sortedData?.map((job, i) => (
+          {sortedData.map((job, i) => (
             <div key={i}>
               <Job job={job} />
             </div>
           ))}
+          <div className="text-center">
+            {hasNextPage && (
+              <Button
+                onClick={fetchNextPage}
+                variant="contained"
+                className="w-[8rem] !py-2 !bg-orang">
+                {isFetching ? "Loading" : "Load More"}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

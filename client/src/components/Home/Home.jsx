@@ -7,9 +7,11 @@ import Jobs from "./LatestJob/Jobs";
 import Help from "./Help/Help";
 import Award from "./Award/Award";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
+import { JobContext } from "../../Context/Context";
 
 const Home = () => {
   const [isScroll, setIsScroll] = useState(false);
+  const { refetch } = JobContext();
   const scrollTop = () => {
     window.scroll({
       top: 0,
@@ -21,7 +23,8 @@ const Home = () => {
     window.addEventListener("scroll", () => {
       return window.scrollY > 50 ? setIsScroll(true) : setIsScroll(false);
     });
-  }, [isScroll]);
+    refetch();
+  }, [isScroll, refetch]);
 
   return (
     <section>
@@ -41,8 +44,7 @@ const Home = () => {
           isScroll
             ? "translate-x-[0] opacity-100"
             : "translate-x-[8rem] opacity-0"
-        } hover:opacity-50`}
-      >
+        } hover:opacity-50`}>
         <ArrowUpwardOutlinedIcon />
       </span>
     </section>

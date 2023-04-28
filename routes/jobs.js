@@ -54,7 +54,7 @@ router.post("/add", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const { country, category, keyword } = req.query;
+  const { country, category, keyword, limit, page } = req.query;
   const query = {};
 
   // check if the country exist in the database
@@ -74,9 +74,19 @@ router.get("/", async (req, res) => {
     ];
   }
 
+  const totalCount = await jobs.countDocuments(query);
+  const skip = parseInt(page - 1) * parseInt(limit);
+  const totalPages = Math.ceil(totalCount / parseInt(limit));
+
   try {
-    const allJobs = await jobs.find(query);
-    res.status(200).json({ status: "SUCCESS", jobs: allJobs });
+    const allJobs = await jobs
+      .find(query)
+      .sort({ createdAt: -1 })
+      .limit(parseInt(limit))
+      .skip(parseInt(skip));
+    res
+      .status(200)
+      .json({ status: "SUCCESS", jobs: allJobs, totalCount, totalPages, page });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ status: "FAILURE", error: err });

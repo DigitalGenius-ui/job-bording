@@ -10,10 +10,12 @@ export const postJob = async (form) => {
   }
 };
 
-export const getAllJobs = async () => {
+export const getAllJobs = async ({ pageParam = 1 }) => {
   try {
-    const res = await axios.get(BaseURL + `/api/job`);
-    return res.data.jobs;
+    const res = await axios.get(
+      BaseURL + `/api/job?limit=5&page=${pageParam}`
+    );
+    return res.data;
   } catch (error) {
     throw Error(error.response.data.msg);
   }

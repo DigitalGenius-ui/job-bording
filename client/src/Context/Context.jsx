@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { getAllJobs, searchJobs } from "../FetchHook/Job";
 import { updateUser, allUsers } from "../FetchHook/User";
 
@@ -36,11 +41,24 @@ const Context = ({ children }) => {
 
   // fetch all data
   const {
-    data: allJobs,
+    data: getJobs,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
     isLoading,
     isError,
     error,
-  } = useQuery("job", getAllJobs);
+  } = useInfiniteQuery("job", getAllJobs, {
+    getNextPageParam: (lastPage, pages) => {
+      console.log(lastPage.page)
+      if (lastPage.page < lastPage.totalPages) {
+        return +lastPage.page + 1;
+      }
+      return null;
+    },
+  });
+
+  const allJobs = getJobs?.pages.map((job) => job.jobs).flat();
 
   const displayJob = country || category || keyword ? searchData : allJobs;
 
@@ -108,9 +126,12 @@ const Context = ({ children }) => {
         // profile image
         userProfile,
         setUserProfile,
-
         // all users
         allUser,
+        // limit for load more
+        isFetching,
+        hasNextPage,
+        fetchNextPage,
       }}>
       {children}
     </Job.Provider>
