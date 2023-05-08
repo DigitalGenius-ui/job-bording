@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 import {
-  useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
 } from "react-query";
-import { getAllJobs, searchJobs } from "../FetchHook/Job";
 import { updateUser, allUsers } from "../FetchHook/User";
 
 const Job = createContext();
@@ -22,45 +20,6 @@ const Context = ({ children }) => {
     message: "",
     open: false,
   });
-
-  // search states
-  const [country, setCountry] = useState("");
-  const [category, setCategory] = useState("");
-  const [keyword, setKeyWord] = useState("");
-
-  const {
-    isLoading: searchLoading,
-    isError: searchError,
-    refetch,
-    data: searchData,
-  } = useQuery("job", () => searchJobs(country, category, keyword), {
-    enabled: false,
-    refetchOnWindowFocus: false,
-    staleTime: 300000,
-  });
-
-  // fetch all data
-  const {
-    data: getJobs,
-    isFetching,
-    hasNextPage,
-    fetchNextPage,
-    isLoading,
-    isError,
-    error,
-  } = useInfiniteQuery("job", getAllJobs, {
-    getNextPageParam: (lastPage, pages) => {
-      console.log(lastPage.page)
-      if (lastPage.page < lastPage.totalPages) {
-        return +lastPage.page + 1;
-      }
-      return null;
-    },
-  });
-
-  const allJobs = getJobs?.pages.map((job) => job.jobs).flat();
-
-  const displayJob = country || category || keyword ? searchData : allJobs;
 
   // get all profiles
   const { data: allUser } = useQuery("users", allUsers);
@@ -101,22 +60,6 @@ const Context = ({ children }) => {
         setUser,
         alert,
         setAlert,
-
-        // fetch all jobs
-        isLoading,
-        isError,
-        error,
-        displayJob,
-        // search states
-        setCountry,
-        setCategory,
-        keyword,
-        setKeyWord,
-        searchLoading,
-        searchError,
-        refetch,
-        country,
-        category,
         // update profile
         profile,
         setProfile,
@@ -128,10 +71,6 @@ const Context = ({ children }) => {
         setUserProfile,
         // all users
         allUser,
-        // limit for load more
-        isFetching,
-        hasNextPage,
-        fetchNextPage,
       }}>
       {children}
     </Job.Provider>

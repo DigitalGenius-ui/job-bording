@@ -13,9 +13,9 @@ const Link = ({ title, path }) => {
   const handleClick = () => {
     navigate(path);
     if (path === "/addJob") {
-      return user ? navigate(path) : setOpen(true);
+      return user ? navigate(path, { replace: true }) : setOpen(true);
     } else if (path === "/jobPosts") {
-      return user ? navigate(path) : setOpen(true);
+      return user ? navigate(path, { replace: true }) : setOpen(true);
     }
   };
   return (

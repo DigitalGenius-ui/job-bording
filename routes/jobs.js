@@ -3,6 +3,7 @@
 const router = require("express").Router();
 const jobs = require("../models/jobs");
 
+// create jobs
 router.post("/add", async (req, res) => {
   const {
     userId,
@@ -53,6 +54,7 @@ router.post("/add", async (req, res) => {
   return res.status(200).json({ status: "SUCCESS", msg: "Job has been added" });
 });
 
+// get all the jobs
 router.get("/", async (req, res) => {
   const { country, category, keyword, limit, page } = req.query;
   const query = {};
@@ -93,6 +95,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// get single job
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
   let singleJob;
@@ -102,6 +105,30 @@ router.get("/:id", async (req, res) => {
     return res.status(400).json({ status: "FAILURE", error: err });
   }
   return res.status(200).json({ status: "SUCCESS", jobs: singleJob });
+});
+
+// delete job
+router.delete("/remove/:id", async (req, res) => {
+  const id = req.params.id;
+  let singleJob;
+  try {
+    singleJob = await jobs.findByIdAndRemove(id);
+  } catch (err) {
+    return res.status(400).json({ status: "FAILURE", error: err });
+  }
+  return res.status(200).json({ status: "SUCCESS", jobs: singleJob });
+});
+
+// update Job
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedJob = await jobs.findByIdAndUpdate(id, req.body);
+    res.status(200).json({ status: "SUCCESS", singleJob: updatedJob });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ status: "FAILURE", error: err });
+  }
 });
 
 module.exports = router;

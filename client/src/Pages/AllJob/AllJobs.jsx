@@ -1,6 +1,6 @@
 import React from "react";
 import Job from "../../components/Home/LatestJob/Job";
-import { JobContext } from "../../Context/Context";
+import { PostJobContexts } from "../../Context/PostJobContext";
 import Filter from "../../components/util/Filter/Filter";
 import Loading from "../../Loading/Loading";
 import { Button } from "@mui/material";
@@ -14,7 +14,7 @@ const AllJobs = () => {
     isFetching,
     hasNextPage,
     fetchNextPage,
-  } = JobContext();
+  } = PostJobContexts();
 
   const sortedData = displayJob?.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -22,7 +22,6 @@ const AllJobs = () => {
 
   if (isLoading) return <Loading />;
   if (isError) return "Something went wrong..." + error.msg;
-
 
   return (
     <div className="size my-16">

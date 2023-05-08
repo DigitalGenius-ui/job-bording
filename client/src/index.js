@@ -5,6 +5,7 @@ import App from "./App";
 import Context from "./Context/Context";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { BrowserRouter } from "react-router-dom";
+import PostJobContext from "./Context/PostJobContext";
 
 const queryClient = new QueryClient({ refetchOnWindowFocus: true });
 
@@ -14,7 +15,9 @@ root.render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Context>
-          <App />
+          <PostJobContext>
+            <App />
+          </PostJobContext>
         </Context>
       </QueryClientProvider>
     </BrowserRouter>

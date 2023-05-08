@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "../../util/Select/Select";
 import SearchIcon from "@mui/icons-material/Search";
-import { JobContext } from "../../../Context/Context";
+import { PostJobContexts } from "../../../Context/PostJobContext";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../Loading/Loading";
 
@@ -16,9 +16,9 @@ const Form = () => {
     refetch,
     country,
     category,
-  } = JobContext();
-
-  const { displayJob } = JobContext();
+    displayJob,
+  } = PostJobContexts();
+  
   const getCountries = [...new Set(displayJob?.map((count) => count?.country))];
   const getCategory = [...new Set(displayJob?.map((cat) => cat?.category))];
   const getKeyword = [...new Set(displayJob?.map((cat) => cat?.keyword))];

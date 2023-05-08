@@ -24,7 +24,7 @@ const Input = ({ type, label, text, onCHange, name, state, isError, size }) => {
         label={label}
         onChange={onCHange}
         name={name}
-        defaultValue={state && state[name]}
+        value={state[name]}
         error={inputValidation(name)?.error}
         size={size && size}
       />

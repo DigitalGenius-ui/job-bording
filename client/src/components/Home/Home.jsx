@@ -7,11 +7,11 @@ import Jobs from "./LatestJob/Jobs";
 import Help from "./Help/Help";
 import Award from "./Award/Award";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
-import { JobContext } from "../../Context/Context";
+import { PostJobContexts } from "../../Context/PostJobContext";
 
 const Home = () => {
   const [isScroll, setIsScroll] = useState(false);
-  const { refetch } = JobContext();
+  const { refetch } = PostJobContexts();
   const scrollTop = () => {
     window.scroll({
       top: 0,

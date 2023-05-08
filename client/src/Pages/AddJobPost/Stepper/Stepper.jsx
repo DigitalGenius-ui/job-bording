@@ -11,7 +11,9 @@ import Preview from "../Preview";
 import PostInfo from "../PostInfo";
 import { JobContext } from "../../../Context/Context";
 import { useMutation, useQueryClient } from "react-query";
-import { postJob } from "../../../FetchHook/Job";
+import { postJob, updateSingleJob } from "../../../FetchHook/Job";
+import { PostJobContexts } from "../../../Context/PostJobContext";
+import { useNavigate } from "react-router-dom";
 
 const steps = ["Position", "Company", "Preview", "Post"];
 
@@ -19,6 +21,9 @@ const StepperComp = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const { user } = JobContext();
+  // update job post
+  const { updateJob } = PostJobContexts();
+  const navigate = useNavigate();
 
   // data states
   const { setAlert } = JobContext();
@@ -39,7 +44,7 @@ const StepperComp = () => {
     keyword: "Web Designer",
   });
 
-  const [aboutCompany, setAboutCompany] = React.useState({
+  let [aboutCompany, setAboutCompany] = React.useState({
     job_posted_before: "No",
     email_id: "something@something.com",
     company_name: user?.fullName,
@@ -84,6 +89,15 @@ const StepperComp = () => {
     onSuccess: () => queryClient.invalidateQueries("job"),
   });
 
+  // update job post
+  const { mutateAsync: updateMutate } = useMutation(
+    "singleJob",
+    updateSingleJob,
+    {
+      onSuccess: () => queryClient.invalidateQueries("singleJob"),
+    }
+  );
+
   // error handling for posting jobs
   useEffect(() => {
     if (validate) {
@@ -100,7 +114,12 @@ const StepperComp = () => {
         open: true,
       });
     }
-  }, [validate, setAlert, error?.msg, isError]);
+
+    if (updateJob) {
+      setAboutCompany(updateJob);
+      setAboutPosition(updateJob);
+    }
+  }, [validate, setAlert, isError, updateJob, error?.msg]);
 
   const handleNext = async () => {
     let newSkipped = skipped;
@@ -142,9 +161,21 @@ const StepperComp = () => {
         ...aboutPosition,
         ...aboutCompany,
       };
-
-      await mutateAsync(data);
-      window.location.replace("/jobPosts");
+      const updateData = {
+        updateJob,
+        data: {
+          aboutCompany,
+          aboutPosition,
+        },
+      };
+      if (updateJob) {
+        await updateMutate(updateData);
+        navigate("/jobPosts");
+      } else {
+        console.log(data);
+        await mutateAsync(data);
+        navigate("/jobPosts");
+      }
     }
 
     setSkipped(newSkipped);

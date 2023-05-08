@@ -14,14 +14,6 @@ const Job = ({ job }) => {
   const postUser = allUser?.find((userId) => userId?._id === job?.userId);
   const folder = process.env.REACT_APP_FOLDER;
 
-  const handleClick = (id) => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-    navigate(`/jobPosts/${id}`);
-  };
-
   // date validation
   const currentDate = moment(job.createdAt);
   const get90Days = moment(currentDate).add(90, "days");
@@ -29,7 +21,7 @@ const Job = ({ job }) => {
 
   return (
     <div
-      onClick={() => handleClick(job._id)}
+      onClick={() => navigate(`/jobPosts/${job._id}`)}
       className={`flex flex-col md:flex-row items-center gap-8 bg-cardBg px-3 py-6 shadowCard cursor-pointer
         hover:border border-orang hover:border-l-4 transition-all duration-100 group
         ${dateDifferences <= 0 && "pointer-events-none text-gray-600"}

@@ -3,7 +3,7 @@ import "./Loading.scss";
 
 const Loading = () => {
   return (
-    <div className="container !z-50">
+    <div className="layer fixed inset-0 !max-w-['100vw'] !z-50 bg-white">
       <div className="loading">
         <div className="ball one"></div>
         <div className="ball two"></div>
