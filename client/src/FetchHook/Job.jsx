@@ -54,13 +54,12 @@ export const removeJob = async (id) => {
 };
 
 // update a job
-export const updateSingleJob = async (updateData) => {
+export const updateSingleJob = async (about) => {
   try {
     const res = await axios.put(
-      `${BaseURL}/api/job/update/${updateData.updateJob._id}`,
-      updateData.data
+      `${BaseURL}/api/job/update/${about._id}`,
+      about
     );
-    console.log(updateData);
     return res.data.singleJob;
   } catch (error) {
     throw Error(error.response.data.msg);

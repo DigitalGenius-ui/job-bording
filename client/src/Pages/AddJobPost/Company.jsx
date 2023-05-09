@@ -11,11 +11,10 @@ import TextEditor from "./TextEditor/TextEditor";
 import Input from "./utils/Input";
 import { useQuill } from "react-quilljs";
 
-const Company = ({ aboutCompany, setAboutCompany, validate }) => {
-
+const Company = ({ jobForm, setJobForm, validate }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAboutCompany((prev) => {
+    setJobForm((prev) => {
       return {
         ...prev,
         [name]: value,
@@ -29,16 +28,16 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
   useEffect(() => {
     if (quill) {
       // give initialValue to the text editor
-      quill.clipboard.dangerouslyPasteHTML(aboutCompany.company_description);
+      quill.clipboard.dangerouslyPasteHTML(jobForm.company_description);
       quill.on("text-change", () => {
-        setAboutCompany((prev) => ({
+        setJobForm((prev) => ({
           ...prev,
           company_description: quillRef.current.firstChild.innerHTML,
         }));
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quill, quillRef, setAboutCompany]);
+  }, [quill, quillRef, setJobForm]);
 
   return (
     <div>
@@ -49,11 +48,10 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           <FormLabel>Job Posted Before?</FormLabel>
           <RadioGroup
             row
-            defaultValue={aboutCompany?.job_posted_before}
-            value={aboutCompany.job_posted_before}
+            defaultValue={jobForm?.job_posted_before}
+            value={jobForm.job_posted_before}
             name="job_posted_before"
-            onChange={handleChange}
-          >
+            onChange={handleChange}>
             <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
             <FormControlLabel value="No" control={<Radio />} label="No" />
           </RadioGroup>
@@ -64,12 +62,12 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
         </FormControl>
       </div>
 
-      {aboutCompany?.job_posted_before === "Yes" && (
+      {jobForm?.job_posted_before === "Yes" && (
         <Input
           type="email"
           label="Email Id"
           name="email_id"
-          state={aboutCompany}
+          state={jobForm}
           onCHange={handleChange}
           isError={validate}
         />
@@ -81,7 +79,7 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           label="Company Name"
           text="Enter your company or organization’s name"
           name="company_name"
-          state={aboutCompany}
+          state={jobForm}
           onCHange={handleChange}
           isError={validate}
         />
@@ -91,7 +89,7 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           text="Where your company is officially headquartered."
           name="company_hq"
           onCHange={handleChange}
-          state={aboutCompany}
+          state={jobForm}
           isError={validate}
         />
       </div>
@@ -103,7 +101,7 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
         This will be displayed on your company’s profile."
         name="company_mission_vission"
         onCHange={handleChange}
-        state={aboutCompany}
+        state={jobForm}
         isError={validate}
       />
 
@@ -114,7 +112,7 @@ const Company = ({ aboutCompany, setAboutCompany, validate }) => {
           text="Example: https://example.com/"
           name="company_website"
           onCHange={handleChange}
-          state={aboutCompany}
+          state={jobForm}
           isError={validate}
         />
       </div>

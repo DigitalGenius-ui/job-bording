@@ -54,13 +54,8 @@ const DisplayJob = () => {
     }
   };
 
-  // update job post
-  useEffect(() => {
-    setUpdateJob(data);
-  }, [data, setUpdateJob]);
-
   const handleUpdate = () => {
-    setUpdateJob(data);
+    setUpdateJob(data?._id);
     navigate(`/addJob`);
   };
 

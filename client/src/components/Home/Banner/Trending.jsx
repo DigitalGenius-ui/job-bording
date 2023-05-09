@@ -1,8 +1,8 @@
 import React from "react";
-import { JobContext } from "../../../Context/Context";
+import { PostJobContexts } from "../../../Context/PostJobContext";
 
 const Trending = () => {
-  const { setKeyWord } = JobContext();
+  const { setKeyWord } = PostJobContexts();
   const trends = [
     "Web Designer",
     "Graphic Designer",

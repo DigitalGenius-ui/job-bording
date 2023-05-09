@@ -2,7 +2,7 @@ import React from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import LanguageIcon from "@mui/icons-material/Language";
 
-const Preview = ({ aboutCompany, aboutPosition }) => {
+const Preview = ({ jobForm }) => {
   return (
     <section>
       <h1 className="text-center text-2xl py-8">Preview job post</h1>
@@ -12,23 +12,23 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
 
           <div>
             <h1 className="pt-7 pb-3 text-3xl font-semibold">
-              {aboutPosition.job_title}
+              {jobForm.job_title}
             </h1>
 
             <div className="flex items-center gap-4 flex-wrap">
               <p className="border border-green py-2 px-3 rounded-full text-green text-sm">
-                {aboutPosition.category}
+                {jobForm.category}
               </p>
               <p className="border border-green py-2 px-3 rounded-full text-green text-sm">
-                {aboutPosition.job_type}
+                {jobForm.job_type}
               </p>
-              {aboutPosition.position_accross_globe === "Yes" && (
+              {jobForm.position_accross_globe === "Yes" && (
                 <p className="border border-green py-2 px-3 rounded-full text-green text-sm">
-                  {aboutPosition.country}
+                  {jobForm.country}
                 </p>
               )}
               <p className="border border-green py-2 px-3 rounded-full text-green text-sm">
-                {aboutPosition.salary_range}
+                {jobForm.salary_range}
               </p>
             </div>
 
@@ -38,7 +38,7 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
               <div
                 className="mt-5"
                 dangerouslySetInnerHTML={{
-                  __html: aboutCompany.company_description,
+                  __html: jobForm.company_description,
                 }}
               />
 
@@ -46,7 +46,7 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
               <div
                 className="mt-5"
                 dangerouslySetInnerHTML={{
-                  __html: aboutPosition.job_description,
+                  __html: jobForm.job_description,
                 }}
               />
             </div>
@@ -54,11 +54,11 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
         </div>
 
         <div className="flex-1">
-          <h1 className="text-3xl">{aboutCompany.company_name}</h1>
+          <h1 className="text-3xl">{jobForm.company_name}</h1>
 
           <div className="flex items-center gap-5 mt-3">
             <LocationOnIcon />
-            <p>{aboutCompany.company_hq}</p>
+            <p>{jobForm.company_hq}</p>
           </div>
 
           <div className="flex items-center gap-5 mt-3">
@@ -67,8 +67,7 @@ const Preview = ({ aboutCompany, aboutPosition }) => {
               <a
                 className="text-blue-600 hover:text-blue-400"
                 target="blank"
-                href={aboutCompany.company_website}
-              >
+                href={jobForm.company_website}>
                 Company Website
               </a>
             </p>

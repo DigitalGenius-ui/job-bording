@@ -3,9 +3,11 @@ import Heading from "../../util/Heading/Heading";
 import Job from "./Job";
 import { JobContext } from "../../../Context/Context";
 import { useNavigate } from "react-router-dom";
+import { PostJobContexts } from "../../../Context/PostJobContext";
 
 const Jobs = () => {
-  const { displayJob, user, setOpen } = JobContext();
+  const { user, setOpen } = JobContext();
+  const { displayJob } = PostJobContexts();
   const navigate = useNavigate();
 
   const sortedData = displayJob?.sort(
@@ -42,8 +44,7 @@ const Jobs = () => {
           onClick={handleNavigate}
           className="bg-orang py-2 px-5 rounded-md text-white shadow-lg shadow-orange-100
           flex items-center gap-1 justify-center mx-auto transition-all duration-500 border-2 border-orang
-          hover:bg-transparent hover:text-orang"
-        >
+          hover:bg-transparent hover:text-orang">
           {user ? "Browse All Jobs" : "Login"}
         </button>
       </div>

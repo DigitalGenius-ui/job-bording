@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -20,58 +20,35 @@ const steps = ["Position", "Company", "Preview", "Post"];
 const StepperComp = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  const { user } = JobContext();
-  // update job post
-  const { updateJob } = PostJobContexts();
+  const {
+    // update job post
+    updateJob,
+    // job post states
+    jobForm,
+    setJobForm,
+    // get all jobs
+    allJobs,
+  } = PostJobContexts();
   const navigate = useNavigate();
 
   // data states
   const { setAlert } = JobContext();
   const [validate, setValidate] = useState(false);
 
-  let [aboutPosition, setAboutPosition] = React.useState({
-    userId: user._id,
-    signupAs: user?.signupAs,
-    job_title: "",
-    category: "Front-End developer",
-    job_type: "Full-Time",
-    position_accross_globe: "No",
-    salary_range: "25,000 - 50,000",
-    country: "Remote",
-    state: "Remote",
-    application_link_or_email: "",
-    job_description: "",
-    keyword: "Web Designer",
-  });
+  const jobPost = allJobs?.find((job) => job?._id === updateJob);
 
-  let [aboutCompany, setAboutCompany] = React.useState({
-    job_posted_before: "No",
-    email_id: "something@something.com",
-    company_name: user?.fullName,
-    company_hq: "",
-    company_mission_vission: "",
-    company_website: "https://",
-    company_description: "",
-  });
+  useEffect(() => {
+    if (jobPost) {
+      setJobForm(jobPost);
+    }
+  }, [updateJob]);
+  console.log(updateJob);
 
   // handle scroll up
   const handleScroll = () => {
     window.scroll({
       top: 0,
       behavior: "smooth",
-    });
-  };
-
-  // errorHandling
-  const inputValidate = (input) => {
-    return new Promise((resolve, reject) => {
-      if (Object.keys(input).every((k) => input[k] !== "")) {
-        resolve("Operation id done successfully");
-        setValidate(false);
-      } else {
-        setValidate(true);
-        reject("Operation was rejected");
-      }
     });
   };
 
@@ -90,13 +67,9 @@ const StepperComp = () => {
   });
 
   // update job post
-  const { mutateAsync: updateMutate } = useMutation(
-    "singleJob",
-    updateSingleJob,
-    {
-      onSuccess: () => queryClient.invalidateQueries("singleJob"),
-    }
-  );
+  const { mutateAsync: updateMutate } = useMutation(updateSingleJob, {
+    onSuccess: () => queryClient.invalidateQueries("job"),
+  });
 
   // error handling for posting jobs
   useEffect(() => {
@@ -114,11 +87,6 @@ const StepperComp = () => {
         open: true,
       });
     }
-
-    if (updateJob) {
-      setAboutCompany(updateJob);
-      setAboutPosition(updateJob);
-    }
   }, [validate, setAlert, isError, updateJob, error?.msg]);
 
   const handleNext = async () => {
@@ -130,25 +98,53 @@ const StepperComp = () => {
     setSkipped(newSkipped);
 
     if (activeStep === 0) {
-      inputValidate(aboutPosition)
-        .then((data) => {
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
-          handleScroll();
-        })
-        .catch((err) => {
-          console.log(err);
+      // validate the states
+      if (
+        !jobForm.job_title ||
+        !jobForm.category ||
+        !jobForm.job_type ||
+        !jobForm.position_accross_globe ||
+        !jobForm.salary_range ||
+        !jobForm.country ||
+        !jobForm.state ||
+        !jobForm.application_link_or_email ||
+        !jobForm.job_description ||
+        !jobForm.keyword
+      ) {
+        setAlert({
+          type: "error",
+          message: "All Fields are required",
+          open: true,
         });
+        setValidate(true);
+        return;
+      }
+      setValidate(false);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      handleScroll();
     }
 
     if (activeStep === 1) {
-      inputValidate(aboutCompany)
-        .then((data) => {
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
-          handleScroll();
-        })
-        .catch((err) => {
-          console.log(err);
+      if (
+        !jobForm.job_posted_before ||
+        !jobForm.email_id ||
+        !jobForm.company_name ||
+        !jobForm.company_hq ||
+        !jobForm.company_mission_vission ||
+        !jobForm.company_website ||
+        !jobForm.company_description
+      ) {
+        setAlert({
+          type: "error",
+          message: "All Fields are required",
+          open: true,
         });
+        setValidate(true);
+        return;
+      }
+      setValidate(false);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      handleScroll();
     }
 
     if (activeStep === 2) {
@@ -157,23 +153,11 @@ const StepperComp = () => {
     }
 
     if (activeStep === 3) {
-      const data = {
-        ...aboutPosition,
-        ...aboutCompany,
-      };
-      const updateData = {
-        updateJob,
-        data: {
-          aboutCompany,
-          aboutPosition,
-        },
-      };
-      if (updateJob) {
-        await updateMutate(updateData);
+      if (jobPost) {
+        await updateMutate(jobForm);
         navigate("/jobPosts");
       } else {
-        console.log(data);
-        await mutateAsync(data);
+        await mutateAsync(jobForm);
         navigate("/jobPosts");
       }
     }
@@ -240,21 +224,18 @@ const StepperComp = () => {
         <React.Fragment>
           {activeStep === 0 ? (
             <Position
-              aboutPosition={aboutPosition}
-              setAboutPosition={setAboutPosition}
+              jobForm={jobForm}
+              setJobForm={setJobForm}
               validate={validate}
             />
           ) : activeStep === 1 ? (
             <Company
-              aboutCompany={aboutCompany}
-              setAboutCompany={setAboutCompany}
+              jobForm={jobForm}
+              setJobForm={setJobForm}
               validate={validate}
             />
           ) : activeStep === 2 ? (
-            <Preview
-              aboutCompany={aboutCompany}
-              aboutPosition={aboutPosition}
-            />
+            <Preview jobForm={jobForm} />
           ) : (
             <PostInfo />
           )}
@@ -285,4 +266,4 @@ const StepperComp = () => {
   );
 };
 
-export default StepperComp;
+export default memo(StepperComp);

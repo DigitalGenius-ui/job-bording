@@ -15,10 +15,10 @@ import TextEditor from "./TextEditor/TextEditor";
 import Input from "./utils/Input";
 import data from "../../app.config.json";
 
-const Position = ({ aboutPosition, setAboutPosition, validate }) => {
+const Position = ({ jobForm, setJobForm, validate }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setAboutPosition((prev) => {
+    setJobForm((prev) => {
       return {
         ...prev,
         [name]: value,
@@ -33,16 +33,16 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
   useEffect(() => {
     if (quill) {
       // give initialValue to the text editor
-      quill.clipboard.dangerouslyPasteHTML(aboutPosition.job_description);
+      quill.clipboard.dangerouslyPasteHTML(jobForm.job_description);
       quill.on("text-change", () => {
-        setAboutPosition((prev) => ({
+        setJobForm((prev) => ({
           ...prev,
           job_description: quillRef.current.firstChild.innerHTML,
         }));
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quill, quillRef, setAboutPosition]);
+  }, [quill, quillRef, setJobForm]);
 
   return (
     <div>
@@ -54,21 +54,20 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
         text=" Example: “Senior Designer”. Titles must describe one position."
         name="job_title"
         onCHange={handleChange}
-        state={aboutPosition}
+        state={jobForm}
         isError={validate}
       />
 
-      <div className="flex items-center gap-3 my-3">
+      <div className="flex lg:items-center lg:flex-row flex-col gap-3 my-3">
         <FormControl fullWidth className="flex-1">
           <InputLabel id="demo-simple-select-label">Category</InputLabel>
 
           <Select
             label="Category"
             onChange={(e) =>
-              setAboutPosition({ ...aboutPosition, category: e.target.value })
+              setJobForm({ ...jobForm, category: e.target.value })
             }
-            value={aboutPosition.category}
-          >
+            value={jobForm.category}>
             {data.categories.map((cat, i) => (
               <MenuItem value={cat} key={i}>
                 {cat}
@@ -81,11 +80,10 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           <FormLabel id="job_type">Job Type</FormLabel>
           <RadioGroup
             row
-            defaultValue={aboutPosition?.job_type}
-            value={aboutPosition.job_type}
+            defaultValue={jobForm?.job_type}
+            value={jobForm.job_type}
             name="job_type"
-            onChange={handleChange}
-          >
+            onChange={handleChange}>
             <FormControlLabel
               value="Full-Time"
               control={<Radio />}
@@ -111,11 +109,10 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
         <Select
           label="Salary Range"
           onChange={(e) =>
-            setAboutPosition({ ...aboutPosition, salary_range: e.target.value })
+            setJobForm({ ...jobForm, salary_range: e.target.value })
           }
-          defaultValue={aboutPosition.salary_range}
-          value={aboutPosition.salary_range}
-        >
+          defaultValue={jobForm.salary_range}
+          value={jobForm.salary_range}>
           <MenuItem value={"Prefer Not to Share"}>Prefer Not to Share</MenuItem>
           {data.salary.map((money, i) => (
             <MenuItem key={i} value={money}>
@@ -132,8 +129,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
             row
             defaultValue="No"
             name="position_accross_globe"
-            onChange={handleChange}
-          >
+            onChange={handleChange}>
             <FormControlLabel value="No" control={<Radio />} label="No" />
             <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
           </RadioGroup>
@@ -145,13 +141,13 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
 
       <div>
         <div className="flex items-center gap-6 mb-5">
-          {aboutPosition.position_accross_globe === "No" && (
+          {jobForm.position_accross_globe === "No" && (
             <>
               <Input
                 label="Country"
                 type="text"
                 name="country"
-                state={aboutPosition}
+                state={jobForm}
                 onCHange={handleChange}
                 isError={validate}
               />
@@ -159,7 +155,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
                 label="State"
                 type="text"
                 name="state"
-                state={aboutPosition}
+                state={jobForm}
                 onCHange={handleChange}
                 isError={validate}
               />
@@ -173,7 +169,7 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           text="Link to Application page or Email address"
           name="application_link_or_email"
           onCHange={handleChange}
-          state={aboutPosition}
+          state={jobForm}
           isError={validate}
         />
       </div>
@@ -185,14 +181,13 @@ const Position = ({ aboutPosition, setAboutPosition, validate }) => {
           <Select
             label="keyword"
             onChange={(e) =>
-              setAboutPosition({
-                ...aboutPosition,
+              setJobForm({
+                ...jobForm,
                 keyword: e.target.value,
               })
             }
-            defaultValue={aboutPosition.keyword}
-            value={aboutPosition.keyword}
-          >
+            defaultValue={jobForm.keyword}
+            value={jobForm.keyword}>
             {data.keyWords.map((trend, i) => (
               <MenuItem key={i} value={trend}>
                 {trend}
