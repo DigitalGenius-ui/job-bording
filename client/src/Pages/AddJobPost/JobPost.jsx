@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import StepperComp from "./Stepper/Stepper";
 
 const JobPost = () => {

@@ -5,7 +5,7 @@ import Subscribe from "./components/Home/Subscribe/Subscribe";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
 import { JobContext } from "./Context/Context";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import Contact from "./Pages/Contact Us/Contact";
 import Loading from "./Loading/Loading";
 import ReactGA from "react-ga4";
@@ -23,11 +23,12 @@ function App() {
   ReactGA.initialize("G-N65Y0L6NSR");
 
   // Send pageview with a custom path
-  ReactGA.send({
-    hitType: "pageview",
-    page: "/",
-    title: "Home",
-  });
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: window.location.pathname,
+    });
+  }, []);
 
   return (
     <>
