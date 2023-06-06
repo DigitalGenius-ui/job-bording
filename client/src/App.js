@@ -8,6 +8,7 @@ import { JobContext } from "./Context/Context";
 import { Suspense, lazy } from "react";
 import Contact from "./Pages/Contact Us/Contact";
 import Loading from "./Loading/Loading";
+import ReactGA from "react-ga4";
 
 const Home = lazy(() => import("./components/Home/Home"));
 const JobPost = lazy(() => import("./Pages/AddJobPost/JobPost"));
@@ -17,6 +18,17 @@ const Profile = lazy(() => import("./Pages/Profile/Profile"));
 
 function App() {
   const { user } = JobContext();
+
+  // initializing googl analytics.
+  ReactGA.initialize("G-N65Y0L6NSR");
+
+  // Send pageview with a custom path
+  ReactGA.send({
+    hitType: "pageview",
+    page: "/",
+    title: "Home",
+  });
+
   return (
     <>
       <Routes>
