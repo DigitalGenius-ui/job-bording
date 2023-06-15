@@ -6,7 +6,7 @@ export const signUp = async (register) => {
     const res = await axios.post("/api/user/sign-up", register);
     return res;
   } catch (error) {
-    throw Error(error.response.data.msg);
+    throw new Error(error.response.data.msg);
   }
 };
 
@@ -16,7 +16,7 @@ export const signIn = async (login) => {
     localStorage.setItem("user", JSON.stringify(res.data.user));
     return res.data.user;
   } catch (error) {
-    throw Error(error.response.data.msg);
+    throw new Error(error.response.data.msg);
   }
 };
 
@@ -26,7 +26,7 @@ export const allUsers = async () => {
     const res = await axios.get(`/api/user`);
     return res.data.allUsers;
   } catch (error) {
-    throw Error(error.response.data.msg);
+    throw new Error(error.response.data.msg);
   }
 };
 
@@ -42,6 +42,7 @@ export const singleUser = async (id) => {
 
 // update users
 export const updateUser = async (data) => {
+  // upload profile image
   if (data.userProfile) {
     const form = new FormData();
     const imageName = Date.now() + data.userProfile.name;
@@ -51,7 +52,20 @@ export const updateUser = async (data) => {
     try {
       await axios.post("/api/upload", form);
     } catch (error) {
-      throw Error(error.response.data.msg);
+      throw new Error(error.response.data.msg);
+    }
+  }
+  // upload resume
+  if (data.resume) {
+    const form = new FormData();
+    const filename = Date.now() + data.resume.name;
+    form.append("name", filename);
+    form.append("file", data.resume);
+    data.profile.resume = filename;
+    try {
+      await axios.post("/api/upload", form);
+    } catch (error) {
+      throw new Error(error.response.data.msg);
     }
   }
 
@@ -62,6 +76,27 @@ export const updateUser = async (data) => {
     );
     return res.data.updatedUser;
   } catch (error) {
-    throw Error(error.response.data.msg);
+    throw new Error(error.response.data.msg);
+  }
+};
+
+// download resume
+export const downloadResume = async (id) => {
+  try {
+    const res = await axios.get("/api/user/download/" + id, {
+      responseType: "blob",
+    });
+    return res;
+  } catch (error) {
+    throw new Error(error.response.data.msg);
+  }
+};
+
+// remove resume
+export const removeResume = async (id) => {
+  try {
+    await axios.delete("/api/user/removeResume/" + id);
+  } catch (error) {
+    throw new Error(error.response.data.msg);
   }
 };

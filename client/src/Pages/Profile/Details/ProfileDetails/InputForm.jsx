@@ -1,9 +1,58 @@
 import React from "react";
 import Inputs from "../../util/Inputs";
 import { JobContext } from "../../../../Context/Context";
+import { downloadResume, removeResume } from "../../../../FetchHook/User";
+import { useMutation, useQueryClient } from "react-query";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const InputForm = ({ update, currentUser }) => {
-  const { setProfile, profile } = JobContext();
+  const { setProfile, profile, setResume, setAlert } = JobContext();
+  const { _id } = profile;
+
+  // download resume
+  const { mutateAsync, isLoading, isError } = useMutation(
+    () => downloadResume(_id),
+    { onSuccess: (data) => data }
+  );
+
+  // download user cv
+  const handleDownload = async (id) => {
+    try {
+      const res = await mutateAsync(id);
+      const blob = new Blob([res?.data], { type: res?.data.type });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = currentUser?.fullName + ".pdf";
+      link.click();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const queryClient = useQueryClient();
+  const {
+    mutateAsync: cvRemover,
+    isLoading: cvLoading,
+    isError: cvError,
+  } = useMutation(["users", _id], () => removeResume(_id), {
+    onSuccess: () => queryClient.invalidateQueries("users"),
+  });
+
+  // remove cv
+  const removeCV = async (id) => {
+    try {
+      await cvRemover(id);
+      setAlert({
+        type: "success",
+        message: "CV has been removed successfully.",
+        open: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (isError || cvError) return "Something went Wrong!!!";
 
   return (
     <div className="pt-[2rem] flex flex-col gap-5">
@@ -59,18 +108,45 @@ const InputForm = ({ update, currentUser }) => {
           value={profile.notes}
         />
       </div>
-
-      {currentUser?.signupAs === "Candidate" && (
+      {currentUser?.signupAs === "Candidate" && update && (
         <Inputs
-          label="Upload Your Resume"
+          label={`${currentUser?.resume ? "Update" : "Upload"} Your Resume`}
           type="file"
           name="resume"
           update={update}
           accept=".pdf,.doc,.docx"
-          onChange={(e) =>
-            setProfile({ ...profile, resume: e.target.files[0] })
-          }
+          onChange={(e) => setResume(e.target.files[0])}
         />
+      )}
+      {currentUser?._id === _id && currentUser?.resume && (
+        <div className="flex items-center justify-between">
+          <span
+            className="cursor-pointer w-fit hover:text-orange-800"
+            onClick={() => handleDownload(_id)}>
+            {isLoading ? "Loading..." : "Download CV"}
+          </span>
+
+          {/* update resume  */}
+          {update && (
+            <div className="flex items-center gap-1">
+              <span
+                onClick={removeCV}
+                className="cursor-pointer hover:text-orange-800 text-sm">
+                {!cvLoading ? (
+                  <DeleteIcon
+                    sx={{
+                      fontSize: "1.2rem",
+                      marginTop: "0.2rem",
+                      pointerEvents: "none",
+                    }}
+                  />
+                ) : (
+                  "Removing"
+                )}
+              </span>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

@@ -26,6 +26,7 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
     setAlert,
     userProfile,
     setUserProfile,
+    resume,
   } = JobContext();
   const [update, setUpdate] = useState(false);
 
@@ -39,7 +40,6 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
         phoneNumber: currentUser?.phoneNumber,
         email: currentUser?.email,
         notes: currentUser?.notes,
-        resume: currentUser?.resume,
         portfolio: currentUser?.portfolio,
         linkedIn: currentUser?.linkedIn,
         twitter: currentUser?.twitter,
@@ -68,6 +68,7 @@ const ProfileDetails = ({ currentUser, profileFetch }) => {
       }
       const data = {
         userProfile,
+        resume,
         profile,
       };
       await updateProfile(data);

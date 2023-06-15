@@ -4,6 +4,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const users = require("../models/users");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 router.post("/sign-up", async (req, res) => {
   const {
@@ -137,6 +138,44 @@ router.put("/update/:id", async (req, res) => {
     res.status(200).json({ status: "SUCCESS", singleUser: updatedUser });
   } catch (err) {
     console.log(err);
+    return res.status(400).json({ status: "FAILURE", error: err });
+  }
+});
+
+// download resume
+router.get("/download/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const findFile = await users.findById(id);
+    if (!findFile) {
+      throw new Error("No File is found.");
+    }
+    const file = findFile.resume;
+    const filePath = path.join(__dirname, `../upload/${file}`);
+    res.download(filePath);
+  } catch (error) {
+    return res.status(400).json({ status: "FAILURE", error: err });
+  }
+});
+
+// remove resume
+router.delete("/removeResume/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedResume = await users.findByIdAndUpdate(
+      { _id: id },
+      { $set: { resume: "" } },
+      { new: true }
+    );
+
+    if (!updatedResume) {
+      return res
+        .status(404)
+        .json({ status: "FAILURE", error: "User not found." });
+    }
+
+    res.status(200).json({ status: "SUCCESS", msg: "file has been deleted" });
+  } catch (error) {
     return res.status(400).json({ status: "FAILURE", error: err });
   }
 });

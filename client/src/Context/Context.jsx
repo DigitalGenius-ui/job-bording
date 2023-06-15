@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { updateUser, allUsers } from "../FetchHook/User";
 
 const Job = createContext();
@@ -28,6 +24,7 @@ const Context = ({ children }) => {
   const id = window?.location?.pathname.split("/")[2];
   const currentUser = allUser?.find((user) => user?._id === id);
   const [userProfile, setUserProfile] = useState(currentUser?.userProfile);
+  const [resume, setResume] = useState(currentUser?.resume);
 
   const [profile, setProfile] = useState({
     _id: user?._id,
@@ -37,7 +34,6 @@ const Context = ({ children }) => {
     phoneNumber: "",
     email: "",
     notes: "",
-    resume: "",
     portfolio: "",
     linkedIn: "",
     twitter: "",
@@ -65,10 +61,12 @@ const Context = ({ children }) => {
         setProfile,
         currentUser,
         updateProfile,
-
         // profile image
         userProfile,
         setUserProfile,
+        // resume
+        resume,
+        setResume,
         // all users
         allUser,
       }}>
