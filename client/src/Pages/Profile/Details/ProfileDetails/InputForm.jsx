@@ -29,6 +29,7 @@ const InputForm = ({ update, currentUser }) => {
     }
   };
 
+  // remove cv
   const queryClient = useQueryClient();
   const {
     mutateAsync: cvRemover,
@@ -38,7 +39,6 @@ const InputForm = ({ update, currentUser }) => {
     onSuccess: () => queryClient.invalidateQueries("users"),
   });
 
-  // remove cv
   const removeCV = async (id) => {
     try {
       await cvRemover(id);
@@ -108,6 +108,7 @@ const InputForm = ({ update, currentUser }) => {
           value={profile.notes}
         />
       </div>
+      {/* add and update resume  */}
       {currentUser?.signupAs === "Candidate" && update && (
         <Inputs
           label={`${currentUser?.resume ? "Update" : "Upload"} Your Resume`}
@@ -126,7 +127,7 @@ const InputForm = ({ update, currentUser }) => {
             {isLoading ? "Loading..." : "Download CV"}
           </span>
 
-          {/* update resume  */}
+          {/* remove resume  */}
           {update && (
             <div className="flex items-center gap-1">
               <span
