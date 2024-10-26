@@ -19,10 +19,10 @@ const Profile = lazy(() => import("./Pages/Profile/Profile"));
 function App() {
   const { user } = JobContext();
 
-  // initializing googl analytics.
+  // initializing google analytics.
   ReactGA.initialize("G-N65Y0L6NSR");
 
-  // Send pageview with a custom path
+  // Send page view with a custom path
   useEffect(() => {
     ReactGA.send({
       hitType: "pageview",

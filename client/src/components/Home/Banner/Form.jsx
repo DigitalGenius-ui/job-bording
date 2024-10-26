@@ -18,7 +18,7 @@ const Form = () => {
     category,
     displayJob,
   } = PostJobContexts();
-  
+
   const getCountries = [...new Set(displayJob?.map((count) => count?.country))];
   const getCategory = [...new Set(displayJob?.map((cat) => cat?.category))];
   const getKeyword = [...new Set(displayJob?.map((cat) => cat?.keyword))];
@@ -27,6 +27,7 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!country || !category || !keyword) return;
     navigate(
       `/jobPosts?country=${country}&category=${category}&keyword=${keyword}`
     );

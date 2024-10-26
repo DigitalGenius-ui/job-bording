@@ -27,7 +27,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="bg-profileBg bg-cover bg-no-repeat lg:h-[510px] relative overflow-hidden">
+    <section className="bg-profileBg bg-cover bg-no-repeat lg:h-[490px] relative">
       <div className="lg:fixed lg:left-0 lg:right-0 lg:top-[80px] lg:flex">
         {user?._id === currentUser?._id && (
           <div className="lg:flex-1 text-white bg-slate-100 lg:bg-transparent p-5 lg:p-0">
@@ -90,7 +90,7 @@ const Profile = () => {
             {/* copyrighted  */}
             <div className="mt-5 text-center border-t border-gray-600 py-8">
               <p className="text-gray-500">
-                Copyright © 2023 All Rights Reserved.
+                Copyright © 2024 All Rights Reserved.
               </p>
             </div>
           </div>

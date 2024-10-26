@@ -1,6 +1,7 @@
 import React from "react";
 import { footer } from "./data";
 import Links from "./Links";
+import moment from "moment";
 
 const Footer = () => {
   return (
@@ -27,9 +28,10 @@ const Footer = () => {
 
       <div
         className="border-t border-gray-300 mt-20 flex items-center justify-center
-        h-[80px]"
-      >
-        <p className="text-gray-500">Copyright © 2021 All Rights Reserved.</p>
+        h-[80px]">
+        <p className="text-gray-500">
+          Copyright © {moment(new Date()).format("YYYY")} All Rights Reserved.
+        </p>
       </div>
     </footer>
   );
