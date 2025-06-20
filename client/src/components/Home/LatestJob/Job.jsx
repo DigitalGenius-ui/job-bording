@@ -15,17 +15,18 @@ const Job = ({ job }) => {
   const folder = process.env.REACT_APP_FOLDER;
 
   // date validation
-  const currentDate = moment(job.createdAt);
+  const currentDate = moment(job?.createdAt);
   const get90Days = moment(currentDate).add(90, "days");
   const dateDifferences = moment(get90Days).diff(currentDate, "days");
 
   return (
     <div
-      onClick={() => navigate(`/jobPosts/${job._id}`)}
+      onClick={() => navigate(`/jobPosts/${job?._id}`)}
       className={`flex flex-col md:flex-row items-center gap-8 bg-cardBg px-3 py-6 shadowCard cursor-pointer
         hover:border border-orang hover:border-l-4 transition-all duration-100 group
         ${dateDifferences <= 0 && "pointer-events-none text-gray-600"}
-        `}>
+        `}
+    >
       <div className="border-2 rounded-full p-1 bg-white">
         {postUser?.userProfile ? (
           <img
@@ -36,7 +37,8 @@ const Job = ({ job }) => {
         ) : (
           <div
             className="text-center w-[4rem] h-[4rem] flex items-center justify-center
-            text-sm">
+            text-sm"
+          >
             Company <br /> Logo
           </div>
         )}
@@ -50,41 +52,44 @@ const Job = ({ job }) => {
             />
           </span>
           <span className="capitalize ml-2 text-sm font-semibold">
-            {job.job_type}
+            {job?.job_type}
           </span>
         </div>
-        <h2 className="py-3 text-xl capitalize">{job.job_title}</h2>
+        <h2 className="py-3 text-xl capitalize">{job?.job_title}</h2>
 
         <div className="flex items-center flex-wrap gap-3">
           <div
             className="shadowCard px-1 py-[0.2rem] bg-white flex items-center 
-            gap-1 rounded-md text-gray-500">
+            gap-1 rounded-md text-gray-500"
+          >
             <span>
               <LocationOnOutlinedIcon
                 sx={{ fontSize: "1rem", color: "#12b6e8" }}
               />
             </span>
             <span className="capitalize mt-1 text-sm">
-              {job.position_accross_globe === "Yes"
-                ? job.country
-                : job.company_hq}
+              {job?.position_accross_globe === "Yes"
+                ? job?.country
+                : job?.company_hq}
             </span>
           </div>
 
           <div
             className="shadowCard px-1 py-[0.2rem] bg-white flex items-center 
-            gap-1 rounded-md text-gray-500">
+            gap-1 rounded-md text-gray-500"
+          >
             <span>
               <WorkOutlineOutlinedIcon
                 sx={{ fontSize: "1rem", color: "#12b6e8" }}
               />
             </span>
-            <span className="capitalize mt-1 text-sm">{job.category}</span>
+            <span className="capitalize mt-1 text-sm">{job?.category}</span>
           </div>
 
           <div
             className="shadowCard px-1 py-[0.2rem] bg-white flex items-center 
-            gap-1 rounded-md text-gray-500">
+            gap-1 rounded-md text-gray-500"
+          >
             <span>
               <AccessTimeOutlinedIcon
                 sx={{ fontSize: "1rem", color: "#12b6e8" }}
@@ -93,14 +98,15 @@ const Job = ({ job }) => {
             <span className="capitalize mt-1 text-sm">
               {dateDifferences <= 0
                 ? "Expired"
-                : moment(job.createdAt).fromNow()}
+                : moment(job?.createdAt).fromNow()}
             </span>
           </div>
         </div>
       </div>
       <button
         className="bg-orang px-6 py-[0.6rem] rounded-md flex items-center justify-center gap-2
-      text-white capitalize group-hover:bg-black w-full md:w-auto">
+      text-white capitalize group-hover:bg-black w-full md:w-auto"
+      >
         brows job
         <span className="bg-white text-orang rounded-full p-1">
           <CampaignOutlinedIcon />

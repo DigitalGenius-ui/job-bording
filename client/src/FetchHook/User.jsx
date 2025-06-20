@@ -3,7 +3,7 @@ import { BaseURL } from "./BaseURL";
 
 export const signUp = async (register) => {
   try {
-    const res = await axios.post("/api/user/sign-up", register);
+    const res = await axios.post("/user/sign-up", register);
     return res;
   } catch (error) {
     throw new Error(error.response.data.msg);
@@ -12,7 +12,7 @@ export const signUp = async (register) => {
 
 export const signIn = async (login) => {
   try {
-    const res = await axios.post("/api/user/sign-in", login);
+    const res = await axios.post("/user/sign-in", login);
     localStorage.setItem("user", JSON.stringify(res.data.user));
     return res.data.user;
   } catch (error) {
@@ -23,7 +23,7 @@ export const signIn = async (login) => {
 // get all users
 export const allUsers = async () => {
   try {
-    const res = await axios.get(`/api/user`);
+    const res = await axios.get(`/user`);
     return res.data.allUsers;
   } catch (error) {
     throw new Error(error.response.data.msg);
@@ -33,7 +33,7 @@ export const allUsers = async () => {
 // get single user
 export const singleUser = async (id) => {
   try {
-    const res = await axios.get(`${BaseURL}/api/user/${id}`);
+    const res = await axios.get(`${BaseURL}/user/${id}`);
     return res.data.singleUser;
   } catch (error) {
     throw Error(error.response.data.msg);
@@ -50,7 +50,7 @@ export const updateUser = async (data) => {
     form.append("file", data.userProfile);
     data.profile.userProfile = imageName;
     try {
-      await axios.post("/api/upload", form);
+      await axios.post("/upload", form);
     } catch (error) {
       throw new Error(error.response.data.msg);
     }
@@ -63,7 +63,7 @@ export const updateUser = async (data) => {
     form.append("file", data.resume);
     data.profile.resume = filename;
     try {
-      await axios.post("/api/upload", form);
+      await axios.post("/upload", form);
     } catch (error) {
       throw new Error(error.response.data.msg);
     }
@@ -71,7 +71,7 @@ export const updateUser = async (data) => {
 
   try {
     const res = await axios.put(
-      `/api/user/update/${data?.profile?._id}`,
+      `/user/update/${data?.profile?._id}`,
       data.profile
     );
     return res.data.updatedUser;
@@ -83,7 +83,7 @@ export const updateUser = async (data) => {
 // download resume
 export const downloadResume = async (id) => {
   try {
-    const res = await axios.get("/api/user/download/" + id, {
+    const res = await axios.get("/user/download/" + id, {
       responseType: "blob",
     });
     return res;
@@ -95,7 +95,7 @@ export const downloadResume = async (id) => {
 // remove resume
 export const removeResume = async (id) => {
   try {
-    await axios.delete("/api/user/removeResume/" + id);
+    await axios.delete("/user/removeResume/" + id);
   } catch (error) {
     throw new Error(error.response.data.msg);
   }

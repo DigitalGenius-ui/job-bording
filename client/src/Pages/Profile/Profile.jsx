@@ -16,6 +16,7 @@ const Profile = () => {
 
   //single user
   const id = window?.location?.pathname.split("/")[2];
+
   const { data: currentUser, refetch: profileFetch } = useQuery(
     ["users", id],
     () => singleUser(id),
@@ -35,7 +36,8 @@ const Profile = () => {
             <div
               onClick={() => setShowMenu(!showMenu)}
               className="lg:hidden bg-black/70 flex justify-center items-center gap-2
-              py-4 capitalize text-lg md:text-2xl rounded-md">
+              py-4 capitalize text-lg md:text-2xl rounded-md"
+            >
               <span>
                 <MenuIcon sx={{ fontSize: "2rem", marginBottom: "0.1rem" }} />
               </span>
@@ -49,7 +51,8 @@ const Profile = () => {
               showMenu
                 ? "mt-5 h-auto transition-height duration-500 ease-in-out"
                 : "h-0 overflow-hidden"
-            }`}>
+            }`}
+            >
               <Dashboard currentUser={currentUser} />
             </div>
           </div>
@@ -61,7 +64,8 @@ const Profile = () => {
             <div className="flex items-center text-sm">
               <p
                 className="cursor-pointer hover:text-orang"
-                onClick={() => navigate("/")}>
+                onClick={() => navigate("/")}
+              >
                 Home
               </p>
               <span>

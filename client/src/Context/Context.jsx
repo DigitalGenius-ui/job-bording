@@ -40,6 +40,7 @@ const Context = ({ children }) => {
     telegram: "",
     website: "",
   });
+
   const queryClient = useQueryClient();
   const { mutateAsync: updateProfile } = useMutation("users", updateUser, {
     onSuccess: () => queryClient.invalidateQueries("users"),
@@ -69,7 +70,8 @@ const Context = ({ children }) => {
         setResume,
         // all users
         allUser,
-      }}>
+      }}
+    >
       {children}
     </Job.Provider>
   );

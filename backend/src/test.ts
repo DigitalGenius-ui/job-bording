@@ -1,11 +1,12 @@
-const path = require("path");
-
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
-const multer = require("multer");
+import path from "path";
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import multer from "multer";
+import { dbConnection } from "./config/db";
+import { PORT } from "./constants/env";
 
 const app = express();
 
@@ -16,14 +17,6 @@ dotenv.config();
 
 // image path
 app.use("/upload", express.static(path.join(__dirname, "/upload")));
-
-mongoose.connect(
-  "mongodb+srv://miladTech:milad123@nodeandexpress.84kxwy4.mongodb.net/users?retryWrites=true&w=majority"
-);
-
-mongoose.connection.once("open", () => {
-  console.log("DB connection has been made");
-});
 
 // uploading image for profile
 const storage = multer.diskStorage({
@@ -41,10 +34,10 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 });
 
 // Use the contacts.js to handle the endpoints starts with '/api/contact';
-app.use("/api/job", require("./routes/jobs"));
-app.use("/api/user", require("./routes/users"));
+// app.use("/api/job", require("./routes/jobs"));
+// app.use("/api/user", require("./routes/users"));
 
-const port = 8080;
-app.listen(port, () => {
-  console.log("application started in port:", port);
+app.listen(PORT, () => {
+  console.log("application started in port:", PORT);
+  dbConnection();
 });
