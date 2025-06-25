@@ -1,28 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import FormError from "../../../utils/FormError";
+import clsx from "clsx";
 
 const Inputs = ({
   icon,
   label,
   type,
-  onChange,
-  errorMsg,
   name,
-  required,
-  pattern,
   update,
   accept,
-  value,
+  register,
+  errors,
 }) => {
-  const inputRef = useRef();
-  const [show, setShow] = useState(false);
-
-  let inputElement = inputRef?.current;
+  const [inputType, setInputType] = useState(type);
 
   const handlePassword = () => {
-    setShow(!show);
     if (type === "password") {
-      !show ? (inputElement.type = "text") : (inputElement.type = "password");
+      setInputType((prev) => (prev === "password" ? "text" : "password"));
     }
   };
 
@@ -36,27 +31,26 @@ const Inputs = ({
         <div className="relative">
           <div>
             <input
-              type={type}
-              ref={inputRef}
+              type={inputType}
               size="small"
               readOnly={type === "email" || !update ? true : false}
-              className={`border border-gray-300 !outline-none p-3 rounded-sm w-full
-              invalid:border-red-500 input ${
-                type === "file" && !update && "pointer-events-none"
-              }`}
-              onChange={onChange}
-              value={value}
-              required={required}
+              className={clsx(
+                "border border-gray-300 !outline-none p-3 rounded-sm w-full",
+                errors && errors[name]?.message && "border-red-500 input",
+                !update && "pointer-events-none",
+                update && "border-black/60 text-black/70"
+              )}
               name={name}
-              pattern={pattern}
               accept={accept}
+              {...register(name)}
             />
-            <span className={`text-sm text-red-600 error`}>{errorMsg}</span>
+            <FormError errors={errors} name={name} />
           </div>
           {type === "password" && (
             <span
               onClick={handlePassword}
-              className="absolute right-1 top-3 cursor-pointer text-gray-400">
+              className="absolute right-1 top-3 cursor-pointer text-gray-400"
+            >
               <VisibilityIcon
                 sx={{ fontSize: "1.2rem", pointerEvents: "none" }}
               />
@@ -66,18 +60,19 @@ const Inputs = ({
       ) : (
         <>
           <textarea
-            className="border border-gray-300 outline-none p-2 resize-none rounded-sm
-            text-sm invalid:border-red-400 input"
+            className={clsx(
+              `border border-gray-300 outline-none p-2 resize-none rounded-sm text-sm input`,
+              errors && errors[name]?.message && "border-red-400"
+            )}
             cols="30"
             rows="5"
             placeholder="Your Notes..."
             readOnly={!update ? true : false}
             name={name}
-            value={value}
-            required
             minLength={10}
-            onChange={onChange}></textarea>
-          <span className={`text-sm text-red-600 error`}>{errorMsg}</span>
+            {...register(name)}
+          ></textarea>
+          <FormError errors={errors} name={name} />
         </>
       )}
     </div>

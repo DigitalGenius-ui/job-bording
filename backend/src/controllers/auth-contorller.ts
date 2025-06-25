@@ -3,7 +3,6 @@ import { CREATED, OK, UNAUTHORIZED } from "../constants/http";
 import {
   emailSchema,
   loginValidSchemas,
-  registerValidSchemas,
   resetPasswordValidSchemas,
 } from "../schemas/auth-schema";
 import {
@@ -22,7 +21,7 @@ import {
 } from "../utils/cookies";
 import { verifyToken } from "../utils/JWTToken";
 import appAssert from "../utils/AppAssert";
-import { sessionCodeModel } from "../models/auth-models";
+import { SessionCodeModel } from "../models/auth-models";
 
 // register user
 export const registerHandler = catchError(async (req, res) => {
@@ -46,6 +45,7 @@ export const loginHanlder = catchError(async (req, res) => {
   });
 
   const { accessToken, refreshToken, user } = await loginUser(request);
+
   return setAccessToken({ res, accessToken, refreshToken })
     .status(OK)
     .json({ message: "Login successfull." });
@@ -59,7 +59,7 @@ export const logOutHanlder = catchError(async (req, res) => {
   const { payload, error } = verifyToken(accessToken, "accessToken");
   appAssert(!error, UNAUTHORIZED, "Invalid access token!");
 
-  await sessionCodeModel.destroy({ where: { id: payload?.sessionId } });
+  await SessionCodeModel.findByIdAndDelete({ _id: payload?.sessionId });
 
   return setClearCookies(res)
     .status(OK)
@@ -71,9 +71,8 @@ export const refreshHanlder = catchError(async (req, res) => {
   const refreshToken = req.cookies.refreshToken as string | undefined;
   appAssert(refreshToken, UNAUTHORIZED, "refreshToken is not provided!");
 
-  const { accessToken, newRefreshToken } = await refreshUserAccessToken(
-    refreshToken
-  );
+  const { accessToken, newRefreshToken } =
+    await refreshUserAccessToken(refreshToken);
 
   if (newRefreshToken) {
     res.cookie("refreshToken", newRefreshToken, getRefreshTokenCookieOptions());

@@ -1,6 +1,6 @@
 import resend from "../config/resend";
 import { EMAIL_SENDER, FRONTEND_URL, NODE_ENV } from "../constants/env";
-import { UserModel } from "../Model/AuthModels";
+import { UserModel } from "../models/users-models";
 import { getVerifyEmailTemplate } from "./emailTemplate";
 type Params = {
   to: string;

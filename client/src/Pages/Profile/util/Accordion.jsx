@@ -5,11 +5,9 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { JobContext } from "../../../Context/Context";
+import clsx from "clsx";
 
 const Accordions = ({ header, children, update, setUpdate, currentUser }) => {
-  const { user } = JobContext();
-
   const onClickHandler = (event) => {
     // this will prevent the accordion to not be closed by clicking hte icon.
     event.stopPropagation();
@@ -22,17 +20,22 @@ const Accordions = ({ header, children, update, setUpdate, currentUser }) => {
         <div className="flex items-center justify-between !w-full">
           <h1>{header}</h1>
 
-          {user?._id === currentUser?._id && (
-            <IconButton onClick={onClickHandler}>
+          {currentUser && (
+            <div
+              className="hover:bg-white/20 p-2 rounded-full"
+              onClick={onClickHandler}
+            >
               <EditIcon sx={{ color: "white" }} />
-            </IconButton>
+            </div>
           )}
         </div>
       </AccordionSummary>
       <AccordionDetails
-        className={`!rounded-sm !p-[2rem] ${
-          update ? "text-black" : "text-gray-500"
-        } `}>
+        className={clsx(
+          "!rounded-sm !p-[2rem] text-gray-500",
+          update && "text-black"
+        )}
+      >
         {children}
       </AccordionDetails>
     </Accordion>

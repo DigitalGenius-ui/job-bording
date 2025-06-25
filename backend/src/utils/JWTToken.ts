@@ -1,14 +1,14 @@
 import jwt from "jsonwebtoken";
 import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from "../constants/env";
-import { DataTypes } from "sequelize";
+import { Types } from "mongoose";
 
 export type accessType = {
-  user_id: typeof DataTypes.UUID;
-  sessionId: typeof DataTypes.UUID;
+  userId: Types.ObjectId;
+  sessionId: Types.ObjectId;
 };
 
 type refreshType = {
-  sessionId: typeof DataTypes.UUID;
+  sessionId: Types.ObjectId;
 };
 
 type Params = {
@@ -18,7 +18,7 @@ type Params = {
 
 const options = {
   // this is for knowing the user's roll
-  audience: ["user"],
+  audience: "user",
 };
 
 // generate new token
@@ -28,7 +28,7 @@ export const generateToken = ({ payload, type }: Params) => {
 
   return jwt.sign(payload, secret, {
     ...options,
-    expiresIn: refreshToken ? "30d" : "15m",
+    expiresIn: refreshToken ? "30d" : "15d",
   });
 };
 
@@ -36,7 +36,7 @@ export const generateToken = ({ payload, type }: Params) => {
 type verifiTokenType = "accessToken" | "refreshToken";
 
 export const verifyToken = <
-  T extends accessType & { error: string | undefined }
+  T extends accessType & { error: string | undefined },
 >(
   token: string,
   type: verifiTokenType

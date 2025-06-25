@@ -5,10 +5,10 @@ import Register from "./Register";
 import Login from "./Login";
 import "./style.scss";
 import CloseIcon from "@mui/icons-material/Close";
-import { JobContext } from "../../Context/Context";
+import { UserContext } from "../../Context/Context";
 
 const Auth = () => {
-  const { open, setOpen, activeForm, setActiveForm } = JobContext();
+  const { open, setOpen, activeForm, setActiveForm } = UserContext();
   const [activeBtn, setActiveBtn] = useState("Register");
 
   const btn = ["Log In", "Register"];

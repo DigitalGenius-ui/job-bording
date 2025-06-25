@@ -4,11 +4,12 @@ import Message from "./components/util/Alert/Message";
 import Subscribe from "./components/Home/Subscribe/Subscribe";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
-import { JobContext } from "./Context/Context";
+import { UserContext } from "./Context/Context";
 import { Suspense, lazy, useEffect } from "react";
 import Contact from "./Pages/Contact Us/Contact";
 import Loading from "./Loading/Loading";
 import ReactGA from "react-ga4";
+import { Toaster } from "react-hot-toast";
 
 const Home = lazy(() => import("./components/Home/Home"));
 const JobPost = lazy(() => import("./Pages/AddJobPost/JobPost"));
@@ -17,7 +18,7 @@ const DisplayJob = lazy(() => import("./Pages/DisplayJob/DisplayJob"));
 const Profile = lazy(() => import("./Pages/Profile/Profile"));
 
 function App() {
-  const { user } = JobContext();
+  const { currentUser } = UserContext();
 
   // initializing google analytics.
   ReactGA.initialize("G-N65Y0L6NSR");
@@ -35,16 +36,19 @@ function App() {
       <Routes>
         <Route path="/" element={<HeadWrapper />}>
           <Route path="/" element={<Home />} />
-          {user && <Route path="/addJob" element={<JobPost />} />}
-          {user && <Route path="/jobPosts" element={<AllJobs />} />}
+          {currentUser && <Route path="/addJob" element={<JobPost />} />}
+          {currentUser && <Route path="/jobPosts" element={<AllJobs />} />}
           <Route path="/jobPosts/:id" element={<DisplayJob />} />
-          {user && <Route path="/profile/:id" element={<Profile />} />}
+          {currentUser && <Route path="/profile/:id" element={<Profile />} />}
           {<Route path="/contact" element={<Contact />} />}
-          <Route path="*" element={<Navigate to={!user ? "/" : "/"} />} />
+          {/* <Route
+            path="*"
+            element={<Navigate to={currentUser ? "/" : "/"} />}
+          /> */}
         </Route>
       </Routes>
       <Auth />
-      <Message />
+      <Toaster />
     </>
   );
 }

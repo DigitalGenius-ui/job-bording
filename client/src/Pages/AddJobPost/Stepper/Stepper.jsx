@@ -9,11 +9,12 @@ import Position from "../Position";
 import Company from "../Company";
 import Preview from "../Preview";
 import PostInfo from "../PostInfo";
-import { JobContext } from "../../../Context/Context";
-import { useMutation, useQueryClient } from "react-query";
-import { postJob, updateSingleJob } from "../../../FetchHook/Job";
+import { UserContext } from "../../../Context/Context";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postJob, updateSingleJob } from "../../../api-calls/job-api";
 import { PostJobContexts } from "../../../Context/PostJobContext";
 import { useNavigate } from "react-router-dom";
+import { JOB_KEYS } from "../../../constants/query-keys";
 
 const steps = ["Position", "Company", "Preview", "Post"];
 
@@ -32,7 +33,7 @@ const StepperComp = () => {
   const navigate = useNavigate();
 
   // data states
-  const { setAlert } = JobContext();
+  const { setAlert } = UserContext();
   const [validate, setValidate] = useState(false);
 
   const jobPost = allJobs?.find((job) => job?._id === updateJob);
@@ -62,13 +63,15 @@ const StepperComp = () => {
 
   // post job in the database
   const queryClient = useQueryClient();
-  const { mutateAsync, isLoading, isError, error } = useMutation(postJob, {
-    onSuccess: () => queryClient.invalidateQueries("job"),
+  const { mutateAsync, isLoading, isError, error } = useMutation({
+    mutationFn: postJob,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [JOB_KEYS] }),
   });
 
   // update job post
-  const { mutateAsync: updateMutate } = useMutation(updateSingleJob, {
-    onSuccess: () => queryClient.invalidateQueries("job"),
+  const { mutateAsync: updateMutate } = useMutation({
+    mutationFn: updateSingleJob,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [JOB_KEYS] }),
   });
 
   // error handling for posting jobs
@@ -245,7 +248,8 @@ const StepperComp = () => {
               color="inherit"
               disabled={activeStep === 0}
               onClick={handleBack}
-              sx={{ mr: 1 }}>
+              sx={{ mr: 1 }}
+            >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />

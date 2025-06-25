@@ -1,47 +1,40 @@
-import React, { useEffect, useState } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import Input from "../util/Input/Input";
-import { useMutation } from "react-query";
-import { signIn } from "../../FetchHook/User";
-import { JobContext } from "../../Context/Context";
+import { signIn } from "../../api-calls/auth-api";
+import { UserContext } from "../../Context/Context";
 import { Box } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
+import useCreateData from "../../hooks/useCreateData";
+import { USER_KEY } from "../../constants/query-keys";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginValidSchemas } from "../../schemas/auth-schema";
 
 const Login = () => {
-  const { setAlert, setOpen } = JobContext();
-  const [login, setLogin] = useState({
-    email: "",
-    password: "",
+  const { setOpen } = UserContext();
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginValidSchemas),
+    defaultValues: {
+      email: "admin@gmail.com",
+      password: "admin@123",
+    },
   });
 
-  const { mutateAsync, error, isLoading, isError } = useMutation(
-    "users",
-    signIn,
-    {
-      onSuccess: (data) => {
-        return data;
-      },
-    }
-  );
+  const { submitData, isPending } = useCreateData({
+    key: [USER_KEY],
+    func: signIn,
+  });
 
-  useEffect(() => {
-    if (isError) {
-      setAlert({
-        type: "error",
-        message: error && error.message,
-        open: true,
-      });
-    }
-  }, [error?.message, isError, setAlert, error]);
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    await mutateAsync(login);
+  const submitHandler = async (values) => {
+    await submitData({ inputData: values, alertMsg: "User is logged in" });
     setOpen(false);
-    window.location.reload();
   };
 
   return (
@@ -55,20 +48,22 @@ const Login = () => {
       </div>
 
       <form
-        onSubmit={submitHandler}
+        onSubmit={handleSubmit(submitHandler)}
         className="flex flex-col px-3 lg:px-6 gap-4"
       >
         <Input
           type="email"
           placeHolder="Email Address"
           name="email"
-          setValue={setLogin}
+          register={register}
+          errors={errors}
         />
         <Input
           type="password"
           placeHolder="Password"
           name="password"
-          setValue={setLogin}
+          register={register}
+          errors={errors}
         />
 
         <div className="flex items-center justify-between gap-2 flex-wrap">
@@ -84,9 +79,9 @@ const Login = () => {
         <button
           className={`bg-orang w-full py-3 mb-4 rounded-md text-white
         hover:bg-orange-400 flex items-center justify-center gap-2
-        ${isLoading && "pointer-events-none"}`}
+        ${isPending && "pointer-events-none"}`}
         >
-          {isLoading && (
+          {isPending && (
             <Box sx={{ display: "flex", marginTop: "0.2rem" }}>
               <CircularProgress size="1rem" />
             </Box>

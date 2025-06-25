@@ -1,23 +1,20 @@
-const Input = ({ name, type, placeHolder, setValue }) => {
-  const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setValue((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
+import { clsx } from "clsx";
+import FormError from "../../../utils/FormError";
 
+const Input = ({ type, placeHolder, register, name, errors }) => {
   return (
-    <input
-      className="border p-3 text-sm outline-none rounded-md"
-      type={type}
-      placeholder={placeHolder}
-      name={name}
-      onChange={onChangeHandler}
-      required
-    />
+    <div>
+      <input
+        className={clsx(
+          `border p-3 text-sm outline-none rounded-md w-full`,
+          errors && errors[name]?.message && "border-red-400"
+        )}
+        type={type}
+        placeholder={placeHolder}
+        {...register(name)}
+      />
+      <FormError errors={errors} name={name} />
+    </div>
   );
 };
 

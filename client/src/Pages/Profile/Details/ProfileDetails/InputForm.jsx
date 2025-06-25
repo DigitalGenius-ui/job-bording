@@ -1,19 +1,18 @@
 import React from "react";
 import Inputs from "../../util/Inputs";
-import { JobContext } from "../../../../Context/Context";
-import { downloadResume, removeResume } from "../../../../FetchHook/User";
-import { useMutation, useQueryClient } from "react-query";
+import { UserContext } from "../../../../Context/Context";
+import { downloadResume, removeResume } from "../../../../api-calls/user-api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const InputForm = ({ update, currentUser }) => {
-  const { setProfile, profile, setResume, setAlert } = JobContext();
+const InputForm = ({ update, register, errors, user }) => {
+  const { profile, setAlert, currentUser } = UserContext();
   const { _id } = profile;
 
   // download resume
-  const { mutateAsync, isLoading, isError } = useMutation(
-    () => downloadResume(_id),
-    { onSuccess: (data) => data }
-  );
+  const { mutateAsync, isLoading, isError } = useMutation({
+    mutationFn: async () => await downloadResume(_id),
+  });
 
   // download user cv
   const handleDownload = async (id) => {
@@ -35,8 +34,10 @@ const InputForm = ({ update, currentUser }) => {
     mutateAsync: cvRemover,
     isLoading: cvLoading,
     isError: cvError,
-  } = useMutation(["users", _id], () => removeResume(_id), {
-    onSuccess: () => queryClient.invalidateQueries("users"),
+  } = useMutation({
+    mutationKey: ["users", _id],
+    mutationFn: async () => await removeResume(_id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
   });
 
   const removeCV = async (id) => {
@@ -59,71 +60,63 @@ const InputForm = ({ update, currentUser }) => {
       <div className="flex flex-col md:flex-row lg:flex-col gap-5">
         <Inputs
           label={`${
-            currentUser?.signupAs === "Employer" ? "Company Name" : "Your Name"
+            user?.signupAs === "Employer" ? "Company Name" : "Your Name"
           }`}
           type="text"
           name="fullName"
-          errorMsg="Full Name is required!!!"
-          required={true}
           update={update}
-          onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
-          value={profile.fullName}
+          register={register}
+          errors={errors}
         />
         <Inputs
           label="Phone Number"
           type="text"
           name="phoneNumber"
-          errorMsg="Invalid Phone Number"
-          required={true}
-          pattern="^\+(?:[0-9] ?){6,14}[0-9]$"
+          register={register}
           update={update}
-          onChange={(e) =>
-            setProfile({ ...profile, phoneNumber: e.target.value })
-          }
-          value={profile.phoneNumber || "+1"}
+          errors={errors}
         />
       </div>
       <Inputs
         label="Email Address"
         type="email"
         name="email"
-        errorMsg="Email is required!!!"
         update={update}
-        onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-        required={true}
-        value={profile.email}
+        register={register}
+        errors={errors}
       />
       <div>
         <Inputs
           label={
-            currentUser?.signupAs === "Employer"
+            user?.signupAs === "Employer"
               ? "Company Description"
               : "Career Objective"
           }
           type="textarea"
           name="notes"
-          onChange={(e) => setProfile({ ...profile, notes: e.target.value })}
+          register={register}
           update={update}
-          errorMsg="This field must be a least 10 characters"
-          value={profile.notes}
+          errors={errors}
         />
       </div>
       {/* add and update resume  */}
-      {currentUser?.signupAs === "Candidate" && update && (
+      {user?.signupAs === "Candidate" && update && (
         <Inputs
-          label={`${currentUser?.resume ? "Update" : "Upload"} Your Resume`}
+          label={`${user?.resume ? "Update" : "Upload"} Your Resume`}
           type="file"
           name="resume"
           update={update}
           accept=".pdf,.doc,.docx"
-          onChange={(e) => setResume(e.target.files[0])}
+          register={register}
+          errors={errors}
         />
       )}
-      {currentUser?._id === _id && currentUser?.resume && (
+      {user?.resume && (
         <div className="flex items-center justify-between">
           <span
             className="cursor-pointer w-fit hover:text-orange-800"
-            onClick={() => handleDownload(_id)}>
+            onClick={() => handleDownload(_id)}
+          >
             {isLoading ? "Loading..." : "Download CV"}
           </span>
 
@@ -132,7 +125,8 @@ const InputForm = ({ update, currentUser }) => {
             <div className="flex items-center gap-1">
               <span
                 onClick={removeCV}
-                className="cursor-pointer hover:text-orange-800 text-sm">
+                className="cursor-pointer hover:text-orange-800 text-sm"
+              >
                 {!cvLoading ? (
                   <DeleteIcon
                     sx={{

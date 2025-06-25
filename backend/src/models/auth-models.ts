@@ -1,18 +1,5 @@
 import mongoose from "mongoose";
 
-// auth model schemas
-const authSchema = new mongoose.Schema(
-  {
-    fullName: { type: String },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    signupAs: { type: String, required: true },
-  },
-  { timestamps: true, collection: "users" }
-);
-
-export const authModel = mongoose.model("users", authSchema);
-
 // session model
 const sessionSchema = new mongoose.Schema(
   {
@@ -27,10 +14,10 @@ const sessionSchema = new mongoose.Schema(
   { timestamps: true, collection: "sessions" }
 );
 
-export const sessionCodeModel = mongoose.model("sessions", sessionSchema);
+export const SessionCodeModel = mongoose.model("sessions", sessionSchema);
 
 // session model
-export const verifyCode = new mongoose.Schema(
+const verifyCode = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
     type: { type: String, required: true },
@@ -43,4 +30,4 @@ export const verifyCode = new mongoose.Schema(
   { timestamps: true, collection: "sessions" }
 );
 
-export const verificationCodeModel = mongoose.model("verifyCode", verifyCode);
+export const VerificationCodeModel = mongoose.model("verifyCode", verifyCode);

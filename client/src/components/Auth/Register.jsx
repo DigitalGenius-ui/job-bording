@@ -1,88 +1,46 @@
-import React, { useState, useEffect } from "react";
 import Input from "../util/Input/Input";
-import { useMutation } from "react-query";
-import { signUp } from "../../FetchHook/User";
-import { JobContext } from "../../Context/Context";
+import { signUp } from "../../api-calls/auth-api";
+import { UserContext } from "../../Context/Context";
 import { Box, CircularProgress } from "@mui/material";
 import Select from "../util/Select/Select";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerValidSchemas } from "../../schemas/auth-schema";
+import FormError from "../../utils/FormError";
+import { AUTH_KEYS } from "../../constants/query-keys";
+import useCreateData from "../../hooks/useCreateData";
 
 const Register = () => {
-  const { setActiveForm, setAlert } = JobContext();
-  const [register, setRegister] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    rePassword: "",
-    signupAs: "",
-    website: "",
-    userProfile: "",
-    gender: "",
-    phoneNumber: "",
-    notes: "",
-    portfolio: "",
-    resume: "",
-    linkedIn : "",
-    twitter : "",
-    telegram : "",
-    acceptTerm: false,
+  const { setActiveForm } = UserContext();
+
+  const { submitData, isPending } = useCreateData({
+    key: [AUTH_KEYS],
+    func: signUp,
   });
 
-  const { mutateAsync, isLoading, error, isError } = useMutation(
-    "users",
-    signUp,
-    {
-      onSuccess: (data) => {
-        return data;
-      },
-    }
-  );
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerValidSchemas),
+    defaultValues: {
+      email: "admin@gmail.com",
+      fullName: "admin",
+      confirmPassword: "admin@123",
+      password: "admin@123",
+      signupAs: "Employer",
+      acceptTerm: true,
+    },
+  });
 
-  useEffect(() => {
-    if (isError) {
-      setAlert({
-        type: "error",
-        message: error && error.message,
-        open: true,
-      });
-    }
-  }, [setAlert, error, isError]);
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    if (register.password !== register.rePassword) {
-      setAlert({
-        type: "error",
-        message: "Your passwords are not matching",
-        open: true,
-      });
-      return;
-    }
-
-    if (!register.signupAs) {
-      setAlert({
-        type: "error",
-        message: "Please fill the select input",
-        open: true,
-      });
-      return;
-    }
-
-    if (register?.acceptTerm === false) {
-      setAlert({
-        type: "error",
-        message: "You must accept the terms and conditions!!",
-        open: true,
-      });
-      return;
-    }
-
-    await mutateAsync(register);
-    setActiveForm(true);
-    setAlert({
-      type: "success",
-      message: "User has been successfully created",
-      open: true,
+  const submitHandler = async (values) => {
+    await submitData({
+      inputData: values,
+      alertMsg: "User is registred successfully!",
     });
+    setActiveForm(true);
   };
 
   return (
@@ -96,60 +54,66 @@ const Register = () => {
       </div>
 
       <form
-        onSubmit={submitHandler}
-        className="flex flex-col px-3 lg:px-6 gap-4">
+        onSubmit={handleSubmit(submitHandler)}
+        className="flex flex-col px-3 lg:px-6 gap-4"
+      >
         <Input
           type="text"
           placeHolder="User Name"
-          setValue={setRegister}
+          register={register}
           name="fullName"
+          errors={errors}
         />
         <Input
           type="email"
           placeHolder="Email Address"
-          setValue={setRegister}
+          register={register}
           name="email"
+          errors={errors}
         />
         <Input
           type="password"
           placeHolder="Password"
-          setValue={setRegister}
+          register={register}
           name="password"
+          errors={errors}
         />
         <Input
           type="password"
           placeHolder="Repeat Password"
-          setValue={setRegister}
-          name="rePassword"
+          register={register}
+          name="confirmPassword"
+          errors={errors}
         />
 
         <Select
           placeHolder="Sign UpAs..."
           data={["Employer", "Candidate"]}
           form="auth"
-          onChange={setRegister}
+          setValue={setValue}
+          name="signupAs"
+          errors={errors}
+          errorMsg={"Please choose you account type!"}
         />
 
-        <p className="flex items-center gap-2 flex-wrap text-sm md:text-md">
+        <div className="flex items-center gap-2 flex-wrap text-sm md:text-md">
           <input
+            {...register("acceptTerm")}
+            name="acceptTerm"
             type="checkbox"
-            value={register?.acceptTerm}
-            onChange={() =>
-              setRegister((prev) => ({
-                ...prev,
-                acceptTerm: !prev?.acceptTerm,
-              }))
-            }
           />
           I Have Read and Agree to the
           <span className="text-orang cursor-pointer">Terms & Conditions</span>
-        </p>
+          <FormError errors={errors} name={"acceptTerm"} classname={"-mt-3"} />
+        </div>
 
         <button
+          type="submit"
           className={`bg-orang w-full py-3 mb-4 rounded-md text-white
         hover:bg-orange-400 flex items-center justify-center gap-2
-        ${isLoading && "pointer-events-none"}`}>
-          {isLoading && (
+        ${isPending && "pointer-events-none"}`}
+        >
+          {isPending && (
             <Box sx={{ display: "flex", marginTop: "0.2rem" }}>
               <CircularProgress size="1rem" />
             </Box>

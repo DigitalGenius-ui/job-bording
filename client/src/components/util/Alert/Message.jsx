@@ -1,10 +1,6 @@
 import { Snackbar, Alert } from "@mui/material";
-import React from "react";
-import { JobContext } from "../../../Context/Context";
 
-const Message = () => {
-  const { alert, setAlert } = JobContext();
-
+const Message = ({ alert, setAlert }) => {
   const handleClose = () => {
     setAlert({ ...alert, open: false });
   };

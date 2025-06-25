@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import LoginIcon from "@mui/icons-material/Login";
 import UserProfile from "./UserProfile";
 import MenuIcon from "@mui/icons-material/Menu";
-import { JobContext } from "../../Context/Context";
+import { UserContext } from "../../Context/Context";
 import { useNavigate } from "react-router-dom";
 
 const Link = ({ title, path }) => {
   const navigate = useNavigate();
-  const { setOpen, user } = JobContext();
+  const { setOpen, currentUser } = UserContext();
   const pathName = window.location.pathname;
 
   const handleClick = () => {
     navigate(path);
     if (path === "/addJob") {
-      return user ? navigate(path, { replace: true }) : setOpen(true);
+      return currentUser ? navigate(path, { replace: true }) : setOpen(true);
     } else if (path === "/jobPosts") {
-      return user ? navigate(path, { replace: true }) : setOpen(true);
+      return currentUser ? navigate(path, { replace: true }) : setOpen(true);
     }
   };
   return (
@@ -27,7 +27,8 @@ const Link = ({ title, path }) => {
         path === pathName
           ? "bg-white/10 lg:bg-orange-50 text-orang"
           : "text-gray-400 lg:text-gray-500 bg-transparent"
-      }`}>
+      }`}
+    >
       {title}
     </span>
   );
@@ -35,7 +36,7 @@ const Link = ({ title, path }) => {
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
-  const { setOpen, user } = JobContext();
+  const { setOpen, currentUser } = UserContext();
 
   const navigate = useNavigate();
   const homeClick = () => {
@@ -65,17 +66,18 @@ const Header = () => {
             left-0 top-0 bottom-0 lg:static lg:flex-row z-50 ${
               menu ? "translate-x-0" : "translate-x-[-100%] lg:translate-x-0"
             } transition-all duration-500
-            lg:bg-transparent lg:items-center lg:justify-between lg:w-[60%]`}>
+            lg:bg-transparent lg:items-center lg:justify-between lg:w-[60%]`}
+          >
             <h1 className="text-white lg:hidden text-center py-4 border-b border-menuBorder">
               Menu
             </h1>
             <Link path="/" title="home" />
             <Link path="/jobPosts" title="find a job" />
-            {user?.signupAs === "Employer" && (
+            {currentUser?.signupAs === "Employer" && (
               <Link path="/addJob" title="post a job" />
             )}
             <Link path="/blog" title="blog" />
-            {user?.signupAs !== "Employer" && (
+            {currentUser?.signupAs !== "Employer" && (
               <Link path="/about" title="about us" />
             )}
             <Link path="/contact" title="contact us" />
@@ -83,25 +85,29 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
-          {!user && (
+          {!currentUser ? (
             <button
               className="flex items-center gap-2 bg-orang text-white py-2 px-2 md:py-2 md:px-4 rounded-full
             hover:bg-transparent border-2 border-orang hover:text-orang transition
             duration-500"
-              onClick={() => setOpen(true)}>
+              onClick={() => setOpen(true)}
+            >
               <LoginIcon sx={{ fontSize: "1.2rem" }} />
               <span className="hidden md:flex">Sign In</span>
             </button>
+          ) : (
+            <>
+              {/* user profile dropdown part   */}
+              <UserProfile />
+            </>
           )}
-
-          {/* user profile dropdown part   */}
-          <UserProfile />
 
           {/* bar part  */}
           <span
             onClick={() => setMenu((prev) => !prev)}
             className="w-[2.5rem] h-[2.5rem] grid place-items-center text-white
-            bg-orang lg:hidden rounded-full">
+            bg-orang lg:hidden rounded-full"
+          >
             <MenuIcon sx={{ fontSize: "2rem" }} />
           </span>
         </div>

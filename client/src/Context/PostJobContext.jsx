@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
-import { getAllJobs, searchJobs } from "../FetchHook/Job";
-import { useInfiniteQuery, useQuery } from "react-query";
-import { JobContext } from "./Context";
+import { getAllJobs, searchJobs } from "../api-calls/job-api";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { UserContext } from "./Context";
 
 const PostJob = createContext();
 
 const PostJobContext = ({ children }) => {
-  const { user } = JobContext();
+  const { currentUser } = UserContext();
   // search states
   const [country, setCountry] = useState("");
   const [category, setCategory] = useState("");
@@ -17,7 +17,9 @@ const PostJobContext = ({ children }) => {
     isError: searchError,
     refetch,
     data: searchData,
-  } = useQuery("job", () => searchJobs(country, category, keyword), {
+  } = useQuery({
+    queryKey: ["job"],
+    queryFn: async () => await searchJobs(country, category, keyword),
     enabled: false,
     refetchOnWindowFocus: false,
     staleTime: 300000,
@@ -32,7 +34,9 @@ const PostJobContext = ({ children }) => {
     isLoading,
     isError,
     error,
-  } = useInfiniteQuery(["job", { status: "SUCCESS" }], getAllJobs, {
+  } = useInfiniteQuery({
+    queryKey: ["job", { status: "SUCCESS" }],
+    queryFn: getAllJobs,
     getNextPageParam: (lastPage, _pages) => {
       if (lastPage.page < lastPage.totalPages) {
         return +lastPage.page + 1;
@@ -48,8 +52,8 @@ const PostJobContext = ({ children }) => {
   const [updateJob, setUpdateJob] = useState("");
 
   let [jobForm, setJobForm] = useState({
-    userId: user?._id,
-    signupAs: user?.signupAs,
+    userId: currentUser?._id,
+    signupAs: currentUser?.signupAs,
     job_title: "",
     category: "Front-End developer",
     job_type: "Full-Time",
@@ -62,7 +66,7 @@ const PostJobContext = ({ children }) => {
     keyword: "Web Designer",
     job_posted_before: "No",
     email_id: "something@something.com",
-    company_name: user?.fullName,
+    company_name: currentUser?.fullName,
     company_hq: "",
     company_mission_vission: "",
     company_website: "https://",
@@ -99,7 +103,8 @@ const PostJobContext = ({ children }) => {
         setJobForm,
         // get all jobs
         allJobs,
-      }}>
+      }}
+    >
       {children}
     </PostJob.Provider>
   );

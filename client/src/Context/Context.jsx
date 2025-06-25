@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { updateUser, allUsers } from "../FetchHook/User";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { updateUser, allUsers, getCurrentUser } from "../api-calls/user-api";
+import { USER_KEY } from "../constants/query-keys";
 
 const Job = createContext();
 
@@ -8,7 +9,6 @@ const Context = ({ children }) => {
   // Auth stats
   const [open, setOpen] = useState(false);
   const [activeForm, setActiveForm] = useState(false);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   // alert state
   const [alert, setAlert] = useState({
@@ -18,19 +18,27 @@ const Context = ({ children }) => {
   });
 
   // get all profiles
-  const { data: allUser } = useQuery("users", allUsers);
+  const { data: allUser } = useQuery({
+    queryKey: ["users"],
+    queryFn: allUsers,
+  });
+
+  const { data: currentUser, isPending } = useQuery({
+    queryKey: [USER_KEY],
+    queryFn: getCurrentUser,
+  });
 
   //update profile data
   const id = window?.location?.pathname.split("/")[2];
-  const currentUser = allUser?.find((user) => user?._id === id);
-  const [userProfile, setUserProfile] = useState(currentUser?.userProfile);
-  const [resume, setResume] = useState(currentUser?.resume);
+  // const currentUser = allUser?.find((user) => user?._id === id);
+  // const [userProfile, setUserProfile] = useState(currentUser?.userProfile);
+  // const [resume, setResume] = useState(currentUser?.resume);
 
   const [profile, setProfile] = useState({
-    _id: user?._id,
+    _id: currentUser?._id,
     gender: "",
     fullName: "",
-    userProfile: currentUser?.userProfile,
+    // userProfile: currentUser?.userProfile,
     phoneNumber: "",
     email: "",
     notes: "",
@@ -42,8 +50,11 @@ const Context = ({ children }) => {
   });
 
   const queryClient = useQueryClient();
-  const { mutateAsync: updateProfile } = useMutation("users", updateUser, {
-    onSuccess: () => queryClient.invalidateQueries("users"),
+
+  const { mutateAsync: updateProfile } = useMutation({
+    mutationKey: ["users"],
+    mutationFn: updateUser,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
   });
 
   return (
@@ -53,21 +64,19 @@ const Context = ({ children }) => {
         setOpen,
         activeForm,
         setActiveForm,
-        user,
-        setUser,
+        currentUser,
         alert,
         setAlert,
         // update profile
         profile,
         setProfile,
-        currentUser,
-        updateProfile,
+        updateProfile: () => undefined,
         // profile image
-        userProfile,
-        setUserProfile,
+        userProfile: undefined,
+        setUserProfile: () => undefined,
         // resume
-        resume,
-        setResume,
+        resume: "",
+        setResume: () => undefined,
         // all users
         allUser,
       }}
@@ -79,4 +88,4 @@ const Context = ({ children }) => {
 
 export default Context;
 
-export const JobContext = () => useContext(Job);
+export const UserContext = () => useContext(Job);

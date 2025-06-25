@@ -5,14 +5,15 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { JobContext } from "../../../Context/Context";
+import { UserContext } from "../../../Context/Context";
+import { IMAGE_PATH } from "../../../constants/env";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
-  const { allUser } = JobContext();
+  const { allUser, currentUser } = UserContext();
 
   const postUser = allUser?.find((userId) => userId?._id === job?.userId);
-  const folder = process.env.REACT_APP_FOLDER;
+  const folder = IMAGE_PATH;
 
   // date validation
   const currentDate = moment(job?.createdAt);

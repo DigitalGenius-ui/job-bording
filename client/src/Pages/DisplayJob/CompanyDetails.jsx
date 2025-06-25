@@ -1,21 +1,23 @@
 import React from "react";
-import { JobContext } from "../../Context/Context";
+import { UserContext } from "../../Context/Context";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import LanguageIcon from "@mui/icons-material/Language";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
+import { IMAGE_PATH } from "../../constants/env";
 
 const Company = ({ data }) => {
-  const { user, allUser } = JobContext();
+  const { user, allUser } = UserContext();
 
   const postUser = allUser?.find((userId) => userId?._id === data?.userId);
-  const folder = process.env.REACT_APP_FOLDER;
+  const folder = IMAGE_PATH;
 
   const navigate = useNavigate();
   return (
     <div
       className="shadowCard2 p-7 flex flex-col justify-center 
-          items-center w-full md:w-[15rem] lg:w-[20rem]">
+          items-center w-full md:w-[15rem] lg:w-[20rem]"
+    >
       <div>
         {postUser?.userProfile ? (
           <img
@@ -26,7 +28,8 @@ const Company = ({ data }) => {
         ) : (
           <div
             className="text-center w-[8rem] h-[8rem] flex items-center justify-center
-            text-lg border border-black rounded-full">
+            text-lg border border-black rounded-full"
+          >
             Company <br /> Logo
           </div>
         )}
@@ -59,7 +62,8 @@ const Company = ({ data }) => {
         <a
           href={`mailto:${data.application_link_or_email}`}
           className={`bg-orang py-2 px-4 capitalize text-white hover:bg-orange-400 mt-2
-              ${!user && "pointer-events-none bg-orange-200"}`}>
+              ${!user && "pointer-events-none bg-orange-200"}`}
+        >
           apply for the job
         </a>
       ) : null}
@@ -69,7 +73,8 @@ const Company = ({ data }) => {
           navigate(`/profile/${data.userId}`);
         }}
         className="font-extrabold text-lg border-t border-gray-300 mt-8
-          pt-5 text-orang leading-6">
+          pt-5 text-orang leading-6"
+      >
         <div className="lg:flex lg:flex-col">
           View Company Profile &
           <span className="ml-1 lg:m-0">

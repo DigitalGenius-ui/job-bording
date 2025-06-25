@@ -1,224 +1,133 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Accordions from "../../util/Accordion";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import {
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import { JobContext } from "../../../../Context/Context";
-import noneGender from "../../../../images/question.png";
-import female from "../../../../images/female.jpg";
-import male from "../../../../images/male.jpg";
+import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { UserContext } from "../../../../Context/Context";
 import InputForm from "./InputForm";
+import { Controller, useForm } from "react-hook-form";
+import { profileSchema } from "../../../../schemas/user-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "react-router-dom";
+import UploadImage from "./UploadImage";
+import useCreateData from "../../../../hooks/useCreateData";
+import { USER_KEY } from "../../../../constants/query-keys";
+import { updateUserProfile } from "../../../../api-calls/user-api";
+import UpdateButton from "../UpdateButton";
 
-const ProfileDetails = ({ currentUser, profileFetch }) => {
-  const fileRef = useRef(null);
-  const [error, setError] = useState(false);
-  const [imgPrev, setImgPrev] = useState("");
-  const {
-    user,
-    profile,
-    setProfile,
-    updateProfile,
-    setAlert,
-    userProfile,
-    setUserProfile,
-    resume,
-  } = JobContext();
+const ProfileDetails = ({ user }) => {
+  const { currentUser } = UserContext();
   const [update, setUpdate] = useState(false);
 
+  const profile = currentUser?.profile;
+
+  const { id: userId } = useParams();
+
+  const {
+    handleSubmit,
+    register,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(profileSchema),
+  });
+
   useEffect(() => {
-    if (currentUser) {
-      // when the user navigate between profiles, data should be updated
-      setProfile({
-        ...profile,
-        gender: currentUser?.gender,
-        fullName: currentUser?.fullName,
-        phoneNumber: currentUser?.phoneNumber,
-        email: currentUser?.email,
-        notes: currentUser?.notes,
-        portfolio: currentUser?.portfolio,
-        linkedIn: currentUser?.linkedIn,
-        twitter: currentUser?.twitter,
-        telegram: currentUser?.telegram,
-        website: currentUser?.website,
+    if (user) {
+      reset({
+        fullName: user?.fullName,
+        phoneNumber: user?.profile?.phoneNumber,
+        email: user?.email,
+        notes: user?.profile?.notes,
+        gender: user?.profile?.gender,
+        resume: user?.profile?.resume,
       });
-      setUserProfile("");
-      profileFetch();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileFetch, currentUser]);
+  }, [user, reset]);
 
-  const folder = process.env.REACT_APP_FOLDER;
+  const { submitData, isPending } = useCreateData({
+    key: [USER_KEY],
+    func: updateUserProfile,
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (user?.signupAs !== "Employer" && profile.gender === "") {
-        setError(true);
-        setAlert({
-          type: "error",
-          message: "Please specify your Gender",
-          open: true,
-        });
-        return;
-      }
-      const data = {
-        userProfile,
-        resume,
-        profile,
-      };
-      await updateProfile(data);
-      setUpdate(false);
-      setAlert({
-        type: "success",
-        message: "Profile has been successfully updated",
-        open: true,
-      });
-      setError(false);
-    } catch (error) {
-      console.log(error);
-    }
+  const onSubmit = async (values) => {
+    await submitData({
+      inputData: { ...values, profileId: profile._id },
+      alertMsg: "Profile has been successfully updated",
+    });
+    setUpdate(false);
   };
 
   return (
     <Accordions
-      header={`${currentUser?._id === user?._id ? "My" : ""} Profile Details`}
+      header={`${currentUser?._id === userId ? "My" : ""} Profile Details`}
       setUpdate={setUpdate}
-      currentUser={currentUser}
-      update={update}>
-      <form onSubmit={handleSubmit}>
-        <div className="flex gap-3">
-          {/* upload image  */}
-          <div
-            className="lg:flex-1"
-            onClick={() => {
-              update && fileRef?.current.click();
-            }}>
-            {/* for previewing the profile while uploading  */}
-            {userProfile ? (
-              <img
-                src={imgPrev}
-                alt="profile"
-                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-                border-dashed border-gray-300 
-                ${update ? "cursor-pointer" : "pointer-events-none"}`}
-              />
-            ) : // displaying the user profile if exist in the database
-            currentUser?.userProfile ? (
-              <img
-                src={folder + currentUser?.userProfile}
-                alt="profile"
-                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-                border-dashed border-gray-300 
-                ${update ? "cursor-pointer" : "pointer-events-none"}`}
-              />
-            ) : // if the user is an employer
-            user?.signupAs === "Employer" ? (
-              <div
-                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] border-2 text-gray-500
-                border-dashed border-gray-300 flex items-center justify-center text-center text-2xl
-                ${update ? "cursor-pointer" : "pointer-events-none"}`}>
-                COMPANY <br /> PROFILE
-              </div>
-            ) : (
-              // if the user is a candidate
-              <img
-                src={
-                  profile.gender === "male"
-                    ? male
-                    : profile.gender === "female"
-                    ? female
-                    : currentUser?.gender === "male"
-                    ? male
-                    : currentUser?.gender === "female"
-                    ? female
-                    : noneGender
-                }
-                alt="profile"
-                className={`w-[8rem] h-[8rem] 1114:w-[10rem] 1114:h-[10rem] object-cover border-2 
-                border-dashed border-gray-300 
-                ${update ? "cursor-pointer" : "pointer-events-none"}`}
-              />
-            )}
-            {/* input for uploading the profile image  */}
-            <input
-              name="userProfile"
-              onChange={(e) => {
-                setUserProfile(e.target.files[0]);
-                e.target.files.length !== 0 &&
-                  setImgPrev(URL.createObjectURL(e.target.files[0]));
-              }}
-              type="file"
-              className="hidden"
-              ref={fileRef}
-            />
-          </div>
+      currentUser={currentUser._id === userId}
+      update={update}
+    >
+      <div className="flex gap-3">
+        <UploadImage update={update} user={user} />
 
-          {/* profile type  */}
-          <div className="flex-1 lg:flex-[1.2]">
-            <h1 className="md:text-lg text-sm pb-2">
-              {currentUser?.signupAs === "Candidate"
-                ? "Account Type"
-                : "Employer Type"}
-            </h1>
-            <p
-              className="bg-orang rounded-sm text-white py-3 w-full text-center
-                md:text-lg pointer-events-none text-sm">
-              <span>
-                <AccountCircleIcon
-                  sx={{ fontSize: "1.4rem", marginRight: "0.4rem" }}
-                />
-              </span>
-              {currentUser?.signupAs === "Candidate" ? "Candidate" : "Employer"}
-            </p>
-          </div>
+        {/* profile type  */}
+        <div className="flex-1 lg:flex-[1.2]">
+          <h1 className="md:text-lg text-sm pb-2">
+            {currentUser?.signupAs === "Candidate"
+              ? "Account Type"
+              : "Employer Type"}
+          </h1>
+          <p
+            className="bg-orang rounded-sm text-white py-3 w-full text-center
+                md:text-lg pointer-events-none text-sm"
+          >
+            <span>
+              <AccountCircleIcon
+                sx={{ fontSize: "1.4rem", marginRight: "0.4rem" }}
+              />
+            </span>
+            {currentUser?.signupAs === "Candidate" ? "Candidate" : "Employer"}
+          </p>
         </div>
-
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {/* gender  */}
         {currentUser?.signupAs === "Candidate" ? (
           <div className="mt-10">
-            <FormLabel>{`${
-              currentUser?._id === user?._id ? "Choose Your" : null
-            } Gender`}</FormLabel>
-            <RadioGroup
-              row
+            <FormLabel>
+              {`${
+                currentUser?._id === user?._id ? "Choose Your" : null
+              } Gender`}
+            </FormLabel>
+            <Controller
               name="gender"
-              onChange={(e) =>
-                setProfile({ ...profile, gender: e.target.value })
-              }
-              value={profile.gender}>
-              <FormControlLabel
-                value="male"
-                control={<Radio disabled={update ? false : true} />}
-                label="Male"
-              />
-              <FormControlLabel
-                value="female"
-                control={<Radio disabled={update ? false : true} />}
-                label="Female"
-              />
-            </RadioGroup>
-            <FormHelperText className="!text-red-700">
-              {error && "This field is required!!"}
-            </FormHelperText>
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <RadioGroup row {...field}>
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio disabled={!update} />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio disabled={!update} />}
+                    label="Female"
+                  />
+                </RadioGroup>
+              )}
+            />
           </div>
         ) : null}
 
         {/* links inputs  */}
-        <InputForm update={update} currentUser={currentUser} />
+        <InputForm
+          user={user}
+          errors={errors}
+          register={register}
+          update={update}
+        />
 
-        {user?._id === currentUser?._id && (
-          <button
-            className={`bg-orang rounded-sm text-white py-3 text-lg cursor-pointer
-            w-[10rem] hover:bg-black mt-[2rem] 
-          ${!update && "pointer-events-none"}`}>
-            Save Changes
-          </button>
-        )}
+        {update && <UpdateButton isPending={isPending} update={update} />}
       </form>
     </Accordions>
   );
